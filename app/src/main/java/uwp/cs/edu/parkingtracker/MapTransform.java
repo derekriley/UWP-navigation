@@ -204,6 +204,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by David on 11/21/14.
  * Modified from MapFragment subclass authored by :
@@ -213,7 +217,7 @@ public class MapTransform {
 
     /* Instance variable begin */
     private GoogleMap mMap;
-    private MarkerOptions[] mOptions;
+    private List<MarkerOptions> mOptions;
     private BasicUser passedActivity;
     /* Instance variable end */
 
@@ -225,7 +229,7 @@ public class MapTransform {
     {
         // Set instance variables.
         this.passedActivity = activity;
-        this.mOptions = new MarkerOptions[6];
+        this.mOptions = new ArrayList<MarkerOptions>();
 
         // Get a handle to the Map Fragment
          this.mMap = ((MapFragment) activity.getFragmentManager()
@@ -237,16 +241,16 @@ public class MapTransform {
      * @param activity
      * @param markerOptions
      */
-    public MapTransform(BasicUser activity, MarkerOptions[] markerOptions)
-    {
-        // Set instance variables.
-        this.passedActivity = activity;
-        this.mOptions = markerOptions;
-
-        // Get a handle to the Map Fragment
-        this.mMap = ((MapFragment) activity.getFragmentManager()
-                .findFragmentById(R.id.map)).getMap();
-    }
+//    public MapTransform(BasicUser activity, MarkerOptions[] markerOptions)
+//    {
+//        // Set instance variables.
+//        this.passedActivity = activity;
+//        this.mOptions = markerOptions;
+//
+//        // Get a handle to the Map Fragment
+//        this.mMap = ((MapFragment) activity.getFragmentManager()
+//                .findFragmentById(R.id.map)).getMap();
+//    }
 
     /**
      * setUpMap : Positions map to specified lot coordinates, lays out the parking lot zones, and
@@ -268,6 +272,19 @@ public class MapTransform {
                 || this.passedActivity.getColors().size() != 0)
             this.layoutMarkers();
 
+        //add building markers
+        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
+            String key = entry.getKey();
+            LatLng value = entry.getValue();
+            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
+        }
+
+        //add parking markers
+        for (Map.Entry<String, LatLng> entry : CONSTANTS.parkingLots.entrySet()) {
+            String key = entry.getKey();
+            LatLng value = entry.getValue();
+            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+        }
 
     }
 
@@ -278,27 +295,28 @@ public class MapTransform {
     private void layoutMarkers() {
 
         // Sets up each marker and gives it a corresponding color, title, and snippet.
-        for (int i = 0; i < this.mOptions.length; i++) {
-            mOptions[i] = new MarkerOptions()
+        for (int i = 0; i < this.mOptions.size(); i++) {
+            mOptions.add(new MarkerOptions()
                     .title("Zone " + (i + 1))
-                    .position(new LatLng(passedActivity.getLat().get(i), passedActivity.getLng().get(i)));
+                    .position(new LatLng(passedActivity.getLat().get(i), passedActivity.getLng().get(i))));
             switch (passedActivity.getColors().get(i).intValue()) {
                 case (0):
-                    mOptions[i].icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    mOptions.get(i).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                             .snippet("Empty");
                     break;
                 case (1):
-                    mOptions[i].icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                    mOptions.get(i).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
                             .snippet("Half Full");
                     break;
                 case (2):
-                    mOptions[i].icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    mOptions.get(i).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                             .snippet("Full");
                     break;
                 default:
-                    mOptions[i].icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    mOptions.get(i).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             }
         }
+
 
         attachMarkersToMap();
     }
