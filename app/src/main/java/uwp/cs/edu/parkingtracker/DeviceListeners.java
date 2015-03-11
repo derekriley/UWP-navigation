@@ -454,22 +454,22 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.basic_user_refresh_button :
-                Toast.makeText(passedActivity.getApplicationContext(), "Refreshing Map",
-                        Toast.LENGTH_SHORT).show();
-                /*
-                 * Should be made more generic; perhaps dependent upon device location.
-                 */
-                passedActivity.getMapTransform().resetMap(CONSTANTS.STUDENT_CENTER_C_LAT, CONSTANTS.STUDENT_CENTER_C_LNG, CONSTANTS.DEFAULT_ZOOM_FACTOR);
-                break;
-
-            case R.id.basic_user_other_lots_button :
-                Toast.makeText(passedActivity.getApplicationContext(), "Displaying Other Lots",
-                        Toast.LENGTH_SHORT).show();
-                break;
-        }
+//        switch (v.getId())
+//        {
+//            case R.id.basic_user_refresh_button :
+//                Toast.makeText(passedActivity.getApplicationContext(), "Refreshing Map",
+//                        Toast.LENGTH_SHORT).show();
+//                /*
+//                 * Should be made more generic; perhaps dependent upon device location.
+//                 */
+//                passedActivity.getMapTransform().resetMap(CONSTANTS.STUDENT_CENTER_C_LAT, CONSTANTS.STUDENT_CENTER_C_LNG, CONSTANTS.DEFAULT_ZOOM_FACTOR);
+//                break;
+//
+//            case R.id.basic_user_other_lots_button :
+//                Toast.makeText(passedActivity.getApplicationContext(), "Displaying Other Lots",
+//                        Toast.LENGTH_SHORT).show();
+//                break;
+//        }
     }
 
     /**

@@ -200,13 +200,20 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.internal.on;
 
@@ -219,6 +226,13 @@ import java.util.Timer;
 public class BasicUser extends FragmentActivity {
 
     /* Instance variables begin */
+
+    private String[] drawerItems ={"one","two","three"};
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
     // arrays that hold the data retrieved from the database
     private ArrayList<Double> lat = null;
@@ -290,9 +304,9 @@ public class BasicUser extends FragmentActivity {
             // Instantiate new device listener.
             deviceListeners = new DeviceListeners(this);
             // Attach listener to the refresh, expert, and other lots buttons.
-            findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
-            findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
-            findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
+//            findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
+//            findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
+//            findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
         }
         return deviceListeners;
     }
@@ -303,11 +317,48 @@ public class BasicUser extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_user);
 
-        // fills up the arrays that will be used in other methods / classes
-        DatabaseExchange.fillArrayOfZones(this, CONSTANTS.STUDENT_CENTER_PARKING_LOT, getLat(), getLng(), getColors());
+        //added nav drawer
+        mTitle = mDrawerTitle = getTitle();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, drawerItems));
+        // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                               @Override
+                                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                   Toast.makeText(getApplicationContext(),"item "+position+"selected",Toast.LENGTH_LONG);
+                                               }
+                                           });
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+
+                // fills up the arrays that will be used in other methods / classes
+                DatabaseExchange.fillArrayOfZones(this, CONSTANTS.STUDENT_CENTER_PARKING_LOT, getLat(), getLng(), getColors());
 
         // Setup device listeners.
         getDeviceListeners();
+
 
         // Setup map.
         getMapTransform();
@@ -317,14 +368,22 @@ public class BasicUser extends FragmentActivity {
         myTimer.schedule(myTask, 1000, 9000);
 
         // assigns the textboxes to the objects
-        TextView dateTime = (TextView) findViewById(R.id.basic_user_date_and_time_output_textView);
+//        TextView dateTime = (TextView) findViewById(R.id.basic_user_date_and_time_output_textView);
 
         // gets the current date and time, down to the second and places
         // both inside the textbox
-        String currentDT = DateFormat.getDateTimeInstance().format(new Date());
-        dateTime.setText(currentDT);
+//        String currentDT = DateFormat.getDateTimeInstance().format(new Date());
+//        dateTime.setText(currentDT);
 
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+//        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+//        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -345,10 +404,24 @@ public class BasicUser extends FragmentActivity {
         if (id == R.id.basic_user_action_settings) {
             return true;
         }
-
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
     // method that changes the activity on the screen for experts
     public void goToExpert(View view) {
         Intent intent = new Intent(this, ExpertActivity.class);

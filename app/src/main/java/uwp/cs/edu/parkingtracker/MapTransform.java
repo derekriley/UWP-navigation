@@ -198,6 +198,7 @@ package uwp.cs.edu.parkingtracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -255,7 +256,7 @@ public class MapTransform {
      * @param zoomFactor
      */
     public void setUpMap(double latitude, double longitude, float zoomFactor) {
-
+        MapsInitializer.initialize(passedActivity);
         // makes the map focus on the Student Center parking lot.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
 

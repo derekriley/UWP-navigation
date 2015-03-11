@@ -200,6 +200,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -356,8 +357,9 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
             }
             else
             {
-                Toast.makeText(activity.getApplicationContext(), "No Network Connection Avaliable",
-                        Toast.LENGTH_SHORT).show();
+                Log.e("parkingtracker", "No Network Connection Avaliable");
+//                Toast.makeText(activity.getApplicationContext(), "No Network Connection Avaliable",
+//                        Toast.LENGTH_SHORT).show();
             }
 
         } catch (MalformedURLException | ProtocolException e) {
