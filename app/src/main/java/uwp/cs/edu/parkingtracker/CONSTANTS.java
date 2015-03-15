@@ -268,6 +268,25 @@ public final class CONSTANTS {
     static final LatLng T_Row_4_Point_3 = new LatLng (42.647981, -87.846827);
     /* Talent (T) Coordinates End*/
 
+    /* Student_Center (A) Coordinates Begin*/
+    static final LatLng A_Row_1_Point_1 = new LatLng (42.649125, -87.853941);
+
+    static final LatLng A_Row_2_Point_1 = new LatLng (42.648511, -87.854008);
+    static final LatLng A_Row_2_Point_2 = new LatLng (42.648455, -87.851937);
+
+    static final LatLng A_Row_3_Point_1 = new LatLng (42.648095, -87.854203);
+    static final LatLng A_Row_3_Point_2 = new LatLng (42.648077, -87.853363);
+    static final LatLng A_Row_3_Point_3 = new LatLng (42.648071, -87.852174);
+
+    static final LatLng A_Row_4_Point_1 = new LatLng (42.647685, -87.854255);
+    static final LatLng A_Row_4_Point_2 = new LatLng (42.647670, -87.853375);
+    static final LatLng A_Row_4_Point_3 = new LatLng (42.647653, -87.852202);
+
+    static final LatLng A_Row_5_Point_1 = new LatLng (42.647479, -87.854288);
+    static final LatLng A_Row_5_Point_2 = new LatLng (42.647420, -87.853387);
+    static final LatLng A_Row_5_Point_3 = new LatLng (42.647421, -87.852199);
+    /* Student_Center (A) Coordinates End*/
+
     /* Rita_Main (B) Coordinates Begin*/
     static final LatLng B_Row_1_Point_1 = new LatLng (42.645479, -87.859190);
     static final LatLng B_Row_1_Point_2 = new LatLng (42.645479, -87.858650);
@@ -290,24 +309,59 @@ public final class CONSTANTS {
     static final LatLng B_Row_4_Point_4 = new LatLng (42.644463, -87.857418);
     /* Rita_Main (B) Coordinates End*/
 
-    /* Rita_Overflow (C) Coordinates Begin
-    static final LatLng C_Row_1_Point_1 = new LatLng ();
-    static final LatLng C_Row_1_Point_2 = new LatLng ();
-    static final LatLng C_Row_1_Point_3 = new LatLng ();
+    /* Rita_Overflow (C) Coordinates Begin*/
+    static final LatLng C_Row_1_Point_1 = new LatLng (42.644346, -87.858951);
+    static final LatLng C_Row_1_Point_2 = new LatLng (42.644347, -87.858080);
+    static final LatLng C_Row_1_Point_3 = new LatLng (42.644342, -87.857582);
 
-    static final LatLng C_Row_2_Point_1 = new LatLng ();
-    static final LatLng C_Row_2_Point_2 = new LatLng ();
-    static final LatLng C_Row_2_Point_3 = new LatLng ();
-    static final LatLng C_Row_2_point_4 = new LatLng ();
+    static final LatLng C_Row_2_Point_1 = new LatLng (42.643981, -87.858963);
+    static final LatLng C_Row_2_Point_2 = new LatLng (42.643957, -87.858093);
+    static final LatLng C_Row_2_Point_3 = new LatLng (42.643940, -87.857292);
 
-    static final LatLng C_Row_3_Point_1 = new LatLng ();
-    static final LatLng C_Row_3_Point_2 = new LatLng ();
-    static final LatLng C_Row_3_Point_3 = new LatLng ();
+    static final LatLng C_Row_3_Point_1 = new LatLng (42.643708, -87.85871);
+    static final LatLng C_Row_3_Point_2 = new LatLng (42.643674, -87.858041);
+    static final LatLng C_Row_3_Point_3 = new LatLng (42.643665, -87.857145);
+
+    static final LatLng C_Row_4_point_1 = new LatLng (42.643407, -87.858041);
+    static final LatLng C_Row_4_point_2 = new LatLng (42.643386, -87.857100);
+    /*Rita_Overflow (C) Coordinates End*/
+
+    /* SAC_Main (D) Coordinates Begin*/
+    static final LatLng D_Row_1_Point_1 = new LatLng (42.641491, -87.856943);
+    static final LatLng D_Row_1_Point_2 = new LatLng (42.641751, -87.856552);
+    static final LatLng D_Row_1_Point_3 = new LatLng (42.641906, -87.856310);
+    static final LatLng D_Row_1_Point_4 = new LatLng (42.641875, -87.855965);
+
+    static final LatLng D_Row_2_Point_1 = new LatLng (42.641251, -87.856630);
+    static final LatLng D_Row_2_Point_2 = new LatLng (42.641507, -87.856232);
+    static final LatLng D_Row_2_Point_3 = new LatLng (42.641748, -87.855838);
+
+    static final LatLng D_Row_3_Point_1 = new LatLng (42.640997, -87.856339);
+    static final LatLng D_Row_3_Point_2 = new LatLng (42.641208, -87.856019);
+    static final LatLng D_Row_3_Point_3 = new LatLng (42.641273, -87.855944);
+    static final LatLng D_Row_3_Point_4 = new LatLng (42.641413, -87.855725);
+    static final LatLng D_Row_3_Point_5 = new LatLng (42.641519, -87.855567);
+
+    static final LatLng D_Row_4_Point_1 = new LatLng (42.640796, -87.856064);
+    static final LatLng D_Row_4_Point_2 = new LatLng (42.640992, -87.855772);
+    static final LatLng D_Row_4_Point_3 = new LatLng (42.641187, -87.855450);
+
+    static final LatLng D_Row_5_Point_1 = new LatLng (42.640517, -87.855700);
+    static final LatLng D_Row_5_Point_2 = new LatLng (42.640719, -87.855413);
+    static final LatLng D_Row_5_Point_3 = new LatLng (42.640719, -87.855413);
+    /* SAC_Main (D) Coordinates End*/
+
+    /* SAC_Overflow (E) Coordinates Begin*/
+    static final LatLng E_Row_1_Point_1 = new LatLng (42.643047, -87.858129);
+    static final LatLng E_Row_1_Point_2 = new LatLng (42.643041, -87.857582);
+
+    static final LatLng E_Row_2_Point_1 = new LatLng (42.642373, -87.858154);
+    static final LatLng E_Row_2_Point_2 = new LatLng (42.642354, -87.857605);
+    /* SAC_Overflow (E) Coordinates End*/
 
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
     public static final float DEFAULT_LINE_WIDTH = 5;
-    Rita_Overflow (C) Coordinates Begin*/
 
    /* Temp. Authorization Constants */
     public static final String USERNAME = "david";
