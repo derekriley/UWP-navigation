@@ -3,46 +3,39 @@ package uwp.cs.edu.parkingtracker;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 /**
- * Created by Able on 3/18/2015.
+ * Created by Russ on 3/18/2015.
  */
 public class Zone {
-
+    private String zoneId;
+    private PolygonOptions polygonOptions;
     private int fullness;
-    private String ID = new String();
-    private PolygonOptions poly = new PolygonOptions();
 
-    //constructor
-    public Zone (String ID, PolygonOptions poly) {
-
-        this.ID = ID;
-        this.poly = poly;
-
+    public String getZoneId() {
+        return zoneId;
     }
 
-    // setters
+    public void setZoneId(String zoneId) {
+        this.zoneId = zoneId;
+    }
+
+    public PolygonOptions getPolygonOptions() {
+        return polygonOptions;
+    }
+
+    public void setPolygonOptions(PolygonOptions polygonOptions) {
+        this.polygonOptions = polygonOptions;
+    }
+
+    public int getFullness() {
+        return fullness;
+    }
+
     public void setFullness(int fullness) {
         this.fullness = fullness;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public Zone(String zoneId, PolygonOptions polygonOptions) {
+        this.zoneId = zoneId;
+        this.polygonOptions = polygonOptions;
     }
-
-    public void setPoly(PolygonOptions poly) {
-        this.poly = poly;
-    }
-
-    //getters
-    public int getFullness(){
-        return fullness;
-    }
-
-    public String getID(){
-        return ID;
-    }
-
-    public PolygonOptions getPoly () {
-        return poly;
-    }
-
 }
