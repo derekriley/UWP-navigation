@@ -202,6 +202,8 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -356,13 +358,14 @@ public class MapTransform {
         switch (CONSTANTS.STUDENT_CENTER_PARKING_LOT)
         {
             case CONSTANTS.STUDENT_CENTER_PARKING_LOT :
+
                 mMap.addPolyline(new PolylineOptions()
-                    .add(CONSTANTS.SOUTH_WEST_OUTER_BOUND_POINT)
-                    .add(CONSTANTS.SOUTH_EAST_OUTER_BOUND_POINT)
-                    .add(CONSTANTS.NORTH_EAST_OUTER_BOUND_POINT)
-                    .add(CONSTANTS.NORTH_WEST_OUTER_BOUND_POINT)
-                    .add(CONSTANTS.SOUTH_WEST_OUTER_BOUND_POINT)
-                    .width(CONSTANTS.DEFAULT_LINE_WIDTH));
+                        .add(CONSTANTS.SOUTH_WEST_OUTER_BOUND_POINT)
+                        .add(CONSTANTS.SOUTH_EAST_OUTER_BOUND_POINT)
+                        .add(CONSTANTS.NORTH_EAST_OUTER_BOUND_POINT)
+                        .add(CONSTANTS.NORTH_WEST_OUTER_BOUND_POINT)
+                        .add(CONSTANTS.SOUTH_WEST_OUTER_BOUND_POINT)
+                        .width(CONSTANTS.DEFAULT_LINE_WIDTH));
                 break;
         }
     }
@@ -406,6 +409,11 @@ public class MapTransform {
                         .width(CONSTANTS.DEFAULT_LINE_WIDTH));
                 break;
         }
+    }
+
+    public void createLotPolygons ()
+    {
+
     }
 
     public void resetMap(double latitude, double longitude, float zoomFactor)

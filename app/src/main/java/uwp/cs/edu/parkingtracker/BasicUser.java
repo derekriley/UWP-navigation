@@ -239,8 +239,6 @@ public class BasicUser extends FragmentActivity {
     protected DeviceListeners deviceListeners = null;
     protected MapTransform mapTransform = null;
 
-
-
     /* Instance variables end */
 
     /* Setters/Getters */

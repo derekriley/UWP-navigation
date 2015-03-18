@@ -195,14 +195,11 @@
 
 package uwp.cs.edu.parkingtracker;
 
-import android.support.annotation.NonNull;
-
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolygonOptions;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by David on 11/21/14.
@@ -268,11 +265,27 @@ public final class CONSTANTS {
     static final LatLng T_Row_4_Point_3 = new LatLng (42.647981, -87.846827);
     /* Talent (T) Coordinates End*/
 
+    /* Talent (T) Polygons Begin*/
+    static final PolygonOptions T_Zone_1 = new PolygonOptions ()
+            .add(T_Row_1_Point_1, T_Row_1_Point_2, T_Row_2_Point_2, T_Row_2_Point_1);
+    static final PolygonOptions T_Zone_2 = new PolygonOptions ()
+            .add(T_Row_1_Point_2, T_Row_1_Point_3, T_Row_2_Point_3, T_Row_2_Point_2);
+    static final PolygonOptions T_Zone_3 = new PolygonOptions ()
+            .add(T_Row_2_Point_1, T_Row_2_Point_2, T_Row_3_Point_2, T_Row_3_Point_1);
+    static final PolygonOptions T_Zone_4 = new PolygonOptions ()
+            .add(T_Row_2_Point_2, T_Row_2_Point_3, T_Row_3_Point_3, T_Row_3_Point_2);
+    static final PolygonOptions T_Zone_5 = new PolygonOptions ()
+            .add(T_Row_3_Point_1, T_Row_3_Point_2, T_Row_4_Point_2, T_Row_4_Point_1);
+    static final PolygonOptions T_Zone_6 = new PolygonOptions ()
+            .add(T_Row_3_Point_2, T_Row_3_Point_3, T_Row_4_Point_3, T_Row_4_Point_2);
+    /* Talent (T) Polygons End*/
+
     /* Student_Center (A) Coordinates Begin*/
     static final LatLng A_Row_1_Point_1 = new LatLng (42.649125, -87.853941);
 
     static final LatLng A_Row_2_Point_1 = new LatLng (42.648511, -87.854008);
-    static final LatLng A_Row_2_Point_2 = new LatLng (42.648455, -87.851937);
+    static final LatLng A_Row_2_Point_2 = new LatLng (42.648516, -87.853350);
+    static final LatLng A_Row_2_Point_3 = new LatLng (42.648455, -87.851937);
 
     static final LatLng A_Row_3_Point_1 = new LatLng (42.648095, -87.854203);
     static final LatLng A_Row_3_Point_2 = new LatLng (42.648077, -87.853363);
@@ -286,6 +299,23 @@ public final class CONSTANTS {
     static final LatLng A_Row_5_Point_2 = new LatLng (42.647420, -87.853387);
     static final LatLng A_Row_5_Point_3 = new LatLng (42.647421, -87.852199);
     /* Student_Center (A) Coordinates End*/
+
+    /* Student_Center (A) Polygons Begin*/
+    static final PolygonOptions A_Zone_1 = new PolygonOptions ()
+            .add(A_Row_1_Point_1, A_Row_2_Point_3, A_Row_2_Point_2, A_Row_2_Point_1);
+    static final PolygonOptions A_Zone_2 = new PolygonOptions ()
+            .add(A_Row_2_Point_1, A_Row_2_Point_2, A_Row_3_Point_2, A_Row_3_Point_1);
+    static final PolygonOptions A_Zone_3 = new PolygonOptions ()
+            .add(A_Row_2_Point_2, A_Row_2_Point_3, A_Row_3_Point_3, A_Row_3_Point_2);
+    static final PolygonOptions A_Zone_4 = new PolygonOptions ()
+            .add(A_Row_3_Point_1, A_Row_3_Point_2, A_Row_4_Point_2, A_Row_4_Point_1);
+    static final PolygonOptions A_Zone_5 = new PolygonOptions ()
+            .add(A_Row_3_Point_2, A_Row_3_Point_3, A_Row_4_Point_3, A_Row_4_Point_2);
+    static final PolygonOptions A_Zone_6 = new PolygonOptions ()
+            .add(A_Row_4_Point_1, A_Row_4_Point_2, A_Row_5_Point_2, A_Row_5_Point_1);
+    static final PolygonOptions A_Zone_7 = new PolygonOptions ()
+            .add(A_Row_4_Point_2, A_Row_4_Point_3, A_Row_5_Point_3, A_Row_5_Point_2);
+    /*Student_Center (A) Polygons End*/
 
     /* Rita_Main (B) Coordinates Begin*/
     static final LatLng B_Row_1_Point_1 = new LatLng (42.645479, -87.859190);
@@ -309,6 +339,27 @@ public final class CONSTANTS {
     static final LatLng B_Row_4_Point_4 = new LatLng (42.644463, -87.857418);
     /* Rita_Main (B) Coordinates End*/
 
+    /* Rita_Main (B) Polygons Begin*/
+    static final PolygonOptions B_Zone_1 = new PolygonOptions()
+            .add(B_Row_1_Point_1, B_Row_1_Point_2, B_Row_2_Point_2, B_Row_2_Point_1);
+    static final PolygonOptions B_Zone_2 = new PolygonOptions()
+            .add(B_Row_1_Point_2, B_Row_1_Point_3, B_Row_2_Point_3, B_Row_2_Point_2);
+    static final PolygonOptions B_Zone_3 = new PolygonOptions()
+            .add(B_Row_1_Point_3, B_Row_1_Point_4, B_Row_2_Point_4, B_Row_2_Point_3);
+    static final PolygonOptions B_Zone_4 = new PolygonOptions()
+            .add(B_Row_2_Point_1, B_Row_2_Point_2, B_Row_3_Point_2, B_Row_3_Point_1);
+    static final PolygonOptions B_Zone_5 = new PolygonOptions()
+            .add(B_Row_2_Point_2, B_Row_2_Point_3, B_Row_3_Point_3, B_Row_3_Point_2);
+    static final PolygonOptions B_Zone_6 = new PolygonOptions()
+            .add(B_Row_2_Point_3, B_Row_2_Point_4, B_Row_3_Point_4, B_Row_3_Point_3);
+    static final PolygonOptions B_Zone_7 = new PolygonOptions()
+            .add(B_Row_3_Point_1, B_Row_3_Point_2, B_Row_4_Point_2, B_Row_4_Point_1);
+    static final PolygonOptions B_Zone_8 = new PolygonOptions()
+            .add(B_Row_3_Point_2, B_Row_3_Point_3, B_Row_4_Point_3, B_Row_4_Point_2);
+    static final PolygonOptions B_Zone_9 = new PolygonOptions()
+            .add(B_Row_3_Point_3, B_Row_3_Point_4, B_Row_4_Point_4, B_Row_4_Point_3);
+    /* Rita_Main (B) Polygons End*/
+
     /* Rita_Overflow (C) Coordinates Begin*/
     static final LatLng C_Row_1_Point_1 = new LatLng (42.644346, -87.858951);
     static final LatLng C_Row_1_Point_2 = new LatLng (42.644347, -87.858080);
@@ -322,9 +373,21 @@ public final class CONSTANTS {
     static final LatLng C_Row_3_Point_2 = new LatLng (42.643674, -87.858041);
     static final LatLng C_Row_3_Point_3 = new LatLng (42.643665, -87.857145);
 
-    static final LatLng C_Row_4_point_1 = new LatLng (42.643407, -87.858041);
-    static final LatLng C_Row_4_point_2 = new LatLng (42.643386, -87.857100);
-    /*Rita_Overflow (C) Coordinates End*/
+    static final LatLng C_Row_4_Point_1 = new LatLng (42.643407, -87.858041);
+    static final LatLng C_Row_4_Point_2 = new LatLng (42.643386, -87.857100);
+    /* Rita_Overflow (C) Coordinates End*/
+
+    /* Rita_Overflow (C) Polygons Begin*/
+    static final PolygonOptions C_Zone_1 = new PolygonOptions()
+            .add(C_Row_1_Point_1, C_Row_1_Point_2, C_Row_2_Point_2, C_Row_2_Point_1);
+    static final PolygonOptions C_Zone_2 = new PolygonOptions()
+            .add(C_Row_1_Point_2, C_Row_1_Point_3, C_Row_2_Point_3, C_Row_2_Point_2);
+    static final PolygonOptions C_Zone_3 = new PolygonOptions()
+            .add(C_Row_2_Point_1, C_Row_2_Point_2, C_Row_3_Point_2, C_Row_4_Point_1, C_Row_3_Point_1);
+    static final PolygonOptions C_Zone_4 = new PolygonOptions()
+            .add(C_Row_2_Point_2, C_Row_2_Point_3, C_Row_3_Point_2, C_Row_3_Point_3);
+    static final PolygonOptions C_Zone_5 = new PolygonOptions()
+            .add(C_Row_3_Point_2, C_Row_3_Point_3, C_Row_4_Point_1, C_Row_4_Point_2);
 
     /* SAC_Main (D) Coordinates Begin*/
     static final LatLng D_Row_1_Point_1 = new LatLng (42.641491, -87.856943);
@@ -351,6 +414,25 @@ public final class CONSTANTS {
     static final LatLng D_Row_5_Point_3 = new LatLng (42.640719, -87.855413);
     /* SAC_Main (D) Coordinates End*/
 
+    /* SAC_Main (D) Polygons Begin*/
+    static final PolygonOptions D_Zone_1 = new PolygonOptions ()
+            .add(D_Row_1_Point_1, D_Row_1_Point_2, D_Row_2_Point_2, D_Row_2_Point_1);
+    static final PolygonOptions D_Zone_2 = new PolygonOptions ()
+            .add(D_Row_1_Point_2, D_Row_1_Point_3, D_Row_1_Point_4, D_Row_2_Point_3, D_Row_2_Point_2);
+    static final PolygonOptions D_Zone_3 = new PolygonOptions ()
+            .add(D_Row_2_Point_1, D_Row_2_Point_2, D_Row_3_Point_3, D_Row_3_Point_2, D_Row_3_Point_1);
+    static final PolygonOptions D_Zone_4 = new PolygonOptions ()
+            .add(D_Row_2_Point_2, D_Row_2_Point_3, D_Row_3_Point_5, D_Row_3_Point_4, D_Row_3_Point_3);
+    static final PolygonOptions D_Zone_5 = new PolygonOptions ()
+            .add(D_Row_3_Point_1, D_Row_3_Point_2, D_Row_4_Point_2, D_Row_4_Point_1);
+    static final PolygonOptions D_Zone_6 = new PolygonOptions ()
+            .add(D_Row_3_Point_2, D_Row_3_Point_3, D_Row_3_Point_4, D_Row_4_Point_3, D_Row_4_Point_2);
+    static final PolygonOptions D_Zone_7 = new PolygonOptions ()
+            .add(D_Row_4_Point_1, D_Row_4_Point_2, D_Row_5_Point_2, D_Row_5_Point_1);
+    static final PolygonOptions D_Zone_8 = new PolygonOptions ()
+            .add(D_Row_4_Point_2, D_Row_4_Point_3, D_Row_5_Point_3, D_Row_5_Point_2);
+    /* SAC_Main (D) Polygons End*/
+
     /* SAC_Overflow (E) Coordinates Begin*/
     static final LatLng E_Row_1_Point_1 = new LatLng (42.643047, -87.858129);
     static final LatLng E_Row_1_Point_2 = new LatLng (42.643041, -87.857582);
@@ -358,6 +440,11 @@ public final class CONSTANTS {
     static final LatLng E_Row_2_Point_1 = new LatLng (42.642373, -87.858154);
     static final LatLng E_Row_2_Point_2 = new LatLng (42.642354, -87.857605);
     /* SAC_Overflow (E) Coordinates End*/
+
+    /* SAC_Overflow (E) Polygons Begin*/
+    static final PolygonOptions E_Zone_1 = new PolygonOptions ()
+            .add(E_Row_1_Point_1, E_Row_1_Point_2, E_Row_2_Point_2, E_Row_2_Point_1);
+    /* SAC_Overflow (E) Polygons End*/
 
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
@@ -369,6 +456,7 @@ public final class CONSTANTS {
 
     public static final Map<String,LatLng> buildings = new HashMap<String,LatLng>();
     public static final Map<String,LatLng> parkingLots = new HashMap<String,LatLng>();
+    public static final Map<String,PolygonOptions> zones = new HashMap<String,PolygonOptions>();
 
     static{
         buildings.put("Greenquist Hall", new LatLng(42.646397, -87.855553));
@@ -390,5 +478,41 @@ public final class CONSTANTS {
         parkingLots.put("Parking Lot D", new LatLng(42.6427, -87.857822));
         parkingLots.put("Parking Lot E",new LatLng(42.641504, -87.856192));
         parkingLots.put("Parking Lot T", new LatLng(42.64854, -87.847608));
+        zones.put("Talent_1", T_Zone_1);
+        zones.put("Talent_2", T_Zone_2);
+        zones.put("Talent_3", T_Zone_3);
+        zones.put("Talent_4", T_Zone_4);
+        zones.put("Talent_5", T_Zone_5);
+        zones.put("Talent_6", T_Zone_6);
+        zones.put("Student_Center_1", A_Zone_1);
+        zones.put("Student_Center_2", A_Zone_2);
+        zones.put("Student_Center_3", A_Zone_3);
+        zones.put("Student_Center_4", A_Zone_4);
+        zones.put("Student_Center_5", A_Zone_5);
+        zones.put("Student_Center_6", A_Zone_6);
+        zones.put("Student_Center_7", A_Zone_7);
+        zones.put("Rita_Main_1", B_Zone_1);
+        zones.put("Rita_Main_2", B_Zone_2);
+        zones.put("Rita_Main_3", B_Zone_3);
+        zones.put("Rita_Main_4", B_Zone_4);
+        zones.put("Rita_Main_5", B_Zone_5);
+        zones.put("Rita_Main_6", B_Zone_6);
+        zones.put("Rita_Main_7", B_Zone_7);
+        zones.put("Rita_Main_8", B_Zone_8);
+        zones.put("Rita_Main_9", B_Zone_9);
+        zones.put("Rita_Overflow_1", C_Zone_1);
+        zones.put("Rita_Overflow_2", C_Zone_2);
+        zones.put("Rita_Overflow_3", C_Zone_3);
+        zones.put("Rita_Overflow_4", C_Zone_4);
+        zones.put("Rita_Overflow_5", C_Zone_5);
+        zones.put("SAC_Main_1", D_Zone_1);
+        zones.put("SAC_Main_2", D_Zone_2);
+        zones.put("SAC_Main_3", D_Zone_3);
+        zones.put("SAC_Main_4", D_Zone_4);
+        zones.put("SAC_Main_5", D_Zone_5);
+        zones.put("SAC_Main_6", D_Zone_6);
+        zones.put("SAC_Main_7", D_Zone_7);
+        zones.put("SAC_Main_8", D_Zone_8);
+        zones.put("SAC_Overflow_1", E_Zone_1);
     }
 }
