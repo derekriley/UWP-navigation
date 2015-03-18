@@ -202,7 +202,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -267,7 +266,7 @@ public class MapTransform {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
 
         // Layout Grid Lines
-        this.layoutGrid();
+//        this.layoutGrid();
 
         // creates the markers from the database arrays and adds them to the map.
         if(this.passedActivity.getLat().size() != 0 || this.passedActivity.getLng().size() != 0
@@ -286,6 +285,13 @@ public class MapTransform {
             String key = entry.getKey();
             LatLng value = entry.getValue();
             mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+        }
+
+        //add parking zones
+        for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
+            String key = entry.getKey();
+            PolygonOptions value = entry.getValue();
+            mMap.addPolygon(value);
         }
 
     }
