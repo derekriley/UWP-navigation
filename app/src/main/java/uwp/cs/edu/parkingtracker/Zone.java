@@ -19,7 +19,7 @@ public class Zone {
 
     }
 
-    // setters
+    //setters
     public void setFullness(int fullness) {
         this.fullness = fullness;
     }
