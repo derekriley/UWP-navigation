@@ -198,6 +198,7 @@ package uwp.cs.edu.parkingtracker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -456,7 +457,7 @@ public final class CONSTANTS {
 
     public static final Map<String,LatLng> buildings = new HashMap<String,LatLng>();
     public static final Map<String,LatLng> parkingLots = new HashMap<String,LatLng>();
-    public static final Map<String,PolygonOptions> zones = new HashMap<String,PolygonOptions>();
+    public static final ArrayList<Zone> zones = new ArrayList<Zone>();
 
     static{
         buildings.put("Greenquist Hall", new LatLng(42.646397, -87.855553));
@@ -478,41 +479,41 @@ public final class CONSTANTS {
         parkingLots.put("Parking Lot D", new LatLng(42.6427, -87.857822));
         parkingLots.put("Parking Lot E",new LatLng(42.641504, -87.856192));
         parkingLots.put("Parking Lot T", new LatLng(42.64854, -87.847608));
-        zones.put("Talent_1", T_Zone_1);
-        zones.put("Talent_2", T_Zone_2);
-        zones.put("Talent_3", T_Zone_3);
-        zones.put("Talent_4", T_Zone_4);
-        zones.put("Talent_5", T_Zone_5);
-        zones.put("Talent_6", T_Zone_6);
-        zones.put("Student_Center_1", A_Zone_1);
-        zones.put("Student_Center_2", A_Zone_2);
-        zones.put("Student_Center_3", A_Zone_3);
-        zones.put("Student_Center_4", A_Zone_4);
-        zones.put("Student_Center_5", A_Zone_5);
-        zones.put("Student_Center_6", A_Zone_6);
-        zones.put("Student_Center_7", A_Zone_7);
-        zones.put("Rita_Main_1", B_Zone_1);
-        zones.put("Rita_Main_2", B_Zone_2);
-        zones.put("Rita_Main_3", B_Zone_3);
-        zones.put("Rita_Main_4", B_Zone_4);
-        zones.put("Rita_Main_5", B_Zone_5);
-        zones.put("Rita_Main_6", B_Zone_6);
-        zones.put("Rita_Main_7", B_Zone_7);
-        zones.put("Rita_Main_8", B_Zone_8);
-        zones.put("Rita_Main_9", B_Zone_9);
-        zones.put("Rita_Overflow_1", C_Zone_1);
-        zones.put("Rita_Overflow_2", C_Zone_2);
-        zones.put("Rita_Overflow_3", C_Zone_3);
-        zones.put("Rita_Overflow_4", C_Zone_4);
-        zones.put("Rita_Overflow_5", C_Zone_5);
-        zones.put("SAC_Main_1", D_Zone_1);
-        zones.put("SAC_Main_2", D_Zone_2);
-        zones.put("SAC_Main_3", D_Zone_3);
-        zones.put("SAC_Main_4", D_Zone_4);
-        zones.put("SAC_Main_5", D_Zone_5);
-        zones.put("SAC_Main_6", D_Zone_6);
-        zones.put("SAC_Main_7", D_Zone_7);
-        zones.put("SAC_Main_8", D_Zone_8);
-        zones.put("SAC_Overflow_1", E_Zone_1);
+        zones.add(new Zone("Talent_1", T_Zone_1));
+        zones.add(new Zone("Talent_2", T_Zone_2));
+        zones.add(new Zone("Talent_3", T_Zone_3));
+        zones.add(new Zone("Talent_4", T_Zone_4));
+        zones.add(new Zone("Talent_5", T_Zone_5));
+        zones.add(new Zone("Talent_6", T_Zone_6));
+        zones.add(new Zone("Student_Center_1", A_Zone_1));
+        zones.add(new Zone("Student_Center_2", A_Zone_2));
+        zones.add(new Zone("Student_Center_3", A_Zone_3));
+        zones.add(new Zone("Student_Center_4", A_Zone_4));
+        zones.add(new Zone("Student_Center_5", A_Zone_5));
+        zones.add(new Zone("Student_Center_6", A_Zone_6));
+        zones.add(new Zone("Student_Center_7", A_Zone_7));
+        zones.add(new Zone("Rita_Main_1", B_Zone_1));
+        zones.add(new Zone("Rita_Main_2", B_Zone_2));
+        zones.add(new Zone("Rita_Main_3", B_Zone_3));
+        zones.add(new Zone("Rita_Main_4", B_Zone_4));
+        zones.add(new Zone("Rita_Main_5", B_Zone_5));
+        zones.add(new Zone("Rita_Main_6", B_Zone_6));
+        zones.add(new Zone("Rita_Main_7", B_Zone_7));
+        zones.add(new Zone("Rita_Main_8", B_Zone_8));
+        zones.add(new Zone("Rita_Main_9", B_Zone_9));
+        zones.add(new Zone("Rita_Overflow_1", C_Zone_1));
+        zones.add(new Zone("Rita_Overflow_2", C_Zone_2));
+        zones.add(new Zone("Rita_Overflow_3", C_Zone_3));
+        zones.add(new Zone("Rita_Overflow_4", C_Zone_4));
+        zones.add(new Zone("Rita_Overflow_5", C_Zone_5));
+        zones.add(new Zone("SAC_Main_1", D_Zone_1));
+        zones.add(new Zone("SAC_Main_2", D_Zone_2));
+        zones.add(new Zone("SAC_Main_3", D_Zone_3));
+        zones.add(new Zone("SAC_Main_4", D_Zone_4));
+        zones.add(new Zone("SAC_Main_5", D_Zone_5));
+        zones.add(new Zone("SAC_Main_6", D_Zone_6));
+        zones.add(new Zone("SAC_Main_7", D_Zone_7));
+        zones.add(new Zone("SAC_Main_8", D_Zone_8));
+        zones.add(new Zone("SAC_Overflow_1", E_Zone_1));
     }
 }
