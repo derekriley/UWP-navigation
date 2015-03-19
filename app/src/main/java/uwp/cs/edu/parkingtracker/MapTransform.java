@@ -195,10 +195,13 @@
 
 package uwp.cs.edu.parkingtracker;
 
+import android.graphics.Point;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.Projection;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -233,7 +236,7 @@ public class MapTransform {
         this.mOptions = new ArrayList<MarkerOptions>();
 
         // Get a handle to the Map Fragment
-         this.mMap = ((MapFragment) activity.getFragmentManager()
+         this.mMap = ((SupportMapFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
     }
 
@@ -292,8 +295,9 @@ public class MapTransform {
 
         //add parking zones
         for (Zone zone : CONSTANTS.zones) {
-            mMap.addPolygon(zone.getPolygonOptions());
+            zone.setPolygon(mMap.addPolygon(zone.getPolygonOptions()));
         }
+
 
     }
 
@@ -501,4 +505,16 @@ public class MapTransform {
         }
 
     }
+
+    public Zone getZoneTapped(int x, int y){
+        Projection pp = mMap.getProjection();
+        LatLng point = pp.fromScreenLocation(new Point(x, y));
+        for (Zone z : CONSTANTS.zones) {
+            if(pointInPolygon(point,z.getPolygon())) {
+                return z;
+            }
+        }
+        return null;
+    }
+
 }

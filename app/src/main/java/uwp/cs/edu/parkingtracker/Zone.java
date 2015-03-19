@@ -1,5 +1,6 @@
 package uwp.cs.edu.parkingtracker;
 
+import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 /**
@@ -9,6 +10,15 @@ public class Zone {
     private String zoneId;
     private PolygonOptions polygonOptions;
     private int fullness;
+    private Polygon polygon;
+
+    public Polygon getPolygon() {
+        return polygon;
+    }
+
+    public void setPolygon(Polygon polygon) {
+        this.polygon = polygon;
+    }
 
     public String getZoneId() {
         return zoneId;

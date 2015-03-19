@@ -316,7 +316,7 @@ public class BasicUser extends FragmentActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                @Override
                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                   Toast.makeText(getApplicationContext(),"item "+position+"selected",Toast.LENGTH_LONG);
+                                                   Toast.makeText(getApplicationContext(),"item "+position+"selected",Toast.LENGTH_LONG).show();
                                                }
                                            });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -421,6 +421,14 @@ public class BasicUser extends FragmentActivity {
         ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
         parkDialogFragment.mListener = deviceListeners;
        parkDialogFragment.show(getSupportFragmentManager(), "map");
+    }
+
+    public void tapEvent(int x, int y) {
+        Zone z = mapTransform.getZoneTapped(x,y);
+        if (z!=null){
+            Toast.makeText(getApplicationContext(),"Tapped zone "+z.getZoneId(),Toast.LENGTH_LONG).show();
+        }
+
     }
 
 }
