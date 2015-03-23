@@ -214,6 +214,8 @@ public final class CONSTANTS {
 
     // REST related strings
     public static final String REST_API = "http://10.0.2.2/~David/PARKING_TRACKER_PHP/core/z/index.php/";
+    public static final String REST_API_PUT = "http://eisner.io/parkingserver/v/";
+    public static final String REST_API_GET = "http://eisner.io/parkingserver/va/";
     public static final String GET_ZONES = "z";
     public static final String UPDATE = "update/";
     public static final String EXPERT = "expert/";

@@ -210,7 +210,7 @@ import android.widget.Toast;
  */
 public class ParkDialogFragment extends DialogFragment{
 
-
+    protected Zone z;
 
     public interface ParkDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
@@ -224,13 +224,13 @@ public class ParkDialogFragment extends DialogFragment{
      * Create a new instance of MyDialogFragment, providing "num"
      * as an argument.
      */
-    static ParkDialogFragment newInstance(int num) {
+    static ParkDialogFragment newInstance(Zone z) {
         ParkDialogFragment f = new ParkDialogFragment();
-
+        f.z=z;
         // Supply num input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("num", num);
-        f.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putInt("num", num);
+//        f.setArguments(args);
 
         return f;
     }
@@ -259,7 +259,8 @@ public class ParkDialogFragment extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-               .setTitle(R.string.lot)
+//               .setTitle(R.string.lot)
+                .setTitle("How full is the " + z.getZoneId() + " lot? Current fullness: "+z.getFullness())
                .setItems(R.array.lot_options, new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialog, int which) {

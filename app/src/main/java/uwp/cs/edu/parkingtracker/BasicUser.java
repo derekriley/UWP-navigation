@@ -417,16 +417,22 @@ public class BasicUser extends FragmentActivity {
     }
 
     // method that changes the activity on the screen for experts
-    public void showParkDialogFragment(MenuItem view) {
+    public void showParkDialogFragment(Zone z) {
         ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
         parkDialogFragment.mListener = deviceListeners;
-       parkDialogFragment.show(getSupportFragmentManager(), "map");
+        parkDialogFragment.z=z;
+        parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
 
     public void tapEvent(int x, int y) {
         Zone z = mapTransform.getZoneTapped(x,y);
         if (z!=null){
-            Toast.makeText(getApplicationContext(),"Tapped zone "+z.getZoneId(),Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),"Tapped zone "+z.getZoneId(),Toast.LENGTH_LONG).show();
+//            DatabaseExchange.sendVote(this,z,1);
+            String va = DatabaseExchange.getAverageVote(this,z);
+            z.setFullness(va);
+//            Toast.makeText(getApplicationContext(),"Vote avg: "+va,Toast.LENGTH_LONG).show();
+            showParkDialogFragment(z);
         }
 
     }

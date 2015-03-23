@@ -205,6 +205,27 @@ import java.util.concurrent.ExecutionException;
  */
 public class DatabaseExchange {
 
+    protected static void sendVote(Activity activity, Zone z, int vote){
+        ArrayList<String> params = new ArrayList<>();
+        params.add(CONSTANTS.PUT);
+        params.add(z.getZoneId()+"/");
+        params.add(vote+"");
+        new RESTClient(CONSTANTS.REST_API_PUT, activity).execute(params);
+    }
+
+    protected static String getAverageVote(Activity activity, Zone z){
+        ArrayList<String> params = new ArrayList<>();
+        params.add(CONSTANTS.GET);
+        params.add(z.getZoneId()+"/");
+        String returnValue = "";
+        try {
+            returnValue = new RESTClient(CONSTANTS.REST_API_GET, activity).execute(params).get();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return returnValue;
+    }
     /**
      * vectorSub : Removes a spot from the current zone that the device is located in.
      *
