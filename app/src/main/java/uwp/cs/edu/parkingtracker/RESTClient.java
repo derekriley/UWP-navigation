@@ -219,6 +219,7 @@ import java.util.ArrayList;
  * @author <a href="mailto:hello@mateo.io">Francisco Mateo</a>
  * @version 0.0.2
  * @modified David Krawchuk 11/2014
+ * @modified Nate Eisner 3/23/2015
  */
 public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
 
@@ -414,9 +415,10 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
      * @throws IOException
      */
     private void pushResultsToDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException{
-        this.url = new URL(this.REST_API + apiCall + "/" + CONSTANTS.USERNAME + "/" + CONSTANTS.PASSWORD);
+        this.url = new URL(this.REST_API + apiCall);
         this.connection = (HttpURLConnection) this.url.openConnection();
-
+        Log.i("APICALL: ",apiCall);
+        Log.i("URL: ", this.url.toString());
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
             throw new IOException("HTTP CONNECTION != 200 "
                     + this.connection.getResponseCode());
