@@ -201,10 +201,32 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by David on 11/21/14.
+ * Created by David
+ * Modified by Russ and Nate
  */
 public class DatabaseExchange {
 
+    protected static void sendVote(Activity activity, Zone z, int vote){
+        ArrayList<String> params = new ArrayList<>();
+        params.add(CONSTANTS.PUT);
+        params.add(CONSTANTS.VOTE+z.getZoneId()+"/"+vote);
+        new RESTClient(CONSTANTS.REST_API, activity).execute(params);
+    }
+
+    protected static String getAverageVote(Activity activity, Zone z){
+        ArrayList<String> params = new ArrayList<>();
+        params.add(CONSTANTS.GET);
+        params.add(CONSTANTS.VOTE_AVG+z.getZoneId()+"/");
+        String returnValue = "";
+        try {
+            returnValue = new RESTClient(CONSTANTS.REST_API, activity).execute(params).get();
+            //Toast.makeText(BasicUser.,returnValue,Toast.LENGTH_LONG);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return returnValue;
+    }
     /**
      * vectorSub : Removes a spot from the current zone that the device is located in.
      *

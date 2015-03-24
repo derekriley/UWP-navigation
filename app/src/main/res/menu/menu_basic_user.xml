@@ -4,9 +4,9 @@
     <item android:id="@+id/basic_user_action_settings"
         android:title="@string/basic_user_action_settings"
         android:orderInCategory="100" />
-    <item android:id="@+id/shake_menu_button"
-        android:title="SHAKE_IT!"
-        android:visible="true"
-        android:onClick="showParkDialogFragment"
-        />
+    <!--<item android:id="@+id/shake_menu_button"-->
+        <!--android:title="SHAKE_IT!"-->
+        <!--android:visible="true"-->
+        <!--android:onClick="showParkDialogFragment"-->
+        <!--/>-->
 </menu>
