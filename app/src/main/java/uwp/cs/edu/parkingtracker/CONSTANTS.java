@@ -333,13 +333,13 @@ public final class CONSTANTS {
 
     static final LatLng B_Row_3_Point_1 = new LatLng (42.644728, -87.859244);
     static final LatLng B_Row_3_Point_2 = new LatLng (42.644719, -87.858675);
-    static final LatLng B_Row_3_Point_3 = new LatLng (42.644705, -87.858128);
-    static final LatLng B_Row_3_Point_4 = new LatLng (42.644671, -87.857422);
+    static final LatLng B_Row_3_Point_3 = new LatLng (42.644705, -87.858349);
+    static final LatLng B_Row_3_Point_4 = new LatLng (42.644705, -87.858128);
+    static final LatLng B_Row_3_Point_5 = new LatLng (42.644671, -87.857422);
 
-    static final LatLng B_Row_4_Point_1 = new LatLng (42.644705, -87.858349);
-    static final LatLng B_Row_4_Point_2 = new LatLng (42.644529, -87.859247);
-    static final LatLng B_Row_4_Point_3 = new LatLng (42.644486, -87.858366);
-    static final LatLng B_Row_4_Point_4 = new LatLng (42.644463, -87.857418);
+    static final LatLng B_Row_4_Point_1 = new LatLng (42.644529, -87.859247);
+    static final LatLng B_Row_4_Point_2 = new LatLng (42.644486, -87.858366);
+    static final LatLng B_Row_4_Point_3 = new LatLng (42.644463, -87.857418);
     /* Rita_Main (B) Coordinates End*/
 
     /* Rita_Main (B) Polygons Begin*/
@@ -352,15 +352,13 @@ public final class CONSTANTS {
     static final PolygonOptions B_Zone_4 = new PolygonOptions()
             .add(B_Row_2_Point_1, B_Row_2_Point_2, B_Row_3_Point_2, B_Row_3_Point_1);
     static final PolygonOptions B_Zone_5 = new PolygonOptions()
-            .add(B_Row_2_Point_2, B_Row_2_Point_3, B_Row_3_Point_3, B_Row_3_Point_2);
+            .add(B_Row_2_Point_2, B_Row_2_Point_3, B_Row_3_Point_4, B_Row_3_Point_2);
     static final PolygonOptions B_Zone_6 = new PolygonOptions()
-            .add(B_Row_2_Point_3, B_Row_2_Point_4, B_Row_3_Point_4, B_Row_3_Point_3);
+            .add(B_Row_2_Point_3, B_Row_2_Point_4, B_Row_3_Point_5, B_Row_3_Point_4);
     static final PolygonOptions B_Zone_7 = new PolygonOptions()
-            .add(B_Row_3_Point_1, B_Row_3_Point_2, B_Row_4_Point_2, B_Row_4_Point_1);
+            .add(B_Row_3_Point_1, B_Row_3_Point_3, B_Row_4_Point_2, B_Row_4_Point_1);
     static final PolygonOptions B_Zone_8 = new PolygonOptions()
-            .add(B_Row_3_Point_2, B_Row_3_Point_3, B_Row_4_Point_3, B_Row_4_Point_2);
-    static final PolygonOptions B_Zone_9 = new PolygonOptions()
-            .add(B_Row_3_Point_3, B_Row_3_Point_4, B_Row_4_Point_4, B_Row_4_Point_3);
+            .add(B_Row_3_Point_3, B_Row_3_Point_5, B_Row_4_Point_3, B_Row_4_Point_2);
     /* Rita_Main (B) Polygons End*/
 
     /* Rita_Overflow (C) Coordinates Begin*/
@@ -386,11 +384,14 @@ public final class CONSTANTS {
     static final PolygonOptions C_Zone_2 = new PolygonOptions()
             .add(C_Row_1_Point_2, C_Row_1_Point_3, C_Row_2_Point_3, C_Row_2_Point_2);
     static final PolygonOptions C_Zone_3 = new PolygonOptions()
-            .add(C_Row_2_Point_1, C_Row_2_Point_2, C_Row_3_Point_2, C_Row_4_Point_1, C_Row_3_Point_1);
+            .add(C_Row_2_Point_1, C_Row_2_Point_2, C_Row_3_Point_2, C_Row_3_Point_1);
     static final PolygonOptions C_Zone_4 = new PolygonOptions()
-            .add(C_Row_2_Point_2, C_Row_2_Point_3, C_Row_3_Point_2, C_Row_3_Point_3);
+            .add(C_Row_2_Point_2, C_Row_2_Point_3, C_Row_3_Point_3, C_Row_3_Point_2);
     static final PolygonOptions C_Zone_5 = new PolygonOptions()
-            .add(C_Row_3_Point_2, C_Row_3_Point_3, C_Row_4_Point_1, C_Row_4_Point_2);
+            .add(C_Row_3_Point_1, C_Row_3_Point_2, C_Row_4_Point_1);
+    static final PolygonOptions C_Zone_6 = new PolygonOptions()
+            .add(C_Row_3_Point_2, C_Row_3_Point_3, C_Row_4_Point_2, C_Row_4_Point_1);
+    /* Rita_Overflow (C) Polygons End*/
 
     /* SAC_Main (D) Coordinates Begin*/
     static final LatLng D_Row_1_Point_1 = new LatLng (42.641491, -87.856943);
@@ -502,12 +503,12 @@ public final class CONSTANTS {
         zones.add(new Zone("Rita_Main_6", B_Zone_6));
         zones.add(new Zone("Rita_Main_7", B_Zone_7));
         zones.add(new Zone("Rita_Main_8", B_Zone_8));
-        zones.add(new Zone("Rita_Main_9", B_Zone_9));
         zones.add(new Zone("Rita_Overflow_1", C_Zone_1));
         zones.add(new Zone("Rita_Overflow_2", C_Zone_2));
         zones.add(new Zone("Rita_Overflow_3", C_Zone_3));
         zones.add(new Zone("Rita_Overflow_4", C_Zone_4));
         zones.add(new Zone("Rita_Overflow_5", C_Zone_5));
+        zones.add(new Zone("Rita_Overflow_6", C_Zone_6));
         zones.add(new Zone("SAC_Main_1", D_Zone_1));
         zones.add(new Zone("SAC_Main_2", D_Zone_2));
         zones.add(new Zone("SAC_Main_3", D_Zone_3));
