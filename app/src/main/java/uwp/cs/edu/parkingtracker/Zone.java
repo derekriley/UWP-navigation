@@ -9,8 +9,12 @@ import com.google.android.gms.maps.model.PolygonOptions;
 public class Zone {
     private String zoneId;
     private PolygonOptions polygonOptions;
-    private String fullness;
+    private double fullness;
     private Polygon polygon;
+
+    public Zone() {
+        this.fullness = 0.0;
+    }
 
     public Polygon getPolygon() {
         return polygon;
@@ -36,12 +40,12 @@ public class Zone {
         this.polygonOptions = polygonOptions;
     }
 
-    public String getFullness() {
-        return fullness;
+    public void setFullness(double fullness) {
+        this.fullness = fullness;
     }
 
-    public void setFullness(String fullness) {
-        this.fullness = fullness;
+    public double getFullness() {
+        return fullness;
     }
 
     public Zone(String zoneId, PolygonOptions polygonOptions) {

@@ -195,6 +195,7 @@
 
 package uwp.cs.edu.parkingtracker;
 
+import android.graphics.Color;
 import android.graphics.Point;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -206,6 +207,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -293,12 +295,23 @@ public class MapTransform {
         //TODO: attempt database connection, if successful, load fullness values for zones and adjust polygonoptions fill color based on fill
         //TODO: if no database connection, dont bother drawing zones?
 
-        //add parking zones
-        for (Zone zone : CONSTANTS.zones) {
-            zone.setPolygon(mMap.addPolygon(zone.getPolygonOptions()));
+        updateZones(CONSTANTS.zones);
+
+    }
+
+    public void updateAZone(Zone zone) {
+        PolygonOptions po = zone.getPolygonOptions();
+        if (zone.getFullness() > 6.66) {
+            po.fillColor(Color.RED);
         }
-
-
+        if (zone.getFullness() >= 3.33 && zone.getFullness() <= 6.66) {
+            po.fillColor(Color.YELLOW);
+        }
+        if (zone.getFullness() < 3.33) {
+            po.fillColor(Color.GREEN);
+        }
+        zone.setPolygonOptions(po);
+        zone.setPolygon(mMap.addPolygon(zone.getPolygonOptions()));
     }
 
     /**
@@ -332,6 +345,26 @@ public class MapTransform {
 
 
         attachMarkersToMap();
+    }
+
+    /**
+     * Used to Update all Zones
+     */
+    public void updateZones(ArrayList<Zone> zList) {
+        for (Zone zone : zList) {
+            PolygonOptions po = zone.getPolygonOptions();
+            if (zone.getFullness() > 6.66) {
+                po.fillColor(Color.RED);
+            }
+            if (zone.getFullness() >= 3.33 && zone.getFullness() <= 6.66) {
+                po.fillColor(Color.YELLOW);
+            }
+            if (zone.getFullness() < 3.33) {
+                po.fillColor(Color.GREEN);
+            }
+            zone.setPolygonOptions(po);
+            zone.setPolygon(mMap.addPolygon(zone.getPolygonOptions()));
+        }
     }
 
     /**
@@ -425,20 +458,6 @@ public class MapTransform {
     public void createLotPolygons ()
     {
 
-    }
-
-    public void resetMap(double latitude, double longitude, float zoomFactor)
-    {
-        // Clear location arrays.
-        passedActivity.clearLocationArrays();
-
-        // fills up the arrays that will be used in other methods / classes
-        DatabaseExchange.fillArrayOfZones(passedActivity, CONSTANTS.STUDENT_CENTER_PARKING_LOT, passedActivity.getLat(), passedActivity.getLng(), passedActivity.getColors());
-
-        // Clear map.
-        mMap.clear();
-        // setup map.
-        setUpMap(latitude, longitude, zoomFactor);
     }
 
     public boolean pointInPolygon(LatLng point, Polygon polygon) {

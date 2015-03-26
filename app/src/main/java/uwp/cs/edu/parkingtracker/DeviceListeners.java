@@ -423,7 +423,10 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/1");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        DatabaseExchange.sendVote(passedActivity,((ParkDialogFragment)dialog).z,1);
+        Zone z = ((ParkDialogFragment)dialog).z;
+        DatabaseExchange.sendVote(passedActivity,z,0);
+        passedActivity.updateZone(z);
+
     }
 
     @Override
@@ -434,7 +437,9 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/2");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        DatabaseExchange.sendVote(passedActivity,((ParkDialogFragment)dialog).z,2);
+        Zone z = ((ParkDialogFragment)dialog).z;
+        DatabaseExchange.sendVote(passedActivity,z,5);
+        passedActivity.updateZone(z);
     }
 
     @Override
@@ -445,7 +450,9 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/3");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        DatabaseExchange.sendVote(passedActivity,((ParkDialogFragment)dialog).z,3);
+        Zone z = ((ParkDialogFragment)dialog).z;
+        DatabaseExchange.sendVote(passedActivity,z,10);
+        passedActivity.updateZone(z);
     }
 
     /**

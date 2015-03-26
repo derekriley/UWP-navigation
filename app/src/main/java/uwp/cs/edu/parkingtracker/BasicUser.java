@@ -61,6 +61,7 @@ public class BasicUser extends FragmentActivity {
 
     protected DeviceListeners deviceListeners = null;
     protected MapTransform mapTransform = null;
+    private ArrayList<Zone> zoneList;
 
     /* Instance variables end */
 
@@ -127,7 +128,7 @@ public class BasicUser extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_user);
-
+        zoneList = CONSTANTS.zones;
         //added nav drawer
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -170,6 +171,10 @@ public class BasicUser extends FragmentActivity {
         // Setup device listeners.
         getDeviceListeners();
 
+        //get zone data from server
+        for (Zone zone : CONSTANTS.zones) {
+            zone.setFullness(Double.valueOf(DatabaseExchange.getAverageVote(BasicUser.this,zone)));
+        }
 
         // Setup map.
         getMapTransform();
@@ -252,10 +257,20 @@ public class BasicUser extends FragmentActivity {
         if (z!=null){
 //            Toast.makeText(getApplicationContext(),"Tapped zone "+z.getZoneId(),Toast.LENGTH_LONG).show();
 //            DatabaseExchange.sendVote(this,z,1);
-            String va = DatabaseExchange.getAverageVote(this,z);
+            double va = Double.valueOf(DatabaseExchange.getAverageVote(this,z));
             z.setFullness(va);
 //            Toast.makeText(getApplicationContext(),"Vote avg: "+va,Toast.LENGTH_LONG).show();
             showParkDialogFragment(z);
+        }
+
+    }
+    public void updateZone(Zone z) {
+        double va = Double.valueOf(DatabaseExchange.getAverageVote(this,z));
+        for ( Zone zone : zoneList) {
+            if (zone.getZoneId().equals(z.getZoneId())) {
+                zone.setFullness(z.getFullness());
+                mapTransform.updateZones(zoneList);
+            }
         }
 
     }
