@@ -204,12 +204,10 @@ public final class CONSTANTS {
     static final PolygonOptions C_Zone_2 = new PolygonOptions()
             .add(C_Row_1_Point_2, C_Row_1_Point_3, C_Row_2_Point_3, C_Row_2_Point_2);
     static final PolygonOptions C_Zone_3 = new PolygonOptions()
-            .add(C_Row_2_Point_1, C_Row_2_Point_2, C_Row_3_Point_2, C_Row_3_Point_1);
+            .add(C_Row_2_Point_1, C_Row_2_Point_2, C_Row_3_Point_2,C_Row_4_Point_1, C_Row_3_Point_1);
     static final PolygonOptions C_Zone_4 = new PolygonOptions()
             .add(C_Row_2_Point_2, C_Row_2_Point_3, C_Row_3_Point_3, C_Row_3_Point_2);
     static final PolygonOptions C_Zone_5 = new PolygonOptions()
-            .add(C_Row_3_Point_1, C_Row_3_Point_2, C_Row_4_Point_1);
-    static final PolygonOptions C_Zone_6 = new PolygonOptions()
             .add(C_Row_3_Point_2, C_Row_3_Point_3, C_Row_4_Point_2, C_Row_4_Point_1);
     /* Rita_Overflow (C) Polygons End*/
 
@@ -328,7 +326,6 @@ public final class CONSTANTS {
         zones.add(new Zone("Rita_Overflow_3", C_Zone_3));
         zones.add(new Zone("Rita_Overflow_4", C_Zone_4));
         zones.add(new Zone("Rita_Overflow_5", C_Zone_5));
-        zones.add(new Zone("Rita_Overflow_6", C_Zone_6));
         zones.add(new Zone("SAC_Main_1", D_Zone_1));
         zones.add(new Zone("SAC_Main_2", D_Zone_2));
         zones.add(new Zone("SAC_Main_3", D_Zone_3));
