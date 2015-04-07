@@ -204,9 +204,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class ExpertActivity extends Activity {
 
@@ -214,7 +211,7 @@ public class ExpertActivity extends Activity {
 
     // String arrays that will eventually fill the spinners
     private static final String[] zones = {"Select Zone", "Zone 1", "Zone 2",
-                                          "Zone 3", "Zone 4", "Zone 5", "Zone 6"};
+            "Zone 3", "Zone 4", "Zone 5", "Zone 6"};
     private static final String[] votes = {"Select Vote", "Empty", "Half Full", "Full"};
 
     // default vote, just in case.
@@ -266,7 +263,7 @@ public class ExpertActivity extends Activity {
                 int index = zoneSpinner.getSelectedItemPosition();
 
                 if (index != 0) {
-                    BasicUser.zone = String.valueOf(index);
+                    //BasicUser.zone = String.valueOf(index);
                 }
             }
 
@@ -306,31 +303,31 @@ public class ExpertActivity extends Activity {
     private View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.voteButton) {
-                Toast.makeText(getApplicationContext(), "Vote Entered",
-                        Toast.LENGTH_SHORT).show();
-                ArrayList<String> params = new ArrayList<>();
-                params.add(CONSTANTS.PUT);
-                // changes the zone data based on the vote
-                params.add(CONSTANTS.EXPERT + BasicUser.zone + vote);
-                new RESTClient(CONSTANTS.REST_API, activity).execute(params);
-            } else if (v.getId() == R.id.resetEmptyButton) {
-                Toast.makeText(getApplicationContext(), "All Lots Emptied",
-                        Toast.LENGTH_SHORT).show();
-                ArrayList<String> params = new ArrayList<>();
-                params.add(CONSTANTS.PUT);
-                // Sets all zones to be empty
-                params.add(CONSTANTS.RESET + "0");
-                new RESTClient(CONSTANTS.REST_API, activity).execute(params);
-            } else {
-                Toast.makeText(getApplicationContext(), "All Lots Filled",
-                        Toast.LENGTH_SHORT).show();
-                ArrayList<String> params = new ArrayList<>();
-                params.add(CONSTANTS.PUT);
-                // Sets all zones to be full
-                params.add(CONSTANTS.RESET + "1");
-                new RESTClient(CONSTANTS.REST_API, activity).execute(params);
-            }
+//            if (v.getId() == R.id.voteButton) {
+//                Toast.makeText(getApplicationContext(), "Vote Entered",
+//                        Toast.LENGTH_SHORT).show();
+//                ArrayList<String> params = new ArrayList<>();
+//                params.add(CONSTANTS.PUT);
+//                // changes the zone data based on the vote
+//                params.add(CONSTANTS.EXPERT + BasicUser.zone + vote);
+//                new RESTClient(CONSTANTS.REST_API, activity).execute(params);
+//            } else if (v.getId() == R.id.resetEmptyButton) {
+//                Toast.makeText(getApplicationContext(), "All Lots Emptied",
+//                        Toast.LENGTH_SHORT).show();
+//                ArrayList<String> params = new ArrayList<>();
+//                params.add(CONSTANTS.PUT);
+//                // Sets all zones to be empty
+//                params.add(CONSTANTS.RESET + "0");
+//                new RESTClient(CONSTANTS.REST_API, activity).execute(params);
+//            } else {
+//                Toast.makeText(getApplicationContext(), "All Lots Filled",
+//                        Toast.LENGTH_SHORT).show();
+//                ArrayList<String> params = new ArrayList<>();
+//                params.add(CONSTANTS.PUT);
+//                // Sets all zones to be full
+//                params.add(CONSTANTS.RESET + "1");
+//                new RESTClient(CONSTANTS.REST_API, activity).execute(params);
+//            }
         }
     };
 

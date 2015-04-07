@@ -206,15 +206,18 @@ import android.widget.Toast;
 
 /**
  * Created by kifle on 7/9/2014.
- * Modified by David Krawchuk on 11/2014.
+ * Modified by David Krawchuk, Russ, Nate
  */
-public class ParkDialogFragment extends DialogFragment{
+public class ParkDialogFragment extends DialogFragment {
 
-    protected Zone z;
+    protected String zID;
+    protected String fullness;
 
     public interface ParkDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
+
         public void onDialogNeutralClick(DialogFragment dialog);
+
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 
@@ -224,9 +227,10 @@ public class ParkDialogFragment extends DialogFragment{
      * Create a new instance of MyDialogFragment, providing "num"
      * as an argument.
      */
-    static ParkDialogFragment newInstance(Zone z) {
+    static ParkDialogFragment newInstance(String zID, String fullness) {
         ParkDialogFragment f = new ParkDialogFragment();
-        f.z=z;
+        f.zID = zID;
+        f.fullness = fullness;
         // Supply num input as an argument.
 //        Bundle args = new Bundle();
 //        args.putInt("num", num);
@@ -240,7 +244,7 @@ public class ParkDialogFragment extends DialogFragment{
      *
      * @param activity
      */
-    public void onAttach (Activity activity) {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
 //        try {
 //            mListener = (ParkDialogListener) activity;
@@ -260,27 +264,27 @@ public class ParkDialogFragment extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
 //               .setTitle(R.string.lot)
-                .setTitle("How full is the " + z.getZoneId() + " lot? Current fullness: "+z.getFullness())
-               .setItems(R.array.lot_options, new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case (0):
-                            mListener.onDialogPositiveClick(ParkDialogFragment.this);
-                            break;
-                        case (1):
-                            mListener.onDialogNeutralClick(ParkDialogFragment.this);
-                            break;
-                        case (2):
-                            mListener.onDialogNegativeClick(ParkDialogFragment.this);
-                            break;
-                        default:
-                            Toast.makeText(getActivity().getApplicationContext(), "Not Working",
-                                    Toast.LENGTH_SHORT).show();
-                    }
+                .setTitle("How full is the " + zID + " lot? Current fullness: " + fullness)
+                .setItems(R.array.lot_options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case (0):
+                                mListener.onDialogPositiveClick(ParkDialogFragment.this);
+                                break;
+                            case (1):
+                                mListener.onDialogNeutralClick(ParkDialogFragment.this);
+                                break;
+                            case (2):
+                                mListener.onDialogNegativeClick(ParkDialogFragment.this);
+                                break;
+                            default:
+                                Toast.makeText(getActivity().getApplicationContext(), "Not Working",
+                                        Toast.LENGTH_SHORT).show();
+                        }
 
-                   }
-               })
+                    }
+                })
                 .create();
     }
 
@@ -304,5 +308,13 @@ public class ParkDialogFragment extends DialogFragment{
         } catch (IllegalStateException e) {
             // ignore
         }
+    }
+
+    public void setzID(String zID) {
+        this.zID = zID;
+    }
+
+    public void setFullness(String fullness) {
+        this.fullness = fullness;
     }
 }

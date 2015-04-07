@@ -204,7 +204,6 @@ import org.json.JSONObject;
  *
  * @author Francisco Mateo
  * @version 0.0.2
- *
  * @modified David Krawchuk
  * @date 11/2014
  */
@@ -219,8 +218,7 @@ public class JSONClient {
     /* Setter/Getter */
 
     private String getJson() {
-        if (json == null)
-        {
+        if (json == null) {
             json = "";
         }
         return json;
@@ -231,8 +229,7 @@ public class JSONClient {
     }
 
     private JSONObject getJob() throws JSONException {
-        if (job == null)
-        {
+        if (job == null) {
             job = new JSONObject(getJson());
         }
         return job;
@@ -244,8 +241,7 @@ public class JSONClient {
     }
 
     private JSONArray getJarr() throws JSONException {
-        if (jarr == null)
-        {
+        if (jarr == null) {
             jarr = new JSONArray("");
         }
         return jarr;
@@ -263,16 +259,15 @@ public class JSONClient {
      * <li>(1) JSON object in the passed JSON String</li>
      * <li>(1) JSON array of JSON objects
      * </ul>
-     *
+     * <p/>
      * Accepted JSON:<br>
      * <code>
      * {"key":[{"key":"value","key":"value"},{"key":"value","key":"value"}]}
      * </code>
      *
      * @param jsonString Constructor assumes properly formated JSON, otherwise
-     * JSONException is raised
-     * @param key JSONArray value associated with a key
-     *
+     *                   JSONException is raised
+     * @param key        JSONArray value associated with a key
      */
     public JSONClient(String jsonString, String key) {
         setJson(jsonString);

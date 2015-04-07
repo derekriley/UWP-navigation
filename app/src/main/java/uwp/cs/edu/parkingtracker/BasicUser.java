@@ -21,6 +21,7 @@ package uwp.cs.edu.parkingtracker;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -32,87 +33,28 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Timer;
 
+//TODO: Implement a network connectivity checker
+//ConnectivityManager connMgr = (ConnectivityManager)
+//this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 public class BasicUser extends FragmentActivity {
 
     /* Instance variables begin */
 
-    private String[] drawerItems ={"Parking","Buildings","Events"};
+    private String[] drawerItems = {"Parking", "Navigate", "Other"};
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
-    // arrays that hold the data retrieved from the database
-    private ArrayList<Double> lat = null;
-    private ArrayList<Double> lng = null;
-    private ArrayList<Double> colors = null;
-
-    protected static boolean hasAsked1, hasAsked2 = false;
-    protected static String zone = "1";
-    protected static String zone2 = "1";
-
-    protected ParkingLotTimer myTask;
-    protected Timer myTimer;
-
     protected DeviceListeners deviceListeners = null;
-    protected MapTransform mapTransform = null;
-    private ArrayList<Zone> zoneList;
+    protected MapTransform mapTransform;
 
-    /* Instance variables end */
-
-    /* Setters/Getters */
-    public ArrayList<Double> getLat()
-    {
-        if (lat == null)
-        {
-            lat = new ArrayList<Double>(6);
-        }
-        return lat;
-    }
-
-    public ArrayList<Double> getLng()
-    {
-        if (lng == null)
-        {
-            lng = new ArrayList<Double>(6);
-        }
-        return lng;
-    }
-
-    public ArrayList<Double> getColors()
-    {
-        if (colors == null)
-        {
-            colors = new ArrayList<Double>(6);
-        }
-        return colors;
-    }
-
-    public void clearLocationArrays()
-    {
-        lat = null;
-        lng = null;
-        colors = null;
-    }
-
-    public MapTransform getMapTransform() {
-        if (mapTransform == null)
-        {
-            // Transform Map. Set map position to student center parking lot.
-            mapTransform = new MapTransform(this);
-            mapTransform.setUpMap(CONSTANTS.STUDENT_CENTER_C_LAT, CONSTANTS.STUDENT_CENTER_C_LNG, CONSTANTS.DEFAULT_ZOOM_FACTOR);
-        }
-        return mapTransform;
-    }
 
     public DeviceListeners getDeviceListeners() {
-        if (deviceListeners == null)
-        {
+        if (deviceListeners == null) {
             // Instantiate new device listener.
             deviceListeners = new DeviceListeners(this);
             // Attach listener to the refresh, expert, and other lots buttons.
@@ -128,7 +70,9 @@ public class BasicUser extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_user);
-        zoneList = CONSTANTS.zones;
+
+
+        /*    START NAV DRAWER     */
         //added nav drawer
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -138,11 +82,11 @@ public class BasicUser extends FragmentActivity {
                 R.layout.drawer_list_item, drawerItems));
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                               @Override
-                                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                   Toast.makeText(getApplicationContext(),"item "+position+"selected",Toast.LENGTH_LONG).show();
-                                               }
-                                           });
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
+            }
+        });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
@@ -164,33 +108,36 @@ public class BasicUser extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-
-                // fills up the arrays that will be used in other methods / classes
-                //DatabaseExchange.fillArrayOfZones(this, CONSTANTS.STUDENT_CENTER_PARKING_LOT, getLat(), getLng(), getColors());
+        /*   END  NAV DRAWER     */
 
         // Setup device listeners.
         getDeviceListeners();
 
-        //get zone data from server
-        for (Zone zone : CONSTANTS.zones) {
-            zone.setFullness(Double.valueOf(DatabaseExchange.getAverageVote(BasicUser.this,zone)));
-        }
+        /* Service  */
+        final Intent mServiceIntent = new Intent(this, ZoneService.class);
+
+        /* Timer */
+        final Handler timerHandler = new Handler();
+
+        Runnable timerRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                startService(mServiceIntent);
+                mapTransform.refreshMap();
+                timerHandler.postDelayed(this, 10000);
+            }
+        };
+        timerHandler.postDelayed(timerRunnable, 10000);
+
 
         // Setup map.
-        getMapTransform();
+        mapTransform = new MapTransform(BasicUser.this);
+        mapTransform.setUpMap();
 
-        myTask = new ParkingLotTimer(this.deviceListeners);
-        myTimer = new Timer();
-        myTimer.schedule(myTask, 1000, 9000);
-
-        // assigns the textboxes to the objects
-//        TextView dateTime = (TextView) findViewById(R.id.basic_user_date_and_time_output_textView);
-
-        // gets the current date and time, down to the second and places
-        // both inside the textbox
-//        String currentDT = DateFormat.getDateTimeInstance().format(new Date());
-//        dateTime.setText(currentDT);
-
+//        myTask = new ParkingLotTimer(this.deviceListeners,mServiceIntent);
+//        myTimer = new Timer();
+//        myTimer.schedule(myTask, 1000, 9000);
 
     }
 
@@ -217,7 +164,12 @@ public class BasicUser extends FragmentActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.basic_user_action_settings) {
+//        if (id == R.id.basic_user_action_settings) {
+//            return true;
+//        }
+        if (id == R.id.exit) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
             return true;
         }
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -238,39 +190,32 @@ public class BasicUser extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
     // method that changes the activity on the screen for experts
     public void goToExpert(View view) {
         Intent intent = new Intent(this, ExpertActivity.class);
         startActivity(intent);
     }
 
-    // method that changes the activity on the screen for experts
-    public void showParkDialogFragment(Zone z) {
+
+    public void showParkDialogFragment(String zID, String fullness) {
         ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
         parkDialogFragment.mListener = deviceListeners;
-        parkDialogFragment.z=z;
+        parkDialogFragment.setzID(zID);
+        parkDialogFragment.setFullness(fullness);
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
 
     public void tapEvent(int x, int y) {
-        Zone z = mapTransform.getZoneTapped(x,y);
-        if (z!=null){
-//            Toast.makeText(getApplicationContext(),"Tapped zone "+z.getZoneId(),Toast.LENGTH_LONG).show();
-//            DatabaseExchange.sendVote(this,z,1);
-            double va = Double.valueOf(DatabaseExchange.getAverageVote(this,z));
-            z.setFullness(va);
-//            Toast.makeText(getApplicationContext(),"Vote avg: "+va,Toast.LENGTH_LONG).show();
-            showParkDialogFragment(z);
-        }
-
-    }
-    public void updateZone(Zone z) {
-        double va = Double.valueOf(DatabaseExchange.getAverageVote(this,z));
-        for ( Zone zone : zoneList) {
-            if (zone.getZoneId().equals(z.getZoneId())) {
-                zone.setFullness(z.getFullness());
-                mapTransform.updateZones(zoneList);
-            }
+        String zInfo[] = mapTransform.getZoneTapped(x, y);
+        if (zInfo != null) {
+            showParkDialogFragment(zInfo[0], zInfo[1]);
         }
 
     }

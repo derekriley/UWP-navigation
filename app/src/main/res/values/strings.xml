@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Parking Tracker</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">UWP</string>
     <string name="basic_user_action_settings">Settings</string>
     <string name="expert_user_action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
@@ -34,5 +33,7 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="basicuser">Parking Lot Tracker</string>
 
 </resources>

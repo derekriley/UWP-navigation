@@ -195,13 +195,8 @@
 
 package uwp.cs.edu.parkingtracker;
 
-import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -213,45 +208,30 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Simple implementation of a REST Client in Java. There are far better ways of
- * doing this, but this way works for us.
+ * Simple implementation of a REST Client in Java.
  *
  * @author <a href="mailto:hello@mateo.io">Francisco Mateo</a>
  * @version 0.0.2
  * @modified David Krawchuk 11/2014
  * @modified Nate Eisner 3/23/2015
  */
-public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
+public class RESTClient extends AsyncTask<ArrayList<String>, Void, String> {
 
     /* Instance Begin */
-    private String REST_API = null;
     private URL url = null;
     private HttpURLConnection connection = null;
     private BufferedReader reader = null;
     private String result = null;
     private String httpMethod = null;
-    private Activity activity = null;
     /* Instance End */
 
     /**
-     * Constructor for desired REST API.
-     *
-     * @param api
-     *            String URL to REST API
-     */
-    public RESTClient(String api, Activity activity) {
-        this.REST_API = api;
-        this.activity = activity;
-    }
-
-    /**
-     *
      * @param params
      * @return
      */
     @Override
     protected String doInBackground(ArrayList<String>... params) {
-
+        String toGetOrPut = params[0].get(1).toString();
         try {
             if (params[0].size() > 2) {
                 throw new IllegalArgumentException(
@@ -267,11 +247,11 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
                 switch (httpMethod) {
 
                     case CONSTANTS.GET:
-                        result = this.get(params[0].get(1).toString());
+                        result = this.get(toGetOrPut);
                         break;
                     case CONSTANTS.PUT:
-                        this.put(params[0].get(1).toString());
-                        result = "Success...I think.";
+                        this.put(toGetOrPut);
+                        result = "";
                         break;
                     default:
                         throw new IllegalArgumentException(
@@ -284,24 +264,25 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
         return result;
     }
 
+
     /**
      * Calls the REST API. PUTs the passed parameters.
-     *
+     * <p/>
      * <p>
      * This method only takes one parameter, the String URL to desired path to
      * the REST service. Parameters are passed in the URL String and are
      * processed on the server side.
      * </p>
-     *
+     * <p/>
      * <h2>Plain Java</h2>
-     *
+     * <p/>
      * <pre>
      * RESTClient client = new RESTClient();
      * client.post(&quot;v1/professors/insert/&quot; + name + &quot;/&quot; + dept);
      * </pre>
-     *
+     * <p/>
      * <h2>Extending Android AsyncTask</h2>
-     *
+     * <p/>
      * <pre>
      * ArrayList&lt;String&gt; params = new ArrayList&lt;&gt;();
      * params.add(&quot;GET&quot;); // Http method
@@ -310,31 +291,19 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
      * new RESTClient(REST_API).execute(params); // Execute
      * </pre>
      *
-     * @param apiCall
-     *            the route of the REST API desired
+     * @param apiCall the route of the REST API desired
      * @return String message of success
      */
-    private String put(String apiCall)
-    {
-            ConnectivityManager connMgr = (ConnectivityManager)
-                    this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                // fetch data
-                  try {
-                    pushResultsToDatabase(apiCall);
-                  } catch (MalformedURLException e) {
-                      e.printStackTrace();
-                  } catch (IOException e) {
-                      e.printStackTrace();
-                  }
-            }
-            else {
-                Toast.makeText(activity.getApplicationContext(), "No Network Connection Avaliable",
-                        Toast.LENGTH_SHORT).show();
-            }
+    private String put(String apiCall) {
 
-
+        // fetch data
+        try {
+            pushResultsToDatabase(apiCall);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -342,26 +311,14 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
      * Returns a JSON string of objects from the server that can be parsed with
      * desired JSON library.
      *
-     * @see #//put()
-     * @param apiCall
-     *            the route of the REST API desired
+     * @param apiCall the route of the REST API desired
      * @return JSON string of objects from server
+     * @see #//put()
      */
     private String get(String apiCall) {
 
         try {
-            ConnectivityManager connMgr = (ConnectivityManager)
-                    this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                fetchResultsFromDatabase(apiCall);
-            }
-            else
-            {
-                Log.e("parkingtracker", "No Network Connection Avaliable");
-//                Toast.makeText(activity.getApplicationContext(), "No Network Connection Avaliable",
-//                        Toast.LENGTH_SHORT).show();
-            }
+            fetchResultsFromDatabase(apiCall);
 
         } catch (MalformedURLException | ProtocolException e) {
             System.out.println(e.getMessage());
@@ -373,16 +330,13 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
     }
 
     /**
-     *
      * @param apiCall
      * @throws MalformedURLException
      * @throws ProtocolException
      * @throws IOException
      */
-    private void fetchResultsFromDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException
-    {
-        //
-        this.url = new URL(this.REST_API + apiCall);
+    private void fetchResultsFromDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException {
+        this.url = new URL(CONSTANTS.REST_URL + apiCall);
 
         this.connection = (HttpURLConnection) this.url.openConnection();
 
@@ -408,16 +362,15 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String>{
     }
 
     /**
-     *
      * @param apiCall
      * @throws MalformedURLException
      * @throws ProtocolException
      * @throws IOException
      */
-    private void pushResultsToDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException{
-        this.url = new URL(this.REST_API + apiCall);
+    private void pushResultsToDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException {
+        this.url = new URL(CONSTANTS.REST_URL + apiCall);
         this.connection = (HttpURLConnection) this.url.openConnection();
-        Log.i("APICALL: ",apiCall);
+        Log.i("APICALL: ", apiCall);
         Log.i("URL: ", this.url.toString());
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
             throw new IOException("HTTP CONNECTION != 200 "

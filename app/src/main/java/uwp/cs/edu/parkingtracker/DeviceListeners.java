@@ -210,7 +210,7 @@ import android.widget.Toast;
 /**
  * Created by David on 11/22/14.
  */
-public class DeviceListeners implements LocationListener, ParkDialogFragment.ParkDialogListener, View.OnClickListener, View.OnLongClickListener{
+public class DeviceListeners implements LocationListener, ParkDialogFragment.ParkDialogListener, View.OnClickListener, View.OnLongClickListener {
 
     /* Instance Variables Begin */
 
@@ -230,8 +230,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 
     /* Getters : Lazy Instantiation */
     public SensorManager getmSensorManager() {
-        if(mSensorManager == null)
-        {
+        if (mSensorManager == null) {
             mSensorManager = (SensorManager) passedActivity.getSystemService(Context.SENSOR_SERVICE);
             mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         }
@@ -239,8 +238,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     }
 
     public LocationManager getLocationManager() {
-        if(locationManager == null)
-        {
+        if (locationManager == null) {
             locationManager = (LocationManager) passedActivity.getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 6000, 10, this);
         }
@@ -248,20 +246,18 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     }
 
     public Location getLocation() {
-        if (location == null)
-        {
+        if (location == null) {
             locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
         }
         return location;
     }
 
     /**
-     *  Default constructor.
+     * Default constructor.
      *
      * @param passedActivity
      */
-    public DeviceListeners(BasicUser passedActivity)
-    {
+    public DeviceListeners(BasicUser passedActivity) {
         // Set the instance variables.
         this.passedActivity = passedActivity;
         // Set up sensor manager.
@@ -280,24 +276,24 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     @Override
     public void onLocationChanged(Location location) {
         if ((location.getLatitude() >= 42.647382) && (location.getLatitude() <= 42.647717)) {
-            if ((location.getLongitude() >=  -87.854570) && location.getLongitude() <=  -87.854157) {
-                Toast.makeText(this.passedActivity.getApplicationContext(), passedActivity.zone2,
-                        Toast.LENGTH_SHORT).show();
-                DatabaseExchange.vectorSub(passedActivity, CONSTANTS.STUDENT_CENTER_PARKING_LOT, passedActivity.zone2);
+            if ((location.getLongitude() >= -87.854570) && location.getLongitude() <= -87.854157) {
+                //Toast.makeText(this.passedActivity.getApplicationContext(), passedActivity.zone2,
+                //        Toast.LENGTH_SHORT).show();
+                //DatabaseExchange.vectorSub(passedActivity, CONSTANTS.STUDENT_CENTER_PARKING_LOT, passedActivity.zone2);
             }
         }
         if ((location.getLatitude() >= 42.648933) && (location.getLatitude() <= 42.649227)) {
-            if ((location.getLongitude() >= -87.853804) && location.getLongitude() <=  -87.854021) {
-                Toast.makeText(this.passedActivity.getApplicationContext(), "N. Parking",
-                        Toast.LENGTH_SHORT).show();
-                DatabaseExchange.vectorAdd(passedActivity, CONSTANTS.STUDENT_CENTER_PARKING_LOT, passedActivity.zone2);
+            if ((location.getLongitude() >= -87.853804) && location.getLongitude() <= -87.854021) {
+                //Toast.makeText(this.passedActivity.getApplicationContext(), "N. Parking",
+                //        Toast.LENGTH_SHORT).show();
+                //DatabaseExchange.vectorAdd(passedActivity, CONSTANTS.STUDENT_CENTER_PARKING_LOT, passedActivity.zone2);
             }
         }
         if ((location.getLatitude() >= 42.647898) && (location.getLatitude() <= 42.647980)) {
             if ((location.getLongitude() >= -87.852234) && location.getLongitude() <= -87.852037) {
-                Toast.makeText(this.passedActivity.getApplicationContext(), "E, Parking",
-                        Toast.LENGTH_SHORT).show();
-                DatabaseExchange.vectorAdd(passedActivity, CONSTANTS.STUDENT_CENTER_PARKING_LOT, passedActivity.zone2);
+                //Toast.makeText(this.passedActivity.getApplicationContext(), "E, Parking",
+                //       Toast.LENGTH_SHORT).show();
+                //DatabaseExchange.vectorAdd(passedActivity, CONSTANTS.STUDENT_CENTER_PARKING_LOT, passedActivity.zone2);
             }
         }
     }
@@ -373,40 +369,39 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
             if (mAccel > 4) {
                 Location loco = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-                if ((loco.getLongitude() <= -87.853320))
-                {
+                if ((loco.getLongitude() <= -87.853320)) {
 
                     if ((loco.getLatitude() <= 42.648890) && (loco.getLatitude() >= 42.648476)) {
                         Toast.makeText(passedActivity.getApplicationContext(), "Zone 1",
                                 Toast.LENGTH_SHORT).show();
-                        passedActivity.zone = "1";
+//                        passedActivity.zone = "1";
                     } else if ((loco.getLatitude() <= 42.648475) && (loco.getLatitude() >= 42.648069)) {
                         Toast.makeText(passedActivity.getApplicationContext(), "Zone 2",
                                 Toast.LENGTH_SHORT).show();
-                        passedActivity.zone = "2";
+                        //passedActivity.zone = "2";
                     } else if ((loco.getLatitude() <= 42.648068) && (loco.getLatitude() >= 42.647660)) {
                         Toast.makeText(passedActivity.getApplicationContext(), "Zone 3",
                                 Toast.LENGTH_SHORT).show();
-                        BasicUser.zone = "3";
+                        //BasicUser.zone = "3";
                     }
                 } else if ((loco.getLongitude() > -87.853320)) {
                     if ((loco.getLatitude() <= 42.648890) && (loco.getLatitude() >= 42.648476)) {
                         Toast.makeText(passedActivity.getApplicationContext(), "Zone 4",
                                 Toast.LENGTH_SHORT).show();
-                        passedActivity.zone = "4";
+                        //passedActivity.zone = "4";
                     } else if ((loco.getLatitude() <= 42.648475) && (loco.getLatitude() >= 42.648069)) {
                         Toast.makeText(passedActivity.getApplicationContext(), "Zone 5",
                                 Toast.LENGTH_SHORT).show();
-                        BasicUser.zone = "5";
+                        //BasicUser.zone = "5";
                     } else if ((loco.getLatitude() <= 42.648068) && (loco.getLatitude() >= 42.647660)) {
                         Toast.makeText(passedActivity.getApplicationContext(), "Zone 6",
                                 Toast.LENGTH_SHORT).show();
-                        passedActivity.zone = "6";
+                        //passedActivity.zone = "6";
                     }
                 }
-                if (!passedActivity.hasAsked2) {
+                //if (!passedActivity.hasAsked2) {
 //                    this.showDialog();
-                    passedActivity.hasAsked2 = true; }
+                //    passedActivity.hasAsked2 = true; }
             }
         }
 
@@ -423,9 +418,9 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/1");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        Zone z = ((ParkDialogFragment)dialog).z;
-        DatabaseExchange.sendVote(passedActivity,z,0);
-        passedActivity.updateZone(z);
+        String zID = ((ParkDialogFragment) dialog).zID;
+        DatabaseExchange.sendVote(zID, 0);
+
 
     }
 
@@ -437,9 +432,9 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/2");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        Zone z = ((ParkDialogFragment)dialog).z;
-        DatabaseExchange.sendVote(passedActivity,z,5);
-        passedActivity.updateZone(z);
+        String zID = ((ParkDialogFragment) dialog).zID;
+        DatabaseExchange.sendVote(zID, 5);
+
     }
 
     @Override
@@ -450,9 +445,9 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/3");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        Zone z = ((ParkDialogFragment)dialog).z;
-        DatabaseExchange.sendVote(passedActivity,z,10);
-        passedActivity.updateZone(z);
+        String zID = ((ParkDialogFragment) dialog).zID;
+        DatabaseExchange.sendVote(zID, 10);
+
     }
 
     /**
@@ -482,9 +477,9 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 
     /**
      * Called when a view has been clicked and held.
-     *
+     * <p/>
      * onLongClickListener that checks for a button hold for half
-     *   a second, which allows experts to change the map
+     * a second, which allows experts to change the map
      *
      * @param v The view that was clicked and held.
      * @return true if the callback consumed the long click, false otherwise.

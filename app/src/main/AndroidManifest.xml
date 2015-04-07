@@ -26,14 +26,12 @@
 
         <activity
             android:name=".BasicUser"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/basicuser" >
         </activity>
 
+        <service
+            android:name=".ZoneService"
+            android:exported="false" />
         <!-- <activity -->
         <!-- android:name=".ExpertActivity" -->
         <!-- android:label="@string/title_activity_expert" -->
@@ -43,6 +41,19 @@
         <!-- android:value="mobile.project.duh.MyActivity" /> -->
         <!-- </activity> -->
 
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
     </application>
 
 </manifest>
