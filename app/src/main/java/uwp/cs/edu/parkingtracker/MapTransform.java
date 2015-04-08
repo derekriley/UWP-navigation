@@ -257,8 +257,6 @@ public class MapTransform {
      */
     public void refreshMap() {
         mMap.clear();
-        //attachMarkersToMap();
-        //drawZones();
         new MapTask().execute(ZoneList.getInstance());
     }
 
@@ -283,7 +281,7 @@ public class MapTransform {
 //        }
     }
 
-    public String[] getZoneTapped(int x, int y) {
+    public String getZoneTapped(int x, int y) {
         Projection pp = mMap.getProjection();
         LatLng point = pp.fromScreenLocation(new Point(x, y));
         return ZoneList.getInstance().zoneTapped(point);

@@ -25,7 +25,6 @@ public class ZoneList {
 
         public Zone() {
             this.fullness = "0";
-            this.polygonOptions.fillColor(Color.GREEN);
         }
 
         public String getZoneId() {
@@ -65,7 +64,6 @@ public class ZoneList {
             this.fullness = "0";
             this.zoneId = zoneId;
             this.polygonOptions = polygonOptions;
-            this.polygonOptions.fillColor(Color.GREEN);
 
         }
     }
@@ -81,7 +79,6 @@ public class ZoneList {
         zoneArrayList = new CopyOnWriteArrayList<Zone>();
         for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
             Zone z = new Zone(entry.getKey(), entry.getValue());
-
             zoneArrayList.add(z);
         }
     }
@@ -196,10 +193,10 @@ public class ZoneList {
 
     }
 
-    public String[] zoneTapped(LatLng point) {
+    public String zoneTapped(LatLng point) {
         for (Zone z : zoneArrayList) {
             if (pointInPolygon(point, z.getPolygonOptions())) {
-                return new String[]{z.getZoneId(), z.getFullness()};
+                return z.getZoneId();
             }
         }
         return null;

@@ -214,11 +214,11 @@ public class ParkDialogFragment extends DialogFragment {
     protected String fullness;
 
     public interface ParkDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
+        public void onDialogEmptyClick(DialogFragment dialog);
 
-        public void onDialogNeutralClick(DialogFragment dialog);
+        public void onDialogHalfClick(DialogFragment dialog);
 
-        public void onDialogNegativeClick(DialogFragment dialog);
+        public void onDialogFullClick(DialogFragment dialog);
     }
 
     ParkDialogListener mListener;
@@ -263,20 +263,19 @@ public class ParkDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-//               .setTitle(R.string.lot)
-                .setTitle("How full is the " + zID + " lot? Current fullness: " + fullness)
+                .setTitle("How full is the lot?")
                 .setItems(R.array.lot_options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case (0):
-                                mListener.onDialogPositiveClick(ParkDialogFragment.this);
+                                mListener.onDialogEmptyClick(ParkDialogFragment.this);
                                 break;
                             case (1):
-                                mListener.onDialogNeutralClick(ParkDialogFragment.this);
+                                mListener.onDialogHalfClick(ParkDialogFragment.this);
                                 break;
                             case (2):
-                                mListener.onDialogNegativeClick(ParkDialogFragment.this);
+                                mListener.onDialogFullClick(ParkDialogFragment.this);
                                 break;
                             default:
                                 Toast.makeText(getActivity().getApplicationContext(), "Not Working",
@@ -312,9 +311,5 @@ public class ParkDialogFragment extends DialogFragment {
 
     public void setzID(String zID) {
         this.zID = zID;
-    }
-
-    public void setFullness(String fullness) {
-        this.fullness = fullness;
     }
 }

@@ -411,7 +411,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 
     // methods that will update the database depending on the user vote.
     @Override
-    public void onDialogPositiveClick(android.support.v4.app.DialogFragment dialog) {
+    public void onDialogEmptyClick(android.support.v4.app.DialogFragment dialog) {
         // User touched the dialog's positive button
 //        ArrayList<String> params = new ArrayList<>();
 //        params.add(CONSTANTS.PUT);
@@ -425,7 +425,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     }
 
     @Override
-    public void onDialogNeutralClick(android.support.v4.app.DialogFragment dialog) {
+    public void onDialogHalfClick(android.support.v4.app.DialogFragment dialog) {
 //        // User touched the dialog's neutral button
 //        ArrayList<String> params = new ArrayList<>();
 //        params.add(CONSTANTS.PUT);
@@ -438,13 +438,8 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     }
 
     @Override
-    public void onDialogNegativeClick(android.support.v4.app.DialogFragment dialog) {
-//        // User touched the dialog's negative button
-//        ArrayList<String> params = new ArrayList<>();
-//        params.add(CONSTANTS.PUT);
-//        // Adds a vote to the nearly empty column in the availability table
-//        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/3");
-//        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
+    public void onDialogFullClick(android.support.v4.app.DialogFragment dialog) {
+        // User touched the dialog's Full
         String zID = ((ParkDialogFragment) dialog).zID;
         DatabaseExchange.sendVote(zID, 10);
 

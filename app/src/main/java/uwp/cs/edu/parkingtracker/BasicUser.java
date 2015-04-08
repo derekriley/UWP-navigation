@@ -33,8 +33,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
-//TODO: Implement a network connectivity checker
+
+//TODO: Implement a network connectivity checker and google play services check
 //ConnectivityManager connMgr = (ConnectivityManager)
 //this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -71,6 +74,19 @@ public class BasicUser extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_user);
 
+        /* Google Analytics */
+
+        // Get tracker.
+        Tracker t = ((ThisApp) getApplication()).getTracker();
+
+        // Set screen name.
+        t.setScreenName("BasicUser");
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder()
+                .setNewSession()
+                .build());
+        /* Google Analytics */
 
         /*    START NAV DRAWER     */
         //added nav drawer
@@ -124,11 +140,20 @@ public class BasicUser extends FragmentActivity {
             @Override
             public void run() {
                 startService(mServiceIntent);
-                mapTransform.refreshMap();
+
                 timerHandler.postDelayed(this, 10000);
             }
         };
         timerHandler.postDelayed(timerRunnable, 10000);
+        Runnable timerRunnable2 = new Runnable() {
+
+            @Override
+            public void run() {
+                mapTransform.refreshMap();
+                timerHandler.postDelayed(this, 5000);
+            }
+        };
+        timerHandler.postDelayed(timerRunnable2, 5000);
 
 
         // Setup map.
@@ -191,12 +216,6 @@ public class BasicUser extends FragmentActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finish();
-    }
-
     // method that changes the activity on the screen for experts
     public void goToExpert(View view) {
         Intent intent = new Intent(this, ExpertActivity.class);
@@ -204,18 +223,17 @@ public class BasicUser extends FragmentActivity {
     }
 
 
-    public void showParkDialogFragment(String zID, String fullness) {
+    public void showParkDialogFragment(String zID) {
         ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
         parkDialogFragment.mListener = deviceListeners;
         parkDialogFragment.setzID(zID);
-        parkDialogFragment.setFullness(fullness);
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
 
     public void tapEvent(int x, int y) {
-        String zInfo[] = mapTransform.getZoneTapped(x, y);
+        String zInfo = mapTransform.getZoneTapped(x, y);
         if (zInfo != null) {
-            showParkDialogFragment(zInfo[0], zInfo[1]);
+            showParkDialogFragment(zInfo);
         }
 
     }

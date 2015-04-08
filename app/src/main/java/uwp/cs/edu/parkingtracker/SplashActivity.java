@@ -7,21 +7,17 @@ import android.os.Handler;
 
 
 public class SplashActivity extends Activity {
-    //Introduce an delay
-    private final int WAIT_TIME = 5000;
+    //Introduce a delay
+    private final int WAIT_TIME = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         getActionBar().hide();
         setContentView(R.layout.activity_splash);
-        //Intent mainIntent = new Intent(SplashActivity.this,BasicUser.class);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                /* Service  */
-                ZoneList.getInstance().update();
                 Intent menuIntent = new Intent(SplashActivity.this, MainActivity.class);
                 SplashActivity.this.startActivity(menuIntent);
                 SplashActivity.this.finish();
@@ -32,6 +28,5 @@ public class SplashActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finish();
     }
 }

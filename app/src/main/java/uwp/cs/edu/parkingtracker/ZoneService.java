@@ -39,14 +39,7 @@ public class ZoneService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        //loadZones from server
-//        Runnable runnable = new Runnable() {
-//            public void run() {
         ZoneList.getInstance().update();
         Log.d("ZoneService", "Loading from server");
-//            }
-//        };
-//        Thread mythread = new Thread(runnable);
-//        mythread.start();
     }
 }

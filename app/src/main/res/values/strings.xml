@@ -35,5 +35,9 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="basicuser">Parking Lot Tracker</string>
+    <string name="beta">BETA</string>
+    <string name="navi">Navigation</string>
+    <string name="other">Other</string>
+    <string name="parking">Parking Tracker</string>
 
 </resources>
