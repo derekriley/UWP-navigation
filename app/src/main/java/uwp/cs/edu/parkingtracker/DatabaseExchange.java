@@ -1,4 +1,4 @@
-/**
+/*
  *
  *   Copyright 2014 University Of Wisconsin Parkside
  *
@@ -25,17 +25,19 @@ import java.util.ArrayList;
  */
 public class DatabaseExchange {
 
+    //sends vote to server
     protected static void sendVote(String zID, int vote) {
         ArrayList<String> params = new ArrayList<>();
         params.add(CONSTANTS.PUT);
-        params.add(CONSTANTS.VOTE + zID + "/" + vote);
+        params.add(CONSTANTS.VOTE + zID + "/" + vote + "/" + CONSTANTS.AUTH_KEY);
         new RESTClient().execute(params);
     }
 
+    //gets fullness
     protected static String getAverageVote(String zID) {
         ArrayList<String> params = new ArrayList<>();
         params.add(CONSTANTS.GET);
-        params.add(CONSTANTS.VOTE_AVG + zID + "/");
+        params.add(CONSTANTS.VOTE_AVG + zID + "/" + CONSTANTS.AUTH_KEY);
         String returnValue = "";
         try {
             returnValue = new RESTClient().execute(params).get();
