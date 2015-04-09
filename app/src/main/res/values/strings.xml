@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">UWP</string>
+    <string name="basic_user_action_settings">Settings</string>
+    <string name="expert_user_action_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="shake_menu_button">Shake</string>
+
+    <string name="lot">How full is the lot?</string>
+    <string name="zones"> -- </string>
+    <string name="votes"> -- </string>
+
+    <string-array name="lot_options">
+        <item>Empty</item>
+        <item>Half Full</item>
+        <item>Full</item>
+    </string-array>
+
+    <string name="title_activity_expert">Expert</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="basicuser">Parking Lot Tracker</string>
+    <string name="beta">BETA</string>
+    <string name="navi">Navigation</string>
+    <string name="other">Other</string>
+    <string name="parking">Parking Tracker</string>
+
+</resources>

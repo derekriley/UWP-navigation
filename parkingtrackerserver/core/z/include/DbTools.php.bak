@@ -1,0 +1,138 @@
+<?php
+
+require_once '_config.php';
+require 'Connect.php';
+
+/**
+ * Class to handle all Db interactions
+ * CRUD - Create, Read, Update and Delete
+ *
+ * @author Francisco Mateo
+ */
+class DbTools {
+
+    private $connection;
+
+    function __construct() {
+
+        $db = new Connect();
+        $this->connection = $db->connect();
+    }
+
+    function showTableprofessors() {
+
+        $query = 'SELECT * FROM professors';
+        $stmt = $this->connection->prepare($query);
+        
+        if($stmt->execute()) {
+            $stmt->bind_result($id, $name, $dept);
+            $result = array();
+
+            while ($stmt->fetch()) {
+                $result['id'] = $id;
+                $result['name'] = $name;
+                $result['dept'] = $dept;
+                
+                //echo $this->prettyJson(jsonResponse('200', $result));
+                echo jsonResponse('200', $result);
+
+            }
+
+            $stmt->close();
+
+            return $result;
+        } else {
+            return NULL;
+        }
+    }
+
+    function getNameById($id) {
+
+        $app = \Slim\Slim::getInstance();
+
+        $query = 'SELECT name FROM professors WHERE id = ?';
+        $stmt = $this->connection->prepare($query);
+        //$stmt = $this->connection->prepare($query)->bind_param("s", $id);
+        $stmt->bind_param("s", $id);
+        
+        if($stmt->execute()) {
+            $stmt->bind_result($name);
+            $result = array();
+
+            while ($stmt->fetch()) {
+                $result['name'] = $name;
+                
+                //echo $this->prettyJson(jsonResponse('200', $result));
+                echo jsonResponse('200', $result);
+
+            }
+
+            $stmt->close();
+
+            return $result;
+        } else {
+            return NULL;
+        }
+    }
+
+    function getHoursbyId($id) {
+
+        $app = \Slim\Slim::getInstance();
+
+        $query = 'SELECT hours, day FROM prof_hours
+                  JOIN professors ON professors.id=prof_hours.prof_id
+                  WHERE professors.id=?;';
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param("i", $id);
+
+        if($stmt->execute()) {
+            $stmt->bind_result($hours, $day);
+	    
+            $result = array();
+
+            while ($stmt->fetch()) {
+                $result[] = array(
+			'hours' => $hours,
+			'day' => $day
+			);
+		
+               // echo jsonResponse('200', $result);
+
+            }
+
+	    echo jsonResponse('200', $result);
+
+            $stmt->close();
+
+            return $result;
+        } else {
+            return NULL;
+        }
+
+    }
+
+    function outOfficebyId($id, $hour, $day, $in_office, $out_office) {
+
+        $app = \Slim\Slim::getInstance();
+
+        echo "<h1>ROUTE WORKS</h1><br>";
+	echo "<img src='http://i.imgur.com/F3PbvNt.gif'>";
+        $query = 'INSERT INTO prof_available(prof_id, hour, day, in_office, out_office)
+                  VALUES(?, ?, ?, ?, ?);';
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param('iiiii', $id, $hour, $day, $in_office, $out_office);
+
+        $stmt->execute();
+            
+
+        $stmt->close();
+    }
+
+    private function probability() {
+        // hourly prob = (total of yes's or 1s)/totalofvotes
+    }
+}
+
+?>
