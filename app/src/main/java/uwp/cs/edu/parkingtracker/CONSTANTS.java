@@ -248,7 +248,7 @@ public final class CONSTANTS {
 //    static final LatLng FIRST_VERTICAL_ZONE_DIVIDER_SOUTH_POINT = new LatLng(42.647671, -87.853373);
 //    /* Student Center Coordinates End */
 
-    /* Talent (T) Coordinates Begin*/
+    //Talent (T) Coordinates Begin
     static final LatLng T_Row_1_Point_1 = new LatLng(42.649226, -87.848384);
     static final LatLng T_Row_1_Point_2 = new LatLng(42.649222, -87.847613);
     static final LatLng T_Row_1_Point_3 = new LatLng(42.649190, -87.846760);
@@ -264,9 +264,9 @@ public final class CONSTANTS {
     static final LatLng T_Row_4_Point_1 = new LatLng(42.647981, -87.848403);
     static final LatLng T_Row_4_Point_2 = new LatLng(42.648082, -87.847627);
     static final LatLng T_Row_4_Point_3 = new LatLng(42.647981, -87.846827);
-    /* Talent (T) Coordinates End*/
+    //Talent (T) Coordinates End
 
-    /* Talent (T) Polygons Begin*/
+    //Talent (T) Polygons Begin
     static final PolygonOptions T_Zone_1 = new PolygonOptions()
             .add(T_Row_1_Point_1, T_Row_1_Point_2, T_Row_2_Point_2, T_Row_2_Point_1);
     static final PolygonOptions T_Zone_2 = new PolygonOptions()
@@ -279,9 +279,9 @@ public final class CONSTANTS {
             .add(T_Row_3_Point_1, T_Row_3_Point_2, T_Row_4_Point_2, T_Row_4_Point_1);
     static final PolygonOptions T_Zone_6 = new PolygonOptions()
             .add(T_Row_3_Point_2, T_Row_3_Point_3, T_Row_4_Point_3, T_Row_4_Point_2);
-    /* Talent (T) Polygons End*/
+    //Talent (T) Polygons End
 
-    /* Student_Center (A) Coordinates Begin*/
+    //Student_Center (A) Coordinates Begin
     static final LatLng A_Row_1_Point_1 = new LatLng(42.649125, -87.853941);
 
     static final LatLng A_Row_2_Point_1 = new LatLng(42.648511, -87.854008);
@@ -299,9 +299,9 @@ public final class CONSTANTS {
     static final LatLng A_Row_5_Point_1 = new LatLng(42.647479, -87.854288);
     static final LatLng A_Row_5_Point_2 = new LatLng(42.647420, -87.853387);
     static final LatLng A_Row_5_Point_3 = new LatLng(42.647421, -87.852199);
-    /* Student_Center (A) Coordinates End*/
+    //Student_Center (A) Coordinates End
 
-    /* Student_Center (A) Polygons Begin*/
+    //Student_Center (A) Polygons Begin
     static final PolygonOptions A_Zone_1 = new PolygonOptions()
             .add(A_Row_1_Point_1, A_Row_2_Point_3, A_Row_2_Point_2, A_Row_2_Point_1);
     static final PolygonOptions A_Zone_2 = new PolygonOptions()
@@ -316,9 +316,9 @@ public final class CONSTANTS {
             .add(A_Row_4_Point_1, A_Row_4_Point_2, A_Row_5_Point_2, A_Row_5_Point_1);
     static final PolygonOptions A_Zone_7 = new PolygonOptions()
             .add(A_Row_4_Point_2, A_Row_4_Point_3, A_Row_5_Point_3, A_Row_5_Point_2);
-    /*Student_Center (A) Polygons End*/
+    //Student_Center (A) Polygons End
 
-    /* Rita_Main (B) Coordinates Begin*/
+    //Rita_Main (B) Coordinates Begin
     static final LatLng B_Row_1_Point_1 = new LatLng(42.645479, -87.859190);
     static final LatLng B_Row_1_Point_2 = new LatLng(42.645479, -87.858650);
     static final LatLng B_Row_1_Point_3 = new LatLng(42.645479, -87.858105);
@@ -338,9 +338,9 @@ public final class CONSTANTS {
     static final LatLng B_Row_4_Point_1 = new LatLng(42.644529, -87.859247);
     static final LatLng B_Row_4_Point_2 = new LatLng(42.644486, -87.858366);
     static final LatLng B_Row_4_Point_3 = new LatLng(42.644463, -87.857418);
-    /* Rita_Main (B) Coordinates End*/
+    //Rita_Main (B) Coordinates End
 
-    /* Rita_Main (B) Polygons Begin*/
+    //Rita_Main (B) Polygons Begin
     static final PolygonOptions B_Zone_1 = new PolygonOptions()
             .add(B_Row_1_Point_1, B_Row_1_Point_2, B_Row_2_Point_2, B_Row_2_Point_1);
     static final PolygonOptions B_Zone_2 = new PolygonOptions()
@@ -357,9 +357,9 @@ public final class CONSTANTS {
             .add(B_Row_3_Point_1, B_Row_3_Point_3, B_Row_4_Point_2, B_Row_4_Point_1);
     static final PolygonOptions B_Zone_8 = new PolygonOptions()
             .add(B_Row_3_Point_3, B_Row_3_Point_5, B_Row_4_Point_3, B_Row_4_Point_2);
-    /* Rita_Main (B) Polygons End*/
+    //Rita_Main (B) Polygons End
 
-    /* Rita_Overflow (C) Coordinates Begin*/
+    //Rita_Overflow (C) Coordinates Begin
     static final LatLng C_Row_1_Point_1 = new LatLng(42.644346, -87.858951);
     static final LatLng C_Row_1_Point_2 = new LatLng(42.644347, -87.858080);
     static final LatLng C_Row_1_Point_3 = new LatLng(42.644342, -87.857582);
@@ -374,9 +374,9 @@ public final class CONSTANTS {
 
     static final LatLng C_Row_4_Point_1 = new LatLng(42.643407, -87.858041);
     static final LatLng C_Row_4_Point_2 = new LatLng(42.643386, -87.857100);
-    /* Rita_Overflow (C) Coordinates End*/
+    //Rita_Overflow (C) Coordinates End
 
-    /* Rita_Overflow (C) Polygons Begin*/
+    //Rita_Overflow (C) Polygons Begin
     static final PolygonOptions C_Zone_1 = new PolygonOptions()
             .add(C_Row_1_Point_1, C_Row_1_Point_2, C_Row_2_Point_2, C_Row_2_Point_1);
     static final PolygonOptions C_Zone_2 = new PolygonOptions()
@@ -387,9 +387,9 @@ public final class CONSTANTS {
             .add(C_Row_2_Point_2, C_Row_2_Point_3, C_Row_3_Point_3, C_Row_3_Point_2);
     static final PolygonOptions C_Zone_5 = new PolygonOptions()
             .add(C_Row_3_Point_2, C_Row_3_Point_3, C_Row_4_Point_2, C_Row_4_Point_1);
-    /* Rita_Overflow (C) Polygons End*/
+    //Rita_Overflow (C) Polygons End
 
-    /* SAC_Main (D) Coordinates Begin*/
+    //SAC_Main (D) Coordinates Begin
     static final LatLng D_Row_1_Point_1 = new LatLng(42.641491, -87.856943);
     static final LatLng D_Row_1_Point_2 = new LatLng(42.641751, -87.856552);
     static final LatLng D_Row_1_Point_3 = new LatLng(42.641906, -87.856310);
@@ -412,9 +412,9 @@ public final class CONSTANTS {
     static final LatLng D_Row_5_Point_1 = new LatLng(42.640517, -87.855700);
     static final LatLng D_Row_5_Point_2 = new LatLng(42.640719, -87.855413);
     static final LatLng D_Row_5_Point_3 = new LatLng(42.640719, -87.855413);
-    /* SAC_Main (D) Coordinates End*/
+    //SAC_Main (D) Coordinates End
 
-    /* SAC_Main (D) Polygons Begin*/
+    //SAC_Main (D) Polygons Begin
     static final PolygonOptions D_Zone_1 = new PolygonOptions()
             .add(D_Row_1_Point_1, D_Row_1_Point_2, D_Row_2_Point_2, D_Row_2_Point_1);
     static final PolygonOptions D_Zone_2 = new PolygonOptions()
@@ -431,26 +431,26 @@ public final class CONSTANTS {
             .add(D_Row_4_Point_1, D_Row_4_Point_2, D_Row_5_Point_2, D_Row_5_Point_1);
     static final PolygonOptions D_Zone_8 = new PolygonOptions()
             .add(D_Row_4_Point_2, D_Row_4_Point_3, D_Row_5_Point_3, D_Row_5_Point_2);
-    /* SAC_Main (D) Polygons End*/
+    //SAC_Main (D) Polygons End
 
-    /* SAC_Overflow (E) Coordinates Begin*/
+    //SAC_Overflow (E) Coordinates Begin
     static final LatLng E_Row_1_Point_1 = new LatLng(42.643047, -87.858129);
     static final LatLng E_Row_1_Point_2 = new LatLng(42.643041, -87.857582);
 
     static final LatLng E_Row_2_Point_1 = new LatLng(42.642373, -87.858154);
     static final LatLng E_Row_2_Point_2 = new LatLng(42.642354, -87.857605);
-    /* SAC_Overflow (E) Coordinates End*/
+    //SAC_Overflow (E) Coordinates End
 
-    /* SAC_Overflow (E) Polygons Begin*/
+    //SAC_Overflow (E) Polygons Begin
     static final PolygonOptions E_Zone_1 = new PolygonOptions()
             .add(E_Row_1_Point_1, E_Row_1_Point_2, E_Row_2_Point_2, E_Row_2_Point_1);
-    /* SAC_Overflow (E) Polygons End*/
+    //SAC_Overflow (E) Polygons End
 
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
     public static final float DEFAULT_LINE_WIDTH = 5;
 
-    /* Temp. Authorization Constants */
+    //Temp. Authorization Constants
 //    public static final String USERNAME = "david";
 //    public static final String PASSWORD = "1234";
 
