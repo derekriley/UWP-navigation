@@ -223,7 +223,7 @@ public class BasicUser extends FragmentActivity {
 
     // Instance variables begin
 
-    private String[] drawerItems = {"Parking", "Navigate", "Other"};
+    private String drawerItems[] = {"Parking", "Navigate", "Other"};
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
