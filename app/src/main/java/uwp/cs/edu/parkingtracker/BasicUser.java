@@ -43,7 +43,7 @@ import com.google.android.gms.analytics.Tracker;
 
 public class BasicUser extends FragmentActivity {
 
-    /* Instance variables begin */
+    // Instance variables begin
 
     private String[] drawerItems = {"Parking", "Navigate", "Other"};
     private DrawerLayout mDrawerLayout;
@@ -68,13 +68,13 @@ public class BasicUser extends FragmentActivity {
         return deviceListeners;
     }
 
-    /*  Activity Methods */
+    //  Activity Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_user);
 
-        /* Google Analytics */
+        // Google Analytics
 
         // Get tracker.
         Tracker t = ((ThisApp) getApplication()).getTracker();
@@ -86,9 +86,9 @@ public class BasicUser extends FragmentActivity {
         t.send(new HitBuilders.ScreenViewBuilder()
                 .setNewSession()
                 .build());
-        /* Google Analytics */
+        // Google Analytics
 
-        /*    START NAV DRAWER     */
+        //    START NAV DRAWER
         //added nav drawer
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -106,14 +106,14 @@ public class BasicUser extends FragmentActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
-            /** Called when a drawer has settled in a completely closed state. */
+            // Called when a drawer has settled in a completely closed state.
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            /** Called when a drawer has settled in a completely open state. */
+            // Called when a drawer has settled in a completely open state.
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(mDrawerTitle);
@@ -124,15 +124,15 @@ public class BasicUser extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        /*   END  NAV DRAWER     */
+        //   END  NAV DRAWER
 
         // Setup device listeners.
         getDeviceListeners();
 
-        /* Service  */
+        // Service
         final Intent mServiceIntent = new Intent(this, ZoneService.class);
 
-        /* Timer */
+        // Timer
         final Handler timerHandler = new Handler();
 
         Runnable timerRunnable = new Runnable() {
