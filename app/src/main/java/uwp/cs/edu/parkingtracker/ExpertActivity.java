@@ -218,9 +218,11 @@ public class ExpertActivity extends Activity {
     private String vote = "/1";
 
     // declarations for the spinners and buttons
-    private Spinner zoneSpinner, voteSpinner;
-    private Button voteButton, resetFullButton, resetEmptyButton;
-
+    private Spinner zoneSpinner;
+    private Spinner voteSpinner;
+    private Button voteButton;
+    private Button resetFullButton;
+    private Button resetEmptyButton;
     // Needed to reference activity by onclicklistener...
     Activity activity = this;
 
