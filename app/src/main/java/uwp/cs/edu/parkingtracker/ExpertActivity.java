@@ -207,7 +207,7 @@ import android.widget.Spinner;
 
 public class ExpertActivity extends Activity {
 
-    /* Instance variables start */
+    // Instance variables start
 
     // String arrays that will eventually fill the spinners
     private static final String[] zones = {"Select Zone", "Zone 1", "Zone 2",
@@ -224,7 +224,7 @@ public class ExpertActivity extends Activity {
     // Needed to reference activity by onclicklistener...
     Activity activity = this;
 
-    /* Instance variables end */
+    // Instance variables end
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

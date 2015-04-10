@@ -210,17 +210,17 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created by David on 11/21/14.
- * Modified by Nate
- * Modified from MapFragment subclass authored by
- */
+
+//Created by David on 11/21/14.
+//Modified by Nate
+//Modified from MapFragment subclass authored by
+
 public class MapTransform {
 
-    /* Instance variable begin */
+    // Instance variable begin
     private GoogleMap mMap;
     private BasicUser passedActivity;
-    /* Instance variable end */
+    // Instance variable end
 
     /**
      * MapTransform : Default constructor.
@@ -237,10 +237,10 @@ public class MapTransform {
                 .findFragmentById(R.id.map)).getMap();
     }
 
-    /**
-     * setUpMap : Positions map to specified lot coordinates, lays out the parking lot zones, and
-     * adds the markers required for user interaction.
-     */
+
+     //setUpMap : Positions map to specified lot coordinates, lays out the parking lot zones, and
+     //adds the markers required for user interaction.
+
     public void setUpMap() {
         double latitude = CONSTANTS.STUDENT_CENTER_C_LAT;
         double longitude = CONSTANTS.STUDENT_CENTER_C_LNG;
@@ -252,19 +252,19 @@ public class MapTransform {
         //attachMarkersToMap();
     }
 
-    /**
-     * Clears map and redraws
-     */
+
+     //Clears map and redraws
+
     public void refreshMap() {
         mMap.clear();
         new MapTask().execute(ZoneList.getInstance());
     }
 
 
-    /**
-     * Physically attach the markers to the google map fragment. Done in one batch to minimize
-     * interruption to the main UI Thread.
-     */
+
+     //Physically attach the markers to the google map fragment. Done in one batch to minimize
+     //interruption to the main UI Thread.
+
     private void attachMarkersToMap() {
         //add building markers
         for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {

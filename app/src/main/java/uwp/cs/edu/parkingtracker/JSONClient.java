@@ -209,13 +209,13 @@ import org.json.JSONObject;
  */
 public class JSONClient {
 
-    /* Instance Variables */
+    // Instance Variables
     private String json = null;
     private JSONObject job = null;
     private JSONArray jarr = null;
-    /* End */
+    // End
 
-    /* Setter/Getter */
+    // Setter/Getter
 
     private String getJson() {
         if (json == null) {
@@ -251,7 +251,7 @@ public class JSONClient {
         this.jarr = jarr;
     }
 
-    /* End */
+    // End
 
     /**
      * Constructor for a JSONClient with only:

@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         getActionBar().hide();
 
-        /* Google Analytics */
+        // Google Analytics
         // Get tracker.
         Tracker t = ((ThisApp) getApplication()).getTracker();
 
@@ -32,14 +32,14 @@ public class MainActivity extends Activity {
         t.send(new HitBuilders.ScreenViewBuilder()
                 .setNewSession()
                 .build());
-        /* Google Analytics */
+        // Google Analytics
 
         pBar = (ProgressBar)findViewById(R.id.parkingProgressBar);
         new LoadTask().execute();
     }
     private class LoadTask extends AsyncTask<Void, Void, Void> {
 
-        /** This method runs on a background thread (not on the UI thread) */
+        // This method runs on a background thread (not on the UI thread)
         @Override
         protected Void doInBackground(Void... params) {
             ZoneList.getInstance().update();
@@ -55,10 +55,10 @@ public class MainActivity extends Activity {
             return null;
         }
 
-        /**
-         * Called after doInBackground() method
-         * This method runs on the UI thread
-         */
+
+        //Called after doInBackground() method
+        //This method runs on the UI thread
+
         @Override
         protected void onPostExecute(Void v) {
             Button btn = (Button)findViewById(R.id.button);

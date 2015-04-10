@@ -204,10 +204,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
-/**
- * Created by kifle on 7/9/2014.
- * Modified by David Krawchuk, Russ, Nate
- */
+
+ //Created by kifle on 7/9/2014.
+ //Modified by David Krawchuk, Russ, Nate
+
 public class ParkDialogFragment extends DialogFragment {
 
     protected String zID;
@@ -223,10 +223,10 @@ public class ParkDialogFragment extends DialogFragment {
 
     ParkDialogListener mListener;
 
-    /**
-     * Create a new instance of MyDialogFragment, providing "num"
-     * as an argument.
-     */
+
+    //Create a new instance of MyDialogFragment, providing "num"
+    //as an argument.
+
     static ParkDialogFragment newInstance(String zID, String fullness) {
         ParkDialogFragment f = new ParkDialogFragment();
         f.zID = zID;
@@ -288,8 +288,8 @@ public class ParkDialogFragment extends DialogFragment {
     }
 
 
-    // two methods that catch the illegal state exception
-    // and ignore it, allowing the app to continue running.
+    //two methods that catch the illegal state exception
+    //and ignore it, allowing the app to continue running.
     @Override
     public int show(FragmentTransaction transaction, String tag) {
         try {

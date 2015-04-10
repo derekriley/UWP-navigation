@@ -27,11 +27,11 @@ import android.util.Log;
  * Created by nate eisner
  */
 public class ZoneService extends IntentService {
-    /**
-     * An IntentService must always have a constructor that calls the super constructor. The
-     * string supplied to the super constructor is used to give a name to the IntentService's
-     * background thread.
-     */
+
+   //An IntentService must always have a constructor that calls the super constructor. The
+   //string supplied to the super constructor is used to give a name to the IntentService's
+   //background thread.
+
     public ZoneService() {
 
         super("ZoneService");

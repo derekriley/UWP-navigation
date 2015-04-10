@@ -217,13 +217,13 @@ import java.util.ArrayList;
  */
 public class RESTClient extends AsyncTask<ArrayList<String>, Void, String> {
 
-    /* Instance Begin */
+    // Instance Begin
     private URL url = null;
     private HttpURLConnection connection = null;
     private BufferedReader reader = null;
     private String result = null;
     private String httpMethod = null;
-    /* Instance End */
+    // Instance End
 
     /**
      * @param params

@@ -20,9 +20,9 @@ package uwp.cs.edu.parkingtracker;
 
 import java.util.ArrayList;
 
-/**
- * Created by Russ and Nate
- */
+
+ //Created by Russ and Nate
+
 public class DatabaseExchange {
 
     //sends vote to server

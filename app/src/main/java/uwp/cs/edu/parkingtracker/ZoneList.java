@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * Thread-safe Singleton Class for the main zone list.
- * Works with Activities and the zone service
- * Created by nate eisner
- */
+
+ //Thread-safe Singleton Class for the main zone list.
+ //Works with Activities and the zone service
+ //Created by nate eisner
+
 public class ZoneList {
 
     public static class Zone {
@@ -72,9 +72,9 @@ public class ZoneList {
     private CopyOnWriteArrayList<Zone> zoneArrayList;
     static ZoneList mInstance = null;
 
-    /**
-     * Constructor
-     */
+
+     //Constructor
+
     private ZoneList() {
         zoneArrayList = new CopyOnWriteArrayList<Zone>();
         for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {

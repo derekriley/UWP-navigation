@@ -207,12 +207,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-/**
- * Created by David on 11/22/14.
- */
+
+ // Created by David on 11/22/14.
+
 public class DeviceListeners implements LocationListener, ParkDialogFragment.ParkDialogListener, View.OnClickListener, View.OnLongClickListener {
 
-    /* Instance Variables Begin */
+    // Instance Variables Begin
 
     // objects for the phone sensors that detect shaking
     private SensorManager mSensorManager = null;
@@ -226,9 +226,9 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 
     // Passed Activity.
     private BasicUser passedActivity = null;
-    /* Instance Variables End */
+    // Instance Variables End
 
-    /* Getters : Lazy Instantiation */
+    // Getters : Lazy Instantiation
     public SensorManager getmSensorManager() {
         if (mSensorManager == null) {
             mSensorManager = (SensorManager) passedActivity.getSystemService(Context.SENSOR_SERVICE);
@@ -350,13 +350,13 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 
     }
 
-    /* onClickListener that tracks which button has been pressed,
-     * and either resets the app or displays other lots
-     */
+     //onClickListener that tracks which button has been pressed,
+     //and either resets the app or displays other lots
 
-    /* method / instantiation that determines what zone the user is in
-     * and allows them to vote.
-     */
+
+     //method / instantiation that determines what zone the user is in
+     //and allows them to vote.
+
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent se) {

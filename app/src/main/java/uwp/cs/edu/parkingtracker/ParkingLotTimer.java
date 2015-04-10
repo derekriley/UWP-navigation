@@ -21,12 +21,12 @@ import android.content.Intent;
 
 import java.util.TimerTask;
 
-/**
- * Created by David on 11/21/14.
- */
+
+ //Created by David on 11/21/14.
+
 public class ParkingLotTimer extends TimerTask {
 
-    /* Instance Variables */
+    //Instance Variables
     private DeviceListeners deviceListeners = null;
     private Intent mService;
 
@@ -72,7 +72,7 @@ public class ParkingLotTimer extends TimerTask {
                     }
                 }
                 BasicUser.hasAsked1 = true;
-            }
+           }
         }*/
     }
 }
