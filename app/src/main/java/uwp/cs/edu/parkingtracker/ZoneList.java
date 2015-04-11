@@ -388,7 +388,9 @@ public class ZoneList {
         }
 
     }
-
+    /**
+     * Returns a Zone Id
+     * */
     public String zoneTapped(LatLng point) {
         for (Zone z : zoneArrayList) {
             if (pointInPolygon(point, z.getPolygonOptions())) {

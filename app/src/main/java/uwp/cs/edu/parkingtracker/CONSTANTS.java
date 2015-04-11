@@ -227,7 +227,7 @@ public final class CONSTANTS {
 //    // ParkingLot Description Constants
 //    public static final int STUDENT_CENTER_PARKING_LOT = 0;
 
-    /* Student Center Coordinates Begin Used for default map view*/
+    // Student Center Coordinates Begin Used for default map view
     public static final double STUDENT_CENTER_C_LAT = 42.648266;
     public static final double STUDENT_CENTER_C_LNG = -87.853041;
 //    // Outer Bounds : Points rotate clockwise.
@@ -245,7 +245,7 @@ public final class CONSTANTS {
 //    // Vertical (North to South) seperators
 //    static final LatLng FIRST_VERTICAL_ZONE_DIVIDER_NORTH_POINT = new LatLng(42.648825, -87.853363);
 //    static final LatLng FIRST_VERTICAL_ZONE_DIVIDER_SOUTH_POINT = new LatLng(42.647671, -87.853373);
-//    /* Student Center Coordinates End */
+//    // Student Center Coordinates End
 
     //Talent (T) Coordinates Begin
     static final LatLng T_Row_1_Point_1 = new LatLng(42.649226, -87.848384);

@@ -262,6 +262,11 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     *
+     * Starts a new basic user activity upon clicking on the parking button
+     * from the main application selection screen.
+     * */
     public void parkingClick(View view) {
         Intent mIntent  = new Intent(MainActivity.this, BasicUser.class);
         startActivity(mIntent);

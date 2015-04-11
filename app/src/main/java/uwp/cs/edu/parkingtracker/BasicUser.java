@@ -218,7 +218,12 @@ import com.google.android.gms.analytics.Tracker;
 // ConnectivityManager connMgr = (ConnectivityManager)
 // this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-public class BasicUser extends FragmentActivity {
+/**
+ * Represents a basic user activity of the application that is essentially
+ * connects and instantiates portions of the application that deals with parking map and voting
+ * on which lots are full.
+ * */
+ public class BasicUser extends FragmentActivity {
 
     // Instance variables begin
 
@@ -283,14 +288,18 @@ public class BasicUser extends FragmentActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
-            // Called when a drawer has settled in a completely closed state.
+            /*
+            *  Called when a drawer has settled in a completely closed state.
+            * */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            // Called when a drawer has settled in a completely open state.
+            /*
+            * Called when a drawer has settled in a completely open state.
+            * */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(mDrawerTitle);
@@ -393,12 +402,13 @@ public class BasicUser extends FragmentActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    // method that changes the activity on the screen for experts
+    /*
+    * Changes the activity screen for experts
+    * */
     public void goToExpert(View view) {
         Intent intent = new Intent(this, ExpertActivity.class);
         startActivity(intent);
     }
-
 
     public void showParkDialogFragment(String zID) {
         ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
@@ -406,7 +416,9 @@ public class BasicUser extends FragmentActivity {
         parkDialogFragment.setzID(zID);
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
-
+    /*
+    *
+    * */
     public void tapEvent(int x, int y) {
         String zInfo = mapTransform.getZoneTapped(x, y);
         if (zInfo != null) {

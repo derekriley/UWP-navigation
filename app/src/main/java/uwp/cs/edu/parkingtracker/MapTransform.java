@@ -238,9 +238,12 @@ public class MapTransform {
     }
 
 
-     //setUpMap : Positions map to specified lot coordinates, lays out the parking lot zones, and
-     //adds the markers required for user interaction.
 
+
+    /**
+     * Positions map to specified lot coordinates, lays out the parking lot zones, and
+     * adds the markers required for user interaction.
+     * */
     public void setUpMap() {
         double latitude = CONSTANTS.STUDENT_CENTER_C_LAT;
         double longitude = CONSTANTS.STUDENT_CENTER_C_LNG;
@@ -253,8 +256,10 @@ public class MapTransform {
     }
 
 
-     //Clears map and redraws
 
+    /**
+     * Clears map and redraws
+     * */
     public void refreshMap() {
         mMap.clear();
         new MapTask().execute(ZoneList.getInstance());
@@ -262,9 +267,12 @@ public class MapTransform {
 
 
 
-     //Physically attach the markers to the google map fragment. Done in one batch to minimize
-     //interruption to the main UI Thread.
 
+
+    /**
+     * Physically attach the markers to the google map fragment. Done in one batch to minimize
+     * interruption to the main UI Thread.
+     * */
     private void attachMarkersToMap() {
         //add building markers
         for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
@@ -280,7 +288,9 @@ public class MapTransform {
 //            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
 //        }
     }
-
+    /**
+     *
+     * */
     public String getZoneTapped(int x, int y) {
         Projection pp = mMap.getProjection();
         LatLng point = pp.fromScreenLocation(new Point(x, y));
