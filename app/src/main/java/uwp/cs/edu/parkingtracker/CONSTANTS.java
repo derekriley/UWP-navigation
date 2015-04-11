@@ -193,7 +193,6 @@
  *
  */
 
-
 package uwp.cs.edu.parkingtracker;
 
 import com.google.android.gms.maps.model.LatLng;

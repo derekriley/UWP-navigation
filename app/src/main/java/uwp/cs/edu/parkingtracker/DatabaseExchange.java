@@ -193,7 +193,6 @@
  *
  */
 
-
 package uwp.cs.edu.parkingtracker;
 
 import java.util.ArrayList;

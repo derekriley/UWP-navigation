@@ -193,7 +193,6 @@
  *
  */
 
-
 package uwp.cs.edu.parkingtracker;
 
 import android.content.Intent;
@@ -216,8 +215,8 @@ import com.google.android.gms.analytics.Tracker;
 
 
 //TODO: Implement a network connectivity checker and google play services check
-//ConnectivityManager connMgr = (ConnectivityManager)
-//this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+// ConnectivityManager connMgr = (ConnectivityManager)
+// this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 public class BasicUser extends FragmentActivity {
 
@@ -238,15 +237,15 @@ public class BasicUser extends FragmentActivity {
         if (deviceListeners == null) {
             // Instantiate new device listener.
             deviceListeners = new DeviceListeners(this);
-            // Attach listener to the refresh, expert, and other lots buttons.
-//            findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
-//            findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
-//            findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
+// Attach listener to the refresh, expert, and other lots buttons.
+// findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
+// findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
+// findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
         }
         return deviceListeners;
     }
 
-    //  Activity Methods
+    // Activity Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,8 +265,8 @@ public class BasicUser extends FragmentActivity {
                 .build());
         // Google Analytics
 
-        //    START NAV DRAWER
-        //added nav drawer
+        // START NAV DRAWER
+        // added nav drawer
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -302,7 +301,7 @@ public class BasicUser extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        //   END  NAV DRAWER
+        // END  NAV DRAWER
 
         // Setup device listeners.
         getDeviceListeners();
@@ -338,17 +337,17 @@ public class BasicUser extends FragmentActivity {
         mapTransform = new MapTransform(BasicUser.this);
         mapTransform.setUpMap();
 
-//        myTask = new ParkingLotTimer(this.deviceListeners,mServiceIntent);
-//        myTimer = new Timer();
-//        myTimer.schedule(myTask, 1000, 9000);
+// myTask = new ParkingLotTimer(this.deviceListeners,mServiceIntent);
+// myTimer = new Timer();
+// myTimer.schedule(myTask, 1000, 9000);
 
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-//        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+// boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+// menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
