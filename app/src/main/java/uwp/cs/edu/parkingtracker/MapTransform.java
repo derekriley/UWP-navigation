@@ -210,11 +210,13 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.ArrayList;
 import java.util.Map;
 
-
-//Created by David on 11/21/14.
-//Modified by Nate
-//Modified from MapFragment subclass authored by
-
+/**
+ * Created by David on 11/21/14.
+ * Modified by Nate
+ *
+ * Contains all methods that deal with creating the map that will be displayed
+ * on the application
+ * */
 public class MapTransform {
 
     // Instance variable begin
@@ -289,7 +291,9 @@ public class MapTransform {
 //        }
     }
     /**
-     *
+     * Returns a call to another method in ZoneList Class that returns a zone id, this zone id is identified
+     * based upon the point chosen, the parameters to this function are passed from the basic user class
+     * in the method known as TapEvent
      * */
     public String getZoneTapped(int x, int y) {
         Projection pp = mMap.getProjection();

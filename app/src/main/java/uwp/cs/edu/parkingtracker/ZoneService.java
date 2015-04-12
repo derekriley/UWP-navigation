@@ -200,9 +200,10 @@ import android.content.Intent;
 import android.util.Log;
 
 
-//Service to handle background zone syncing.
-//Created by nate eisner
-
+/**
+ * Service to handle background zone syncing.
+ * Created by nate eisner
+ * */
 public class ZoneService extends IntentService {
 
    //An IntentService must always have a constructor that calls the super constructor. The

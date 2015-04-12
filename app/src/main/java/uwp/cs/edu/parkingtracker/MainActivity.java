@@ -206,7 +206,10 @@ import android.widget.ProgressBar;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-
+/**
+ * Creates a main activity layout that will help the user choose between the
+ * parking application and the navigation application
+ * */
 public class MainActivity extends Activity {
     ProgressBar pBar;
 
@@ -234,7 +237,9 @@ public class MainActivity extends Activity {
     }
     private class LoadTask extends AsyncTask<Void, Void, Void> {
 
-        // This method runs on a background thread (not on the UI thread)
+        /**
+         * This method runs on a background thread (not on the UI thread)
+         * */
         @Override
         protected Void doInBackground(Void... params) {
             ZoneList.getInstance().update();
@@ -251,9 +256,11 @@ public class MainActivity extends Activity {
         }
 
 
-        //Called after doInBackground() method
-        //This method runs on the UI thread
 
+        /**
+         * Called after doInBackground() method
+         * This method runs on the UI thread
+         * */
         @Override
         protected void onPostExecute(Void v) {
             Button btn = (Button)findViewById(R.id.button);
@@ -263,9 +270,9 @@ public class MainActivity extends Activity {
     }
 
     /**
-     *
      * Starts a new basic user activity upon clicking on the parking button
-     * from the main application selection screen.
+     * from the main application selection screen. This click in the app
+     * essentially starts the parking lot voting portion of the application
      * */
     public void parkingClick(View view) {
         Intent mIntent  = new Intent(MainActivity.this, BasicUser.class);

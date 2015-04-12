@@ -202,8 +202,12 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
 
- //Created by nate eisner on 4/8/15.
 
+/**
+ *
+ * Maintains all needs associated with google analytics
+ * Created by nate eisner on 4/8/15.
+ * */
 public class ThisApp extends Application {
     Tracker t;
     private final String PROPERTY_ID = "UA-61649168-1";

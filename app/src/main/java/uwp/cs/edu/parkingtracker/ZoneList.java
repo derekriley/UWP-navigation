@@ -193,7 +193,6 @@
  *
  */
 
-
 package uwp.cs.edu.parkingtracker;
 
 import android.graphics.Color;
@@ -207,11 +206,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
- //Thread-safe Singleton Class for the main zone list.
- //Works with Activities and the zone service
- //Created by nate eisner
-
+/**
+ * Thread-safe Singleton Class for the main zone list.
+ * Works with Activities and the zone service
+ * Created by nate eisner
+ * */
 public class ZoneList {
 
     public static class Zone {
@@ -347,9 +346,12 @@ public class ZoneList {
         // odd number of crossings?
         return (crossings % 2 == 1);
     }
-
+    /**
+     * Ray Casting algorithm checks, for each segment, if the point is 1) to the left of the segment
+     * and 2) not above nor below the segment. If these two conditions are met, it returns true
+     * */
     public boolean rayCrossesSegment(LatLng point, LatLng a, LatLng b) {
-        // Ray Casting algorithm checks, for each segment, if the point is 1) to the left of the segment and 2) not above nor below the segment. If these two conditions are met, it returns true
+
         double px = point.longitude,
                 py = point.latitude,
                 ax = a.longitude,

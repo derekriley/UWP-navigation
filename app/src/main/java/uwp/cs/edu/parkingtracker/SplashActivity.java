@@ -201,7 +201,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-
+/**
+ * Creates the splash screen for the application and sets everything accordingly
+ * */
 public class SplashActivity extends Activity {
     //Introduce a delay
     private final int WAIT_TIME = 3000;

@@ -198,11 +198,18 @@ package uwp.cs.edu.parkingtracker;
 import java.util.ArrayList;
 
 
- //Created by Russ and Nate
+ /**
+  * Passes data to the database and uses data
+  * from the database to determine the fullness of the votes
+  *
+  * Created by: nate and russ
+  * */
 
 public class DatabaseExchange {
 
-    //sends vote to server
+    /**
+     * sends vote to server
+     * */
     protected static void sendVote(String zID, int vote) {
         ArrayList<String> params = new ArrayList<>();
         params.add(CONSTANTS.PUT);
@@ -210,7 +217,9 @@ public class DatabaseExchange {
         new RESTClient().execute(params);
     }
 
-    //gets fullness
+    /**
+     * finds the fullness of the zone
+     * */
     protected static String getAverageVote(String zID) {
         ArrayList<String> params = new ArrayList<>();
         params.add(CONSTANTS.GET);

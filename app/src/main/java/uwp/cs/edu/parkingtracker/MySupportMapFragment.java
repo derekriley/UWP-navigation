@@ -207,7 +207,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 /**
  * Created by Russ on 3/18/2015.
  */
-
 public class MySupportMapFragment extends SupportMapFragment {
     private View mOriginalContentView;
     private TouchableWrapper mTouchView;
@@ -239,6 +238,7 @@ public class MySupportMapFragment extends SupportMapFragment {
         public TouchableWrapper() {
             super(mActivity);
         }
+
 
         @Override
         public boolean dispatchTouchEvent(MotionEvent event) {

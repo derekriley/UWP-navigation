@@ -226,7 +226,6 @@ import com.google.android.gms.analytics.Tracker;
  public class BasicUser extends FragmentActivity {
 
     // Instance variables begin
-
     private String drawerItems[] = {"Parking", "Navigate", "Other"};
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -360,9 +359,11 @@ import com.google.android.gms.analytics.Tracker;
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     *  Inflate the menu; this adds items to the action bar if it is present.
+     * */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_basic_user, menu);
         return true;
     }
@@ -417,6 +418,7 @@ import com.google.android.gms.analytics.Tracker;
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
     /*
+    * Triggers a call to get the tapped zone from other methods
     *
     * */
     public void tapEvent(int x, int y) {

@@ -201,6 +201,10 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * Contains all constant points that make up all the zones
+ * */
 public final class CONSTANTS {
 
     // Prevent instantiation, even from the native class
