@@ -212,13 +212,13 @@ import uwp.cs.edu.parkingtracker.parking.ZoneList;
  * Creates a main activity layout that will help the user choose between the
  * parking application and the navigation application
  * */
-public class MainActivity extends Activity {
+public class MenuActivity extends Activity {
     ProgressBar pBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_menu);
         getActionBar().hide();
 
         // Google Analytics
@@ -277,7 +277,7 @@ public class MainActivity extends Activity {
      * essentially starts the parking lot voting portion of the application
      * */
     public void parkingClick(View view) {
-        Intent mIntent  = new Intent(MainActivity.this, ParkingActivity.class);
+        Intent mIntent  = new Intent(MenuActivity.this, ParkingActivity.class);
         startActivity(mIntent);
         finish();
     }

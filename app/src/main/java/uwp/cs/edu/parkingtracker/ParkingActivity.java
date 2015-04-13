@@ -257,7 +257,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_basic_user);
+        setContentView(R.layout.activity_parking);
 
         // Google Analytics
 
