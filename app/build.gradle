@@ -16,6 +16,11 @@ android {
     }
     productFlavors {
     }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java/Map', 'src/main/java/Parking', 'src/main/java/uwp.cs.edu.parkingtracker/Map']
+        }
+    }
 }
 
 dependencies {
