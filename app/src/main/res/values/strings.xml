@@ -39,5 +39,7 @@
     <string name="navi">Navigation</string>
     <string name="other">Other</string>
     <string name="parking">Parking Tracker</string>
+    <string name="title_activity_navigate">NavigateActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
