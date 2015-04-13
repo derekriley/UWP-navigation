@@ -207,8 +207,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import uwp.cs.edu.parkingtracker.network.DatabaseExchange;
+import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
 
- // Created by David on 11/22/14.
+
+// Created by David on 11/22/14.
 
 public class DeviceListeners implements LocationListener, ParkDialogFragment.ParkDialogListener, View.OnClickListener, View.OnLongClickListener {
 
@@ -225,7 +228,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     private Location location = null;
 
     // Passed Activity.
-    private BasicUser passedActivity = null;
+    private ParkingActivity passedActivity = null;
     // Instance Variables End
 
     // Getters : Lazy Instantiation
@@ -257,7 +260,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
      *
      * @param passedActivity
      */
-    public DeviceListeners(BasicUser passedActivity) {
+    public DeviceListeners(ParkingActivity passedActivity) {
         // Set the instance variables.
         this.passedActivity = passedActivity;
         // Set up sensor manager.
@@ -418,7 +421,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/1");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        String zID = ((ParkDialogFragment) dialog).zID;
+        String zID = ((ParkDialogFragment) dialog).getID();
         DatabaseExchange.sendVote(zID, 0);
 
 
@@ -432,7 +435,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        // Adds a vote to the nearly empty column in the availability table
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/2");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        String zID = ((ParkDialogFragment) dialog).zID;
+        String zID = ((ParkDialogFragment) dialog).getID();
         DatabaseExchange.sendVote(zID, 5);
 
     }
@@ -440,7 +443,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     @Override
     public void onDialogFullClick(android.support.v4.app.DialogFragment dialog) {
         // User touched the dialog's Full
-        String zID = ((ParkDialogFragment) dialog).zID;
+        String zID = ((ParkDialogFragment) dialog).getID();
         DatabaseExchange.sendVote(zID, 10);
 
     }

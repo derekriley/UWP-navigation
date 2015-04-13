@@ -18,7 +18,7 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="uwp.cs.edu.parkingtracker.MySupportMapFragment"/>
+            android:name="uwp.cs.edu.parkingtracker.mapping.MySupportMapFragment"/>
 
     </FrameLayout>
     <ListView

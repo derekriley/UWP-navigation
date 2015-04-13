@@ -193,213 +193,194 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
+package uwp.cs.edu.parkingtracker.network;
 
-import android.graphics.Color;
+import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolygonOptions;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
+
+import uwp.cs.edu.parkingtracker.CONSTANTS;
 
 /**
- * Thread-safe Singleton Class for the main zone list.
- * Works with Activities and the zone service
- * Created by nate eisner
- * */
-public class ZoneList {
+ * Simple implementation of a REST Client in Java.
+ *
+ * @author <a href="mailto:hello@mateo.io">Francisco Mateo</a>
+ * @version 0.0.2
+ * @modified David Krawchuk 11/2014
+ * @modified Nate Eisner 3/23/2015
+ */
+public class RESTClient extends AsyncTask<ArrayList<String>, Void, String> {
 
-    public static class Zone {
-        private String zoneId;
-        private PolygonOptions polygonOptions;
-        private String fullness;
-
-        public Zone() {
-            this.fullness = "0";
-        }
-
-        public String getZoneId() {
-            return zoneId;
-        }
-
-        public void setZoneId(String zoneId) {
-            this.zoneId = zoneId;
-        }
-
-        public PolygonOptions getPolygonOptions() {
-            return polygonOptions;
-        }
-
-        public void setPolygonOptions(PolygonOptions polygonOptions) {
-            this.polygonOptions = polygonOptions;
-        }
-
-        public void setFullness(String fullness) {
-            this.fullness = fullness;
-            if (Double.valueOf(fullness) > 6.66) {
-                this.polygonOptions.fillColor(Color.RED);
-            }
-            if (Double.valueOf(fullness) >= 3.33 && Double.valueOf(fullness) <= 6.66) {
-                this.polygonOptions.fillColor(Color.YELLOW);
-            }
-            if (Double.valueOf(fullness) < 3.33) {
-                this.polygonOptions.fillColor(Color.GREEN);
-            }
-        }
-
-        public String getFullness() {
-            return fullness;
-        }
-
-        public Zone(String zoneId, PolygonOptions polygonOptions) {
-            this.fullness = "0";
-            this.zoneId = zoneId;
-            this.polygonOptions = polygonOptions;
-
-        }
-    }
-
-    //synchronized thread-safe arraylist
-    private CopyOnWriteArrayList<Zone> zoneArrayList;
-    static ZoneList mInstance = null;
-
-
-     //Constructor
-
-    private ZoneList() {
-        zoneArrayList = new CopyOnWriteArrayList<Zone>();
-        for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
-            Zone z = new Zone(entry.getKey(), entry.getValue());
-            zoneArrayList.add(z);
-        }
-    }
-
-    public synchronized static ZoneList getInstance() {
-        if (mInstance == null) {
-            mInstance = new ZoneList();
-            Log.d("ZoneList", "New Instance");
-            mInstance.update();
-        }
-        return mInstance;
-    }
-
-
-    public int getSize() {
-        return zoneArrayList.size();
-    }
+    // Instance Begin
+    private URL url = null;
+    private HttpURLConnection connection = null;
+    private BufferedReader reader = null;
+    private String result = null;
+    private String httpMethod = null;
+    // Instance End
 
     /**
-     * @param zID
-     * @param pO
+     * @param params
+     * @return
      */
-    public void addZone(String zID, PolygonOptions pO) {
-        Zone z = new Zone(zID, pO);
-        zoneArrayList.add(z);
-    }
+    @Override
+    protected String doInBackground(ArrayList<String>... params) {
+        String toGetOrPut = params[0].get(1).toString();
+        try {
+            if (params[0].size() > 2) {
+                throw new IllegalArgumentException(
+                        "You have passed in more than (2) params for the String arraylist: "
+                                + params[0].size());
+            } else if (params[0].size() < 2) {
+                throw new IllegalArgumentException(
+                        "You have passed in less than the required length (2) of params for the String arraylist.");
+            } else {
 
+                httpMethod = params[0].get(0).toUpperCase();
 
-    public synchronized void update() {
-        Runnable runnable = new Runnable() {
-            public void run() {
-                for (Zone z : zoneArrayList) {
-                    z.setFullness(DatabaseExchange.getAverageVote(z.getZoneId()));
+                switch (httpMethod) {
+
+                    case CONSTANTS.GET:
+                        result = this.get(toGetOrPut);
+                        break;
+                    case CONSTANTS.PUT:
+                        this.put(toGetOrPut);
+                        result = "";
+                        break;
+                    default:
+                        throw new IllegalArgumentException(
+                                "First param in String arraylist is neither GET nor PUT.");
                 }
             }
-        };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
-
-    }
-
-    public synchronized ArrayList<PolygonOptions> getPolys() {
-        ArrayList<PolygonOptions> polys = new ArrayList<>();
-        for (Zone z : zoneArrayList) {
-            polys.add(z.getPolygonOptions());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-        return polys;
+        return result;
     }
 
-    public boolean pointInPolygon(LatLng point, PolygonOptions polygon) {
-        // ray casting alogrithm http://rosettacode.org/wiki/Ray-casting_algorithm
-        int crossings = 0;
-        List<LatLng> path = polygon.getPoints();
-        //path.remove(path.size()); //remove the last point that is added automatically by getPoints()
 
-        // for each edge
-        for (int i = 0; i < path.size(); i++) {
-            LatLng a = path.get(i);
-            int j = i + 1;
-            //to close the last edge, you have to take the first point of your polygon
-            if (j >= path.size()) {
-                j = 0;
-            }
-            LatLng b = path.get(j);
-            if (rayCrossesSegment(point, a, b)) {
-                crossings++;
-            }
-        }
-
-        // odd number of crossings?
-        return (crossings % 2 == 1);
-    }
     /**
-     * Ray Casting algorithm checks, for each segment, if the point is 1) to the left of the segment
-     * and 2) not above nor below the segment. If these two conditions are met, it returns true
-     * */
-    public boolean rayCrossesSegment(LatLng point, LatLng a, LatLng b) {
+     * Calls the REST API. PUTs the passed parameters.
+     * <p/>
+     * <p>
+     * This method only takes one parameter, the String URL to desired path to
+     * the REST service. Parameters are passed in the URL String and are
+     * processed on the server side.
+     * </p>
+     * <p/>
+     * <h2>Plain Java</h2>
+     * <p/>
+     * <pre>
+     * RESTClient client = new RESTClient();
+     * client.post(&quot;v1/professors/insert/&quot; + name + &quot;/&quot; + dept);
+     * </pre>
+     * <p/>
+     * <h2>Extending Android AsyncTask</h2>
+     * <p/>
+     * <pre>
+     * ArrayList&lt;String&gt; params = new ArrayList&lt;&gt;();
+     * params.add(&quot;GET&quot;); // Http method
+     * params.add(&quot;nope/7/7/0/1/0&quot;); // Pass in params
+     *
+     * new RESTClient(REST_API).execute(params); // Execute
+     * </pre>
+     *
+     * @param apiCall the route of the REST API desired
+     * @return String message of success
+     */
+    private String put(String apiCall) {
 
-        double px = point.longitude,
-                py = point.latitude,
-                ax = a.longitude,
-                ay = a.latitude,
-                bx = b.longitude,
-                by = b.latitude;
-        if (ay > by) {
-            ax = b.longitude;
-            ay = b.latitude;
-            bx = a.longitude;
-            by = a.latitude;
+        // fetch data
+        try {
+            pushResultsToDatabase(apiCall);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        // alter longitude to cater for 180 degree crossings
-        if (px < 0 || ax < 0 || bx < 0) {
-            px += 360;
-            ax += 360;
-            bx += 360;
-        }
-        // if the point has the same latitude as a or b, increase slightly py
-        if (py == ay || py == by) py += 0.00000001;
-
-
-        // if the point is above, below or to the right of the segment, it returns false
-        if ((py > by || py < ay) || (px > Math.max(ax, bx))) {
-            return false;
-        }
-        // if the point is not above, below or to the right and is to the left, return true
-        else if (px < Math.min(ax, bx)) {
-            return true;
-        }
-        // if the two above conditions are not met, you have to compare the slope of segment [a,b] (the red one here) and segment [a,p] (the blue one here) to see if your point is to the left of segment [a,b] or not
-        else {
-            double red = (ax != bx) ? ((by - ay) / (bx - ax)) : Double.POSITIVE_INFINITY;
-            double blue = (ax != px) ? ((py - ay) / (px - ax)) : Double.POSITIVE_INFINITY;
-            return (blue >= red);
-        }
-
+        return result;
     }
+
     /**
-     * Returns a Zone Id
-     * */
-    public String zoneTapped(LatLng point) {
-        for (Zone z : zoneArrayList) {
-            if (pointInPolygon(point, z.getPolygonOptions())) {
-                return z.getZoneId();
-            }
+     * Returns a JSON string of objects from the server that can be parsed with
+     * desired JSON library.
+     *
+     * @param apiCall the route of the REST API desired
+     * @return JSON string of objects from server
+     * @see #//put()
+     */
+    private String get(String apiCall) {
+
+        try {
+            fetchResultsFromDatabase(apiCall);
+
+        } catch (MalformedURLException | ProtocolException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
-        return null;
+
+        return result;
     }
 
+    /**
+     * @param apiCall
+     * @throws MalformedURLException
+     * @throws ProtocolException
+     * @throws IOException
+     */
+    private void fetchResultsFromDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException {
+        this.url = new URL(CONSTANTS.REST_URL + apiCall);
+
+        this.connection = (HttpURLConnection) this.url.openConnection();
+
+        if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            throw new IOException("HTTP CONNECTION != 200: "
+                    + this.connection.getResponseCode());
+        }
+
+        this.reader = new BufferedReader(new InputStreamReader(
+                this.connection.getInputStream()));
+
+        char ch;
+        do {
+            reader.mark(1);
+            ch = (char) reader.read();
+        } while (ch == '\r' || ch == '\n');
+
+        // Reset reader position.
+        this.reader.reset();
+
+        result = this.reader.readLine();
+        connection.disconnect();
+    }
+
+    /**
+     * @param apiCall
+     * @throws MalformedURLException
+     * @throws ProtocolException
+     * @throws IOException
+     */
+    private void pushResultsToDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException {
+        this.url = new URL(CONSTANTS.REST_URL + apiCall);
+        this.connection = (HttpURLConnection) this.url.openConnection();
+        Log.i("APICALL: ", apiCall);
+        Log.i("URL: ", this.url.toString());
+        if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            throw new IOException("HTTP CONNECTION != 200 "
+                    + this.connection.getResponseCode());
+        } else {
+            // display error
+            connection.disconnect();
+            result = "Success";
+        }
+    }
 }

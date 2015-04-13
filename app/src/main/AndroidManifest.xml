@@ -27,12 +27,12 @@
             android:value="AIzaSyDiCohq3VpPkUnkuvVZsi_rxg20uote2Sk" />
 
         <activity
-            android:name=".BasicUser"
+            android:name=".ParkingActivity"
             android:label="@string/basicuser" >
         </activity>
 
         <service
-            android:name=".ZoneService"
+            android:name=".parking.ZoneService"
             android:exported="false" />
         <!-- <activity -->
         <!-- android:name=".ExpertActivity" -->

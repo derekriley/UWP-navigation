@@ -193,43 +193,133 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
+package uwp.cs.edu.parkingtracker.mapping;
+
+import android.graphics.Point;
+import android.os.AsyncTask;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.Projection;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import uwp.cs.edu.parkingtracker.CONSTANTS;
+import uwp.cs.edu.parkingtracker.R;
+import uwp.cs.edu.parkingtracker.parking.ZoneList;
+import uwp.cs.edu.parkingtracker.ParkingActivity;
 
- /**
-  * Passes data to the database and uses data
-  * from the database to determine the fullness of the votes
-  *
-  * Created by: nate and russ
-  * */
+/**
+ * Created by David on 11/21/14.
+ * Modified by Nate
+ *
+ * Contains all methods that deal with creating the map that will be displayed
+ * on the application
+ * */
+public class MapTransform {
 
-public class DatabaseExchange {
+    // Instance variable begin
+    private GoogleMap mMap;
+    private ParkingActivity passedActivity;
+    // Instance variable end
 
     /**
-     * sends vote to server
-     * */
-    protected static void sendVote(String zID, int vote) {
-        ArrayList<String> params = new ArrayList<>();
-        params.add(CONSTANTS.PUT);
-        params.add(CONSTANTS.VOTE + zID + "/" + vote + "/" + CONSTANTS.AUTH_KEY);
-        new RESTClient().execute(params);
+     * MapTransform : Default constructor.
+     *
+     * @param activity
+     */
+    public MapTransform(ParkingActivity activity) {
+        // Set instance variables.
+        this.passedActivity = activity;
+
+
+        // Get a handle to the Map Fragment
+        this.mMap = ((MySupportMapFragment) activity.getSupportFragmentManager()
+                .findFragmentById(R.id.map)).getMap();
     }
 
+
+
+
     /**
-     * finds the fullness of the zone
+     * Positions map to specified lot coordinates, lays out the parking lot zones, and
+     * adds the markers required for user interaction.
      * */
-    protected static String getAverageVote(String zID) {
-        ArrayList<String> params = new ArrayList<>();
-        params.add(CONSTANTS.GET);
-        params.add(CONSTANTS.VOTE_AVG + zID + "/" + CONSTANTS.AUTH_KEY);
-        String returnValue = "";
-        try {
-            returnValue = new RESTClient().execute(params).get();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void setUpMap() {
+        double latitude = CONSTANTS.STUDENT_CENTER_C_LAT;
+        double longitude = CONSTANTS.STUDENT_CENTER_C_LNG;
+        float zoomFactor = CONSTANTS.DEFAULT_ZOOM_FACTOR;
+        MapsInitializer.initialize(passedActivity);
+        // makes the map focus on the Student Center parking lot.
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
+        new MapTask().execute(ZoneList.getInstance());
+        //attachMarkersToMap();
+    }
+
+
+
+    /**
+     * Clears map and redraws
+     * */
+    public void refreshMap() {
+        mMap.clear();
+        new MapTask().execute(ZoneList.getInstance());
+    }
+
+
+
+
+
+    /**
+     * Physically attach the markers to the google map fragment. Done in one batch to minimize
+     * interruption to the main UI Thread.
+     * */
+    private void attachMarkersToMap() {
+        //add building markers
+        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
+            String key = entry.getKey();
+            LatLng value = entry.getValue();
+            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
         }
-        return returnValue;
+
+//        //add parking markers
+//        for (Map.Entry<String, LatLng> entry : CONSTANTS.parkingLots.entrySet()) {
+//            String key = entry.getKey();
+//            LatLng value = entry.getValue();
+//            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+//        }
+    }
+    /**
+     * Returns a call to another method in ZoneList Class that returns a zone id, this zone id is identified
+     * based upon the point chosen, the parameters to this function are passed from the basic user class
+     * in the method known as TapEvent
+     * */
+    public String getZoneTapped(int x, int y) {
+        Projection pp = mMap.getProjection();
+        LatLng point = pp.fromScreenLocation(new Point(x, y));
+        return ZoneList.getInstance().zoneTapped(point);
+    }
+
+    public class MapTask extends AsyncTask<ZoneList, PolygonOptions, Void> {
+
+        @Override
+        protected Void doInBackground(ZoneList... params) {
+            ZoneList zL = params[0];
+            ArrayList<PolygonOptions> polygons = zL.getPolys();
+            for (PolygonOptions pO : polygons)
+                publishProgress(pO);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(PolygonOptions... values) {
+            mMap.addPolygon(values[0]);
+        }
     }
 }

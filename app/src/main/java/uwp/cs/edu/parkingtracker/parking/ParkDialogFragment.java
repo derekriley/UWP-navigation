@@ -193,31 +193,136 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
 
-import android.app.IntentService;
-import android.content.Intent;
-import android.util.Log;
+package uwp.cs.edu.parkingtracker.parking;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
+
+import uwp.cs.edu.parkingtracker.R;
 
 
 /**
- * Service to handle background zone syncing.
- * Created by nate eisner
+ * Created by kifle on 7/9/2014.
+ * Modified by David Krawchuk, Russ, Nate
+ *
  * */
-public class ZoneService extends IntentService {
+public class ParkDialogFragment extends DialogFragment {
 
-   //An IntentService must always have a constructor that calls the super constructor. The
-   //string supplied to the super constructor is used to give a name to the IntentService's
-   //background thread.
+    protected String zID;
+    protected String fullness;
+    protected ParkDialogListener mListener;
 
-    public ZoneService() {
 
-        super("ZoneService");
+    public interface ParkDialogListener {
+        public void onDialogEmptyClick(DialogFragment dialog);
+
+        public void onDialogHalfClick(DialogFragment dialog);
+
+        public void onDialogFullClick(DialogFragment dialog);
+    }
+
+
+    /**
+     * Create a new instance of MyDialogFragment, providing "num"
+     * as an argument.
+     * */
+    static ParkDialogFragment newInstance(String zID, String fullness) {
+        ParkDialogFragment f = new ParkDialogFragment();
+        f.zID = zID;
+        f.fullness = fullness;
+        // Supply num input as an argument.
+//        Bundle args = new Bundle();
+//        args.putInt("num", num);
+//        f.setArguments(args);
+
+        return f;
+    }
+
+    /**
+     * Called at the initial phase of fragment's lifecycle.
+     *
+     * @param activity
+     */
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+//        try {
+//            mListener = (ParkDialogListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement ParkDialogListener");
+//        }
+    }
+
+    /**
+     * Called after onAttach as part of the fragment lifecycle.
+     *
+     * @param savedInstanceState
+     * @return
+     */
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new AlertDialog.Builder(getActivity())
+                .setTitle("How full is the lot?")
+                .setItems(R.array.lot_options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case (0):
+                                mListener.onDialogEmptyClick(ParkDialogFragment.this);
+                                break;
+                            case (1):
+                                mListener.onDialogHalfClick(ParkDialogFragment.this);
+                                break;
+                            case (2):
+                                mListener.onDialogFullClick(ParkDialogFragment.this);
+                                break;
+                            default:
+                                Toast.makeText(getActivity().getApplicationContext(), "Not Working",
+                                        Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                })
+                .create();
+    }
+
+    public String getID () {return this.zID;};
+
+    public void setListener (ParkDialogListener pdL) {
+        mListener = pdL;
+    }
+    /**
+     * catchs the illegal state exception in two methods
+     * and ignore it, allowing the app to continue running.
+     * */
+    @Override
+    public int show(FragmentTransaction transaction, String tag) {
+        try {
+            return super.show(transaction, tag);
+        } catch (IllegalStateException e) {
+            // ignore
+        }
+        return -1;
     }
 
     @Override
-    protected void onHandleIntent(Intent workIntent) {
-        ZoneList.getInstance().update();
-        Log.d("ZoneService", "Loading from server");
+    public void show(FragmentManager manager, String tag) {
+        try {
+            super.show(manager, tag);
+        } catch (IllegalStateException e) {
+            // ignore
+        }
+    }
+
+    public void setzID(String zID) {
+        this.zID = zID;
     }
 }

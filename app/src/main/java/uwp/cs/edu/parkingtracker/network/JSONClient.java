@@ -193,102 +193,132 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
+package uwp.cs.edu.parkingtracker.network;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
-import uwp.cs.edu.parkingtracker.parking.ZoneList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
- * Creates a main activity layout that will help the user choose between the
- * parking application and the navigation application
- * */
-public class MainActivity extends Activity {
-    ProgressBar pBar;
+ * Wrapper class for the <b>org.json</b> library.
+ *
+ * @author Francisco Mateo
+ * @version 0.0.2
+ * @modified David Krawchuk
+ * @date 11/2014
+ */
+public class JSONClient {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getActionBar().hide();
+    // Instance Variables
+    private String json = null;
+    private JSONObject job = null;
+    private JSONArray jarr = null;
+    // End
 
-        // Google Analytics
-        // Get tracker.
-        Tracker t = ((ThisApp) getApplication()).getTracker();
+    // Setter/Getter
 
-        // Set screen name.
-        t.setScreenName("Menu");
-
-        // Send a screen view.
-        t.send(new HitBuilders.ScreenViewBuilder()
-                .setNewSession()
-                .build());
-        // Google Analytics
-
-        pBar = (ProgressBar)findViewById(R.id.parkingProgressBar);
-        new LoadTask().execute();
-    }
-    private class LoadTask extends AsyncTask<Void, Void, Void> {
-
-        /**
-         * This method runs on a background thread (not on the UI thread)
-         * */
-        @Override
-        protected Void doInBackground(Void... params) {
-            ZoneList.getInstance().update();
-            int i = 0;
-            while (i <= 50) {
-                try {
-                    Thread.sleep(100);
-                    i++;
-                }
-                catch (Exception e) {
-                }
-            }
-            return null;
+    private String getJson() {
+        if (json == null) {
+            json = "";
         }
+        return json;
+    }
 
+    private void setJson(String json) {
+        this.json = json;
+    }
 
+    private JSONObject getJob() throws JSONException {
+        if (job == null) {
+            job = new JSONObject(getJson());
+        }
+        return job;
+    }
 
-        /**
-         * Called after doInBackground() method
-         * This method runs on the UI thread
-         * */
-        @Override
-        protected void onPostExecute(Void v) {
-            Button btn = (Button)findViewById(R.id.button);
-            btn.setEnabled(true);
-            pBar.setVisibility(View.GONE);
+    private void setJob(String key) throws JSONException {
+
+        job = new JSONObject(key);
+    }
+
+    private JSONArray getJarr() throws JSONException {
+        if (jarr == null) {
+            jarr = new JSONArray("");
+        }
+        return jarr;
+    }
+
+    public void setJarr(JSONArray jarr) {
+        this.jarr = jarr;
+    }
+
+    // End
+
+    /**
+     * Constructor for a JSONClient with only:
+     * <ul>
+     * <li>(1) JSON object in the passed JSON String</li>
+     * <li>(1) JSON array of JSON objects
+     * </ul>
+     * <p/>
+     * Accepted JSON:<br>
+     * <code>
+     * {"key":[{"key":"value","key":"value"},{"key":"value","key":"value"}]}
+     * </code>
+     *
+     * @param jsonString Constructor assumes properly formated JSON, otherwise
+     *                   JSONException is raised
+     * @param key        JSONArray value associated with a key
+     */
+    public JSONClient(String jsonString, String key) {
+        setJson(jsonString);
+        try {
+            setJob(getJson());
+            try {
+                setJarr(getJob().getJSONArray(key));
+            } catch (JSONException e) {
+                System.out.println("Key (" + key + ") is not found OR the"
+                        + "value is not a JSONArray");
+            }
+        } catch (JSONException e) {
+            System.out.println("Syntax error in the source string or"
+                    + "duplicated key.");
         }
     }
 
     /**
-     * Starts a new basic user activity upon clicking on the parking button
-     * from the main application selection screen. This click in the app
-     * essentially starts the parking lot voting portion of the application
-     * */
-    public void parkingClick(View view) {
-        Intent mIntent  = new Intent(MainActivity.this, ParkingActivity.class);
-        startActivity(mIntent);
-        finish();
+     * Get array of double associated with specified key
+     *
+     * @param key The key string
+     * @return Array of double
+     */
+    public double[] getDoubleArray(String key) {
+        double[] result = new double[0];
+
+        try {
+            result = new double[getJarr().length()];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = getJarr().getJSONObject(i).getDouble(key);
+            }
+        } catch (JSONException e) {
+            System.out.println("Key (" + key + ") not found OR the value cannot"
+                    + " be converted to an integer");
+        }
+        return result;
     }
 
-    public void navClick(View view) {
-
+    /**
+     * Return int from passed string. Assumes only a single int on one line.
+     *
+     * @param s The string containing a single int
+     * @return
+     */
+    public double getDouble(String s) {
+        double result = 0;
+        try {
+            result = Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            System.out.println("Passed in string is not a double => " + s);
+        }
+        return result;
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 }

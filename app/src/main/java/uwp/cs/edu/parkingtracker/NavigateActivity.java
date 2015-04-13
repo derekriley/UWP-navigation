@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import uwp.cs.edu.parkingtracker.R;
+
 
 public class NavigateActivity extends ActionBarActivity {
     // Instance variables begin

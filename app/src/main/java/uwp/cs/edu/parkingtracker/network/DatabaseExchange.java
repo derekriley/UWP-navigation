@@ -193,132 +193,45 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
+package uwp.cs.edu.parkingtracker.network;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
+
+import uwp.cs.edu.parkingtracker.CONSTANTS;
+
 
 /**
- * Wrapper class for the <b>org.json</b> library.
- *
- * @author Francisco Mateo
- * @version 0.0.2
- * @modified David Krawchuk
- * @date 11/2014
- */
-public class JSONClient {
+  * Passes data to the database and uses data
+  * from the database to determine the fullness of the votes
+  *
+  * Created by: nate and russ
+  * */
 
-    // Instance Variables
-    private String json = null;
-    private JSONObject job = null;
-    private JSONArray jarr = null;
-    // End
-
-    // Setter/Getter
-
-    private String getJson() {
-        if (json == null) {
-            json = "";
-        }
-        return json;
-    }
-
-    private void setJson(String json) {
-        this.json = json;
-    }
-
-    private JSONObject getJob() throws JSONException {
-        if (job == null) {
-            job = new JSONObject(getJson());
-        }
-        return job;
-    }
-
-    private void setJob(String key) throws JSONException {
-
-        job = new JSONObject(key);
-    }
-
-    private JSONArray getJarr() throws JSONException {
-        if (jarr == null) {
-            jarr = new JSONArray("");
-        }
-        return jarr;
-    }
-
-    public void setJarr(JSONArray jarr) {
-        this.jarr = jarr;
-    }
-
-    // End
+public class DatabaseExchange {
 
     /**
-     * Constructor for a JSONClient with only:
-     * <ul>
-     * <li>(1) JSON object in the passed JSON String</li>
-     * <li>(1) JSON array of JSON objects
-     * </ul>
-     * <p/>
-     * Accepted JSON:<br>
-     * <code>
-     * {"key":[{"key":"value","key":"value"},{"key":"value","key":"value"}]}
-     * </code>
-     *
-     * @param jsonString Constructor assumes properly formated JSON, otherwise
-     *                   JSONException is raised
-     * @param key        JSONArray value associated with a key
-     */
-    public JSONClient(String jsonString, String key) {
-        setJson(jsonString);
-        try {
-            setJob(getJson());
-            try {
-                setJarr(getJob().getJSONArray(key));
-            } catch (JSONException e) {
-                System.out.println("Key (" + key + ") is not found OR the"
-                        + "value is not a JSONArray");
-            }
-        } catch (JSONException e) {
-            System.out.println("Syntax error in the source string or"
-                    + "duplicated key.");
-        }
+     * sends vote to server
+     * */
+    public static void sendVote(String zID, int vote) {
+        ArrayList<String> params = new ArrayList<>();
+        params.add(CONSTANTS.PUT);
+        params.add(CONSTANTS.VOTE + zID + "/" + vote + "/" + CONSTANTS.AUTH_KEY);
+        new RESTClient().execute(params);
     }
 
     /**
-     * Get array of double associated with specified key
-     *
-     * @param key The key string
-     * @return Array of double
-     */
-    public double[] getDoubleArray(String key) {
-        double[] result = new double[0];
-
+     * finds the fullness of the zone
+     * */
+    public static String getAverageVote(String zID) {
+        ArrayList<String> params = new ArrayList<>();
+        params.add(CONSTANTS.GET);
+        params.add(CONSTANTS.VOTE_AVG + zID + "/" + CONSTANTS.AUTH_KEY);
+        String returnValue = "";
         try {
-            result = new double[getJarr().length()];
-            for (int i = 0; i < result.length; i++) {
-                result[i] = getJarr().getJSONObject(i).getDouble(key);
-            }
-        } catch (JSONException e) {
-            System.out.println("Key (" + key + ") not found OR the value cannot"
-                    + " be converted to an integer");
+            returnValue = new RESTClient().execute(params).get();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return result;
-    }
-
-    /**
-     * Return int from passed string. Assumes only a single int on one line.
-     *
-     * @param s The string containing a single int
-     * @return
-     */
-    public double getDouble(String s) {
-        double result = 0;
-        try {
-            result = Double.parseDouble(s);
-        } catch (NumberFormatException e) {
-            System.out.println("Passed in string is not a double => " + s);
-        }
-        return result;
+        return returnValue;
     }
 }

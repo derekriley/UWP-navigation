@@ -193,7 +193,7 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
+package uwp.cs.edu.parkingtracker.mapping;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -204,18 +204,20 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
+import uwp.cs.edu.parkingtracker.ParkingActivity;
+
 /**
  * Created by Russ on 3/18/2015.
  */
 public class MySupportMapFragment extends SupportMapFragment {
     private View mOriginalContentView;
     private TouchableWrapper mTouchView;
-    private BasicUser mActivity;
+    private ParkingActivity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity = (BasicUser) getActivity();
+        mActivity = (ParkingActivity) getActivity();
     }
 
     @Override

@@ -193,128 +193,216 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
+package uwp.cs.edu.parkingtracker.parking;
 
-import android.graphics.Point;
-import android.os.AsyncTask;
+import android.graphics.Color;
+import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.Projection;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import uwp.cs.edu.parkingtracker.CONSTANTS;
+import uwp.cs.edu.parkingtracker.network.DatabaseExchange;
 
 /**
- * Created by David on 11/21/14.
- * Modified by Nate
- *
- * Contains all methods that deal with creating the map that will be displayed
- * on the application
+ * Thread-safe Singleton Class for the main zone list.
+ * Works with Activities and the zone service
+ * Created by nate eisner
  * */
-public class MapTransform {
+public class ZoneList {
 
-    // Instance variable begin
-    private GoogleMap mMap;
-    private BasicUser passedActivity;
-    // Instance variable end
+    public static class Zone {
+        private String zoneId;
+        private PolygonOptions polygonOptions;
+        private String fullness;
+
+        public Zone() {
+            this.fullness = "0";
+        }
+
+        public String getZoneId() {
+            return zoneId;
+        }
+
+        public void setZoneId(String zoneId) {
+            this.zoneId = zoneId;
+        }
+
+        public PolygonOptions getPolygonOptions() {
+            return polygonOptions;
+        }
+
+        public void setPolygonOptions(PolygonOptions polygonOptions) {
+            this.polygonOptions = polygonOptions;
+        }
+
+        public void setFullness(String fullness) {
+            this.fullness = fullness;
+            if (Double.valueOf(fullness) > 6.66) {
+                this.polygonOptions.fillColor(Color.RED);
+            }
+            if (Double.valueOf(fullness) >= 3.33 && Double.valueOf(fullness) <= 6.66) {
+                this.polygonOptions.fillColor(Color.YELLOW);
+            }
+            if (Double.valueOf(fullness) < 3.33) {
+                this.polygonOptions.fillColor(Color.GREEN);
+            }
+        }
+
+        public String getFullness() {
+            return fullness;
+        }
+
+        public Zone(String zoneId, PolygonOptions polygonOptions) {
+            this.fullness = "0";
+            this.zoneId = zoneId;
+            this.polygonOptions = polygonOptions;
+
+        }
+    }
+
+    //synchronized thread-safe arraylist
+    private CopyOnWriteArrayList<Zone> zoneArrayList;
+    static ZoneList mInstance = null;
+
+
+     //Constructor
+
+    private ZoneList() {
+        zoneArrayList = new CopyOnWriteArrayList<Zone>();
+        for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
+            Zone z = new Zone(entry.getKey(), entry.getValue());
+            zoneArrayList.add(z);
+        }
+    }
+
+    public synchronized static ZoneList getInstance() {
+        if (mInstance == null) {
+            mInstance = new ZoneList();
+            Log.d("ZoneList", "New Instance");
+            mInstance.update();
+        }
+        return mInstance;
+    }
+
+
+    public int getSize() {
+        return zoneArrayList.size();
+    }
 
     /**
-     * MapTransform : Default constructor.
-     *
-     * @param activity
+     * @param zID
+     * @param pO
      */
-    public MapTransform(BasicUser activity) {
-        // Set instance variables.
-        this.passedActivity = activity;
-
-
-        // Get a handle to the Map Fragment
-        this.mMap = ((MySupportMapFragment) activity.getSupportFragmentManager()
-                .findFragmentById(R.id.map)).getMap();
+    public void addZone(String zID, PolygonOptions pO) {
+        Zone z = new Zone(zID, pO);
+        zoneArrayList.add(z);
     }
 
 
+    public synchronized void update() {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                for (Zone z : zoneArrayList) {
+                    z.setFullness(DatabaseExchange.getAverageVote(z.getZoneId()));
+                }
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
 
-
-    /**
-     * Positions map to specified lot coordinates, lays out the parking lot zones, and
-     * adds the markers required for user interaction.
-     * */
-    public void setUpMap() {
-        double latitude = CONSTANTS.STUDENT_CENTER_C_LAT;
-        double longitude = CONSTANTS.STUDENT_CENTER_C_LNG;
-        float zoomFactor = CONSTANTS.DEFAULT_ZOOM_FACTOR;
-        MapsInitializer.initialize(passedActivity);
-        // makes the map focus on the Student Center parking lot.
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
-        new MapTask().execute(ZoneList.getInstance());
-        //attachMarkersToMap();
     }
 
-
-
-    /**
-     * Clears map and redraws
-     * */
-    public void refreshMap() {
-        mMap.clear();
-        new MapTask().execute(ZoneList.getInstance());
+    public synchronized ArrayList<PolygonOptions> getPolys() {
+        ArrayList<PolygonOptions> polys = new ArrayList<>();
+        for (Zone z : zoneArrayList) {
+            polys.add(z.getPolygonOptions());
+        }
+        return polys;
     }
 
+    public boolean pointInPolygon(LatLng point, PolygonOptions polygon) {
+        // ray casting alogrithm http://rosettacode.org/wiki/Ray-casting_algorithm
+        int crossings = 0;
+        List<LatLng> path = polygon.getPoints();
+        //path.remove(path.size()); //remove the last point that is added automatically by getPoints()
 
-
-
-
-    /**
-     * Physically attach the markers to the google map fragment. Done in one batch to minimize
-     * interruption to the main UI Thread.
-     * */
-    private void attachMarkersToMap() {
-        //add building markers
-        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
-            String key = entry.getKey();
-            LatLng value = entry.getValue();
-            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
+        // for each edge
+        for (int i = 0; i < path.size(); i++) {
+            LatLng a = path.get(i);
+            int j = i + 1;
+            //to close the last edge, you have to take the first point of your polygon
+            if (j >= path.size()) {
+                j = 0;
+            }
+            LatLng b = path.get(j);
+            if (rayCrossesSegment(point, a, b)) {
+                crossings++;
+            }
         }
 
-//        //add parking markers
-//        for (Map.Entry<String, LatLng> entry : CONSTANTS.parkingLots.entrySet()) {
-//            String key = entry.getKey();
-//            LatLng value = entry.getValue();
-//            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
-//        }
+        // odd number of crossings?
+        return (crossings % 2 == 1);
     }
     /**
-     * Returns a call to another method in ZoneList Class that returns a zone id, this zone id is identified
-     * based upon the point chosen, the parameters to this function are passed from the basic user class
-     * in the method known as TapEvent
+     * Ray Casting algorithm checks, for each segment, if the point is 1) to the left of the segment
+     * and 2) not above nor below the segment. If these two conditions are met, it returns true
      * */
-    public String getZoneTapped(int x, int y) {
-        Projection pp = mMap.getProjection();
-        LatLng point = pp.fromScreenLocation(new Point(x, y));
-        return ZoneList.getInstance().zoneTapped(point);
-    }
+    public boolean rayCrossesSegment(LatLng point, LatLng a, LatLng b) {
 
-    public class MapTask extends AsyncTask<ZoneList, PolygonOptions, Void> {
+        double px = point.longitude,
+                py = point.latitude,
+                ax = a.longitude,
+                ay = a.latitude,
+                bx = b.longitude,
+                by = b.latitude;
+        if (ay > by) {
+            ax = b.longitude;
+            ay = b.latitude;
+            bx = a.longitude;
+            by = a.latitude;
+        }
+        // alter longitude to cater for 180 degree crossings
+        if (px < 0 || ax < 0 || bx < 0) {
+            px += 360;
+            ax += 360;
+            bx += 360;
+        }
+        // if the point has the same latitude as a or b, increase slightly py
+        if (py == ay || py == by) py += 0.00000001;
 
-        @Override
-        protected Void doInBackground(ZoneList... params) {
-            ZoneList zL = params[0];
-            ArrayList<PolygonOptions> polygons = zL.getPolys();
-            for (PolygonOptions pO : polygons)
-                publishProgress(pO);
-            return null;
+
+        // if the point is above, below or to the right of the segment, it returns false
+        if ((py > by || py < ay) || (px > Math.max(ax, bx))) {
+            return false;
+        }
+        // if the point is not above, below or to the right and is to the left, return true
+        else if (px < Math.min(ax, bx)) {
+            return true;
+        }
+        // if the two above conditions are not met, you have to compare the slope of segment [a,b] (the red one here) and segment [a,p] (the blue one here) to see if your point is to the left of segment [a,b] or not
+        else {
+            double red = (ax != bx) ? ((by - ay) / (bx - ax)) : Double.POSITIVE_INFINITY;
+            double blue = (ax != px) ? ((py - ay) / (px - ax)) : Double.POSITIVE_INFINITY;
+            return (blue >= red);
         }
 
-        @Override
-        protected void onProgressUpdate(PolygonOptions... values) {
-            mMap.addPolygon(values[0]);
-        }
     }
+    /**
+     * Returns a Zone Id
+     * */
+    public String zoneTapped(LatLng point) {
+        for (Zone z : zoneArrayList) {
+            if (pointInPolygon(point, z.getPolygonOptions())) {
+                return z.getZoneId();
+            }
+        }
+        return null;
+    }
+
 }
