@@ -268,7 +268,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parking);
-
+        progress = (ProgressBar) findViewById(R.id.loadingProgress);
         // Google Analytics
 
         // Get tracker.
@@ -288,9 +288,8 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         // Setup device listeners.
         getDeviceListeners();
 
-
+        //Service
         final Intent mServiceIntent = new Intent(this, ZoneService.class);
-        startService(mServiceIntent);
 
         // Timer
         final Handler timerHandler = new Handler();
@@ -300,21 +299,10 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
             @Override
             public void run() {
                 startService(mServiceIntent);
-                timerHandler.postDelayed(this, 20000);
+                timerHandler.postDelayed(this, 30000);
             }
         };
-        timerHandler.postDelayed(timerRunnable, 20000);
-
-        //map refresh timer
-        Runnable timerRunnable2 = new Runnable() {
-
-            @Override
-            public void run() {
-                mapTransform.refreshMap();
-                timerHandler.postDelayed(this, 5000);
-            }
-        };
-        timerHandler.postDelayed(timerRunnable2, 5000);
+        timerHandler.postDelayed(timerRunnable, 0);
 
 
         // Setup map.
@@ -464,20 +452,19 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         getActionBar().setHomeButtonEnabled(true);
     }
 
-    //option for server progress
+//    //option for server progress
     private void showLoadingBar(boolean option) {
         View mapView = findViewById(R.id.mapLayout);
-        progress = (ProgressBar) findViewById(R.id.loadingProgress);
+
         ViewGroup.MarginLayoutParams mapParams = (ViewGroup.MarginLayoutParams)
                 mapView.getLayoutParams();
         //show progress bar
         if (option) {
-            mapParams.setMargins(0, 5, 0, 0);
+            mapParams.setMargins(0, 10, 0, 0);
             mapView.requestLayout();
             progress.setVisibility(View.VISIBLE);
         }
-        //hide
-        if (!option) {
+        else {
             mapParams.setMargins(0, 0, 0, 0);
             mapView.requestLayout();
             progress.setVisibility(View.GONE);
@@ -486,20 +473,28 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     }
 
     /**
-     * Custom BroadcastReceiver for loading zones and displaying progress
+     * Custom BroadcastReceiver for loading zones, displaying progress and calling to refresh map
+     * when complete
      */
     private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
            @Override
         public void onReceive(Context context, Intent intent) {
-            if(!intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false)) {
-                int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT,0);
-                if (status < 100) {
-                    showLoadingBar(true);
+               boolean complete = intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false);
+            if(!complete) {
+                showLoadingBar(true);
+                int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT,CONSTANTS.zones.size());
+                if (status < CONSTANTS.zones.size()) {
+                    //progress.setProgress(status);
+                    //showLoadingBar(true);
                 }
-                if (status == 100) {
-                    showLoadingBar(false);
+                if (status == CONSTANTS.zones.size()) {
+                    //showLoadingBar(false);
                 }
                 progress.setProgress(status);
+            }
+            if (complete) {
+                showLoadingBar(false);
+                mapTransform.refreshMap();
             }
         }
     };

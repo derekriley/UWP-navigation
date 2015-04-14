@@ -202,6 +202,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -268,29 +269,35 @@ public class ZoneList {
 
     //thread-safe hashmap
     private ConcurrentHashMap<String,Zone> zoneMap;
-    static ZoneList mInstance = null;
+    public static volatile ZoneList mInstance = null;
 
      //Constructor - creates from constants map
     private ZoneList() {
         zoneMap = new ConcurrentHashMap<>();
         for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
             Zone z = new Zone(entry.getKey(), entry.getValue());
-            zoneMap.put(z.getZoneId(),z);
+            zoneMap.put(z.getZoneId(), z);
         }
     }
 
     public synchronized static ZoneList getInstance() {
         if (mInstance == null) {
-            mInstance = new ZoneList();
-            Log.d("ZoneList", "New Instance");
+            synchronized (ZoneList.class) {
+                if (mInstance == null) {
+                    mInstance = new ZoneList();
+                    Log.d("ZoneList", "New Instance");
+                }
+            }
         }
         return mInstance;
     }
 
     public synchronized ArrayList<String> getZoneIDs () {
-        ArrayList<String> zIDS = new ArrayList<>();
-        zIDS.addAll(zoneMap.keySet());
-        return zIDS;
+        synchronized (zoneMap) {
+            ArrayList<String> zIDS = new ArrayList<>();
+            zIDS.addAll(zoneMap.keySet());
+            return zIDS;
+        }
     }
 
     public synchronized boolean setFullness (String zID) {
@@ -311,7 +318,8 @@ public class ZoneList {
      */
     public synchronized ArrayList<PolygonOptions> getPolys() {
         ArrayList<PolygonOptions> polys = new ArrayList<>();
-        for (Map.Entry<String, Zone> e : zoneMap.entrySet()) {
+        Map<String, Zone> tempMap = new HashMap<>(zoneMap);
+        for (Map.Entry<String, Zone> e : tempMap.entrySet()) {
             //String key = e.getKey();
             Zone z = e.getValue();
             polys.add(z.getPolygonOptions());

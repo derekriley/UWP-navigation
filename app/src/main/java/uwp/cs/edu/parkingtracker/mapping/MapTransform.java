@@ -262,7 +262,9 @@ public class MapTransform {
         //attachMarkersToMap();
     }
 
-
+    public void drawPolygon (PolygonOptions polygonOptions) {
+        mMap.addPolygon(polygonOptions);
+    }
 
     /**
      * Clears map and redraws
@@ -271,10 +273,6 @@ public class MapTransform {
         mMap.clear();
         new MapTask().execute(ZoneList.getInstance());
     }
-
-
-
-
 
     /**
      * Physically attach the markers to the google map fragment. Done in one batch to minimize
@@ -306,6 +304,9 @@ public class MapTransform {
         return ZoneList.getInstance().zoneTapped(point);
     }
 
+    /**
+     * Task to draw Polygons on map from ZoneList
+     */
     public class MapTask extends AsyncTask<ZoneList, PolygonOptions, Void> {
 
         @Override
@@ -319,7 +320,7 @@ public class MapTransform {
 
         @Override
         protected void onProgressUpdate(PolygonOptions... values) {
-            mMap.addPolygon(values[0]);
+            drawPolygon(values[0]);
         }
     }
 }

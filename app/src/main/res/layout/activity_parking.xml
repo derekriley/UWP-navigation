@@ -9,14 +9,17 @@
     android:background="#ff000000"
     android:id="@+id/drawer_layout">
     <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
         android:id="@+id/progressLayout">
         <ProgressBar
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
             android:id="@+id/loadingProgress"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_gravity="center_horizontal"
             android:visibility="visible"/>
         </FrameLayout>
     <FrameLayout

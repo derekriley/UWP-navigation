@@ -207,6 +207,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
+import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
 /**
  * Creates a menu activity layout that will help the user choose between the
@@ -238,6 +239,8 @@ public class MenuActivity extends Activity {
         navBut.setEnabled(true);
 
         pBar = (ProgressBar)findViewById(R.id.parkingProgressBar);
+        final Intent mServiceIntent = new Intent(this, ZoneService.class);
+        startService(mServiceIntent);
         new LoadTask().execute();
     }
     private class LoadTask extends AsyncTask<Void, Void, Void> {
@@ -248,15 +251,7 @@ public class MenuActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             ZoneList.getInstance();
-//            int i = 0;
-//            while (i <= 50) {
-//                try {
-//                    Thread.sleep(100);
-//                    i++;
-//                }
-//                catch (Exception e) {
-//                }
-//            }
+
             return null;
         }
 

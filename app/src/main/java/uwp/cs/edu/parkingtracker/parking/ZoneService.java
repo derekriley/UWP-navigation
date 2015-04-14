@@ -229,10 +229,10 @@ public class ZoneService extends IntentService {
         intent.putExtra (CONSTANTS.DATA_STATUS,false);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                 int i = 1;
-                ArrayList<String> zIDs = ZoneList.getInstance().getIDs();
+                ArrayList<String> zIDs = ZoneList.getInstance().getZoneIDs();
                 for (String ID : zIDs) {
                     ZoneList.getInstance().setFullness(ID);
-                    intent.putExtra (CONSTANTS.DATA_AMOUNT, ((i / zIDs.size()) * 100));
+                    intent.putExtra (CONSTANTS.DATA_AMOUNT, i);
                     LocalBroadcastManager.getInstance(ZoneService.this).sendBroadcast(intent);
                     i++;
                 }
