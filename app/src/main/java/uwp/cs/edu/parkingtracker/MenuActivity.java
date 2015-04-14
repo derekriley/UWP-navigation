@@ -285,6 +285,14 @@ public class MenuActivity extends Activity {
     public void navClick(View view) {
 
     }
+    /**
+     * Designated to work with the menu and run other functions to save the parking spot
+     *
+     * */
+    public void saveParkingClick(View view){
+
+
+    }
 
     @Override
     protected void onDestroy() {
