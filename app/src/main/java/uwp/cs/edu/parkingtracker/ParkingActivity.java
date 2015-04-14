@@ -200,6 +200,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.location.LocationManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -217,6 +219,7 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.maps.model.LatLng;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
 import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
@@ -235,13 +238,16 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
  public class ParkingActivity extends FragmentActivity {
 
     // Instance variables begin
-    private String drawerItems[] = {"Navigate", "Other"};
+    private String drawerItems[] = {"Navigate", "Other","Save Parking Spot"};
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private ProgressBar progress;
+    private LatLng mSaveSpot;
+    private DeviceListeners mDevice;
+
 
 
     // Service
@@ -423,6 +429,17 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
                     startActivity(mIntent);
                     finish();
                 }
+                if (position ==2){
+                    //for this position 2 we are clicking on the button that says save parking spot
+                    mDevice = getDeviceListeners();
+                    //we have a new instance of the class Device listeners and we call the getDeviceListeners Method
+                    Location location1 = mDevice.getLocation();
+                    //we got a new location and we call the get location method with our instance of the Device listener class
+                    mSaveSpot = new LatLng(location1.getLatitude(),location1.getLongitude());
+                    //our mSaveSpot and we convert our location
+                    mapTransform.attachMarkerToMap(mSaveSpot);
+                }
+
                 //Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
             }
         });

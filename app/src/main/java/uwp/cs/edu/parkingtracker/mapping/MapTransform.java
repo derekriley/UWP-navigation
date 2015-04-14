@@ -285,6 +285,13 @@ public class MapTransform {
             LatLng value = entry.getValue();
             mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
         }
+    }
+    public void attachMarkerToMap(LatLng point) {
+        //add marker to the map for the saved parking spot
+
+
+
+            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(point).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
 
 //        //add parking markers
 //        for (Map.Entry<String, LatLng> entry : CONSTANTS.parkingLots.entrySet()) {
