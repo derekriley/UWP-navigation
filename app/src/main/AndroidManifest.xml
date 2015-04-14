@@ -32,16 +32,7 @@
         </activity>
 
         <service
-            android:name=".parking.ZoneService"
-            android:exported="false" />
-        <!-- <activity -->
-        <!-- android:name=".ExpertActivity" -->
-        <!-- android:label="@string/title_activity_expert" -->
-        <!-- android:parentActivityName=".BasicUser" > -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value="mobile.project.duh.MyActivity" /> -->
-        <!-- </activity> -->
+            android:name="uwp.cs.edu.parkingtracker.parking.ZoneService" />
 
         <activity
             android:name=".SplashActivity"

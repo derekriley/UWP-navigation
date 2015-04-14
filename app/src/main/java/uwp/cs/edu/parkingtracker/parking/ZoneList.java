@@ -204,7 +204,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.network.DatabaseExchange;
@@ -266,18 +266,16 @@ public class ZoneList {
         }
     }
 
-    //synchronized thread-safe arraylist
-    private CopyOnWriteArrayList<Zone> zoneArrayList;
+    //thread-safe hashmap
+    private ConcurrentHashMap<String,Zone> zoneMap;
     static ZoneList mInstance = null;
 
-
-     //Constructor
-
+     //Constructor - creates from constants map
     private ZoneList() {
-        zoneArrayList = new CopyOnWriteArrayList<Zone>();
+        zoneMap = new ConcurrentHashMap<>();
         for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
             Zone z = new Zone(entry.getKey(), entry.getValue());
-            zoneArrayList.add(z);
+            zoneMap.put(z.getZoneId(),z);
         }
     }
 
@@ -285,42 +283,37 @@ public class ZoneList {
         if (mInstance == null) {
             mInstance = new ZoneList();
             Log.d("ZoneList", "New Instance");
-            mInstance.update();
         }
         return mInstance;
     }
 
+    public synchronized ArrayList<String> getZoneIDs () {
+        ArrayList<String> zIDS = new ArrayList<>();
+        zIDS.addAll(zoneMap.keySet());
+        return zIDS;
+    }
 
-    public int getSize() {
-        return zoneArrayList.size();
+    public synchronized boolean setFullness (String zID) {
+        try {
+            Zone z = zoneMap.get(zID);
+            z.setFullness(DatabaseExchange.getFullness(zID));
+            zoneMap.put(zID,z);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     /**
-     * @param zID
-     * @param pO
+     * Gets PolygonOptions from Zones for drawing purposes
+     * @return ArrayList polys
      */
-    public void addZone(String zID, PolygonOptions pO) {
-        Zone z = new Zone(zID, pO);
-        zoneArrayList.add(z);
-    }
-
-
-    public synchronized void update() {
-        Runnable runnable = new Runnable() {
-            public void run() {
-                for (Zone z : zoneArrayList) {
-                    z.setFullness(DatabaseExchange.getAverageVote(z.getZoneId()));
-                }
-            }
-        };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
-
-    }
-
     public synchronized ArrayList<PolygonOptions> getPolys() {
         ArrayList<PolygonOptions> polys = new ArrayList<>();
-        for (Zone z : zoneArrayList) {
+        for (Map.Entry<String, Zone> e : zoneMap.entrySet()) {
+            //String key = e.getKey();
+            Zone z = e.getValue();
             polys.add(z.getPolygonOptions());
         }
         return polys;
@@ -397,7 +390,8 @@ public class ZoneList {
      * Returns a Zone Id
      * */
     public String zoneTapped(LatLng point) {
-        for (Zone z : zoneArrayList) {
+        ArrayList<Zone> zones = new ArrayList<>(zoneMap.values());
+        for (Zone z : zones) {
             if (pointInPolygon(point, z.getPolygonOptions())) {
                 return z.getZoneId();
             }

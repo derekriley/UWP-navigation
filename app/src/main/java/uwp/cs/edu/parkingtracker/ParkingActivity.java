@@ -195,20 +195,25 @@
 
 package uwp.cs.edu.parkingtracker;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -236,6 +241,11 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private ProgressBar progress;
+
+
+    // Service
+    final Intent mServiceIntent = new Intent(this, ZoneService.class);
 
     protected DeviceListeners deviceListeners = null;
     protected MapTransform mapTransform;
@@ -265,7 +275,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         Tracker t = ((ThisApp) getApplication()).getTracker();
 
         // Set screen name.
-        t.setScreenName("BasicUser");
+        t.setScreenName("ParkingActivity");
 
         // Send a screen view.
         t.send(new HitBuilders.ScreenViewBuilder()
@@ -273,67 +283,29 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
                 .build());
         // Google Analytics
 
-        // START NAV DRAWER
-        // added nav drawer
-        mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, drawerItems));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
-            }
-        });
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-
-            /*
-            *  Called when a drawer has settled in a completely closed state.
-            * */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /*
-            * Called when a drawer has settled in a completely open state.
-            * */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
-        // END  NAV DRAWER
+        setUpNavDrawer();
 
         // Setup device listeners.
         getDeviceListeners();
 
-        // Service
+
         final Intent mServiceIntent = new Intent(this, ZoneService.class);
+        startService(mServiceIntent);
 
         // Timer
         final Handler timerHandler = new Handler();
-
+        //server refresh timer
         Runnable timerRunnable = new Runnable() {
 
             @Override
             public void run() {
                 startService(mServiceIntent);
-
-                timerHandler.postDelayed(this, 10000);
+                timerHandler.postDelayed(this, 20000);
             }
         };
-        timerHandler.postDelayed(timerRunnable, 10000);
+        timerHandler.postDelayed(timerRunnable, 20000);
+
+        //map refresh timer
         Runnable timerRunnable2 = new Runnable() {
 
             @Override
@@ -349,10 +321,21 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         mapTransform = new MapTransform(ParkingActivity.this);
         mapTransform.setUpMap();
 
-// myTask = new ParkingLotTimer(this.deviceListeners,mServiceIntent);
-// myTimer = new Timer();
-// myTimer.schedule(myTask, 1000, 9000);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the listener when the application is paused
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register for the particular broadcast based on ACTION string
+        IntentFilter filter = new IntentFilter(ZoneService.ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
     }
 
     @Override
@@ -434,5 +417,91 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         }
 
     }
+
+    private void setUpNavDrawer() {
+        // added nav drawer
+        mTitle = mDrawerTitle = getTitle();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, drawerItems));
+        // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    Intent mIntent  = new Intent(ParkingActivity.this, NavigateActivity.class);
+                    startActivity(mIntent);
+                    finish();
+                }
+                //Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
+            }
+        });
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+            /*
+            *  Called when a drawer has settled in a completely closed state.
+            * */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /*
+            * Called when a drawer has settled in a completely open state.
+            * */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+    }
+
+    //option for server progress
+    private void showLoadingBar(boolean option) {
+        View mapView = findViewById(R.id.mapLayout);
+        progress = (ProgressBar) findViewById(R.id.loadingProgress);
+        ViewGroup.MarginLayoutParams mapParams = (ViewGroup.MarginLayoutParams)
+                mapView.getLayoutParams();
+        //show progress bar
+        if (option) {
+            mapParams.setMargins(0, 5, 0, 0);
+            mapView.requestLayout();
+            progress.setVisibility(View.VISIBLE);
+        }
+        //hide
+        if (!option) {
+            mapParams.setMargins(0, 0, 0, 0);
+            mapView.requestLayout();
+            progress.setVisibility(View.GONE);
+        }
+
+    }
+
+    /**
+     * Custom BroadcastReceiver for loading zones and displaying progress
+     */
+    private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
+           @Override
+        public void onReceive(Context context, Intent intent) {
+            if(!intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false)) {
+                int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT,0);
+                if (status < 100) {
+                    showLoadingBar(true);
+                }
+                if (status == 100) {
+                    showLoadingBar(false);
+                }
+                progress.setProgress(status);
+            }
+        }
+    };
 
 }

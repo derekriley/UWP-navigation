@@ -14,11 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/white">
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginRight="50dp"
+                android:id="@+id/bSpinner"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="GO"
+                android:id="@+id/goButton" />
+            </FrameLayout>
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="uwp.cs.edu.parkingtracker.mapping.MySupportMapFragment"/>
+            android:layout_marginTop="50dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
     </FrameLayout>
     <ListView

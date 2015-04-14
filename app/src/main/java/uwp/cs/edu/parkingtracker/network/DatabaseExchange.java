@@ -222,7 +222,7 @@ public class DatabaseExchange {
     /**
      * finds the fullness of the zone
      * */
-    public static String getAverageVote(String zID) {
+    public static String getFullness(String zID) {
         ArrayList<String> params = new ArrayList<>();
         params.add(CONSTANTS.GET);
         params.add(CONSTANTS.VOTE_AVG + zID + "/" + CONSTANTS.AUTH_KEY);

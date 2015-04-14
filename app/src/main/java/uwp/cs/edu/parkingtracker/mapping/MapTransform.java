@@ -197,6 +197,7 @@ package uwp.cs.edu.parkingtracker.mapping;
 
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -213,7 +214,6 @@ import java.util.Map;
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.R;
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
-import uwp.cs.edu.parkingtracker.ParkingActivity;
 
 /**
  * Created by David on 11/21/14.
@@ -226,7 +226,7 @@ public class MapTransform {
 
     // Instance variable begin
     private GoogleMap mMap;
-    private ParkingActivity passedActivity;
+    private FragmentActivity passedActivity;
     // Instance variable end
 
     /**
@@ -234,7 +234,7 @@ public class MapTransform {
      *
      * @param activity
      */
-    public MapTransform(ParkingActivity activity) {
+    public MapTransform(FragmentActivity activity) {
         // Set instance variables.
         this.passedActivity = activity;
 

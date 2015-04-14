@@ -209,7 +209,7 @@ import com.google.android.gms.analytics.Tracker;
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
 
 /**
- * Creates a main activity layout that will help the user choose between the
+ * Creates a menu activity layout that will help the user choose between the
  * parking application and the navigation application
  * */
 public class MenuActivity extends Activity {
@@ -234,6 +234,9 @@ public class MenuActivity extends Activity {
                 .build());
         // Google Analytics
 
+        Button navBut = (Button)findViewById(R.id.buttonNavigate);
+        navBut.setEnabled(true);
+
         pBar = (ProgressBar)findViewById(R.id.parkingProgressBar);
         new LoadTask().execute();
     }
@@ -244,20 +247,18 @@ public class MenuActivity extends Activity {
          * */
         @Override
         protected Void doInBackground(Void... params) {
-            ZoneList.getInstance().update();
-            int i = 0;
-            while (i <= 50) {
-                try {
-                    Thread.sleep(100);
-                    i++;
-                }
-                catch (Exception e) {
-                }
-            }
+            ZoneList.getInstance();
+//            int i = 0;
+//            while (i <= 50) {
+//                try {
+//                    Thread.sleep(100);
+//                    i++;
+//                }
+//                catch (Exception e) {
+//                }
+//            }
             return null;
         }
-
-
 
         /**
          * Called after doInBackground() method
@@ -265,14 +266,14 @@ public class MenuActivity extends Activity {
          * */
         @Override
         protected void onPostExecute(Void v) {
-            Button btn = (Button)findViewById(R.id.button);
+            Button btn = (Button)findViewById(R.id.buttonParking);
             btn.setEnabled(true);
             pBar.setVisibility(View.GONE);
         }
     }
 
     /**
-     * Starts a new basic user activity upon clicking on the parking button
+     * Starts a new parking activity upon clicking on the parking button
      * from the main application selection screen. This click in the app
      * essentially starts the parking lot voting portion of the application
      * */
@@ -282,8 +283,11 @@ public class MenuActivity extends Activity {
         finish();
     }
 
+    //Starts navigation activity
     public void navClick(View view) {
-
+        Intent mIntent  = new Intent(MenuActivity.this, NavigateActivity.class);
+        startActivity(mIntent);
+        finish();
     }
     /**
      * Designated to work with the menu and run other functions to save the parking spot

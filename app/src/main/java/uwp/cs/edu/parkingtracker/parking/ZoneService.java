@@ -197,7 +197,12 @@ package uwp.cs.edu.parkingtracker.parking;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import java.util.ArrayList;
+
+import uwp.cs.edu.parkingtracker.CONSTANTS;
 
 
 /**
@@ -206,18 +211,62 @@ import android.util.Log;
  * */
 public class ZoneService extends IntentService {
 
-   //An IntentService must always have a constructor that calls the super constructor. The
-   //string supplied to the super constructor is used to give a name to the IntentService's
-   //background thread.
+    public static final String ACTION = "uwp.cs.edu.parkingtracker.ZoneService";
 
+    /**
+     * An IntentService must always have a constructor that calls the super constructor. The
+     * string supplied to the super constructor is used to give a name to the IntentService's
+     * background thread.
+     */
     public ZoneService() {
-
         super("ZoneService");
     }
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        ZoneList.getInstance().update();
         Log.d("ZoneService", "Loading from server");
+        final Intent intent = new Intent(ACTION);
+        intent.putExtra (CONSTANTS.DATA_STATUS,false);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                int i = 1;
+                ArrayList<String> zIDs = ZoneList.getInstance().getIDs();
+                for (String ID : zIDs) {
+                    ZoneList.getInstance().setFullness(ID);
+                    intent.putExtra (CONSTANTS.DATA_AMOUNT, ((i / zIDs.size()) * 100));
+                    LocalBroadcastManager.getInstance(ZoneService.this).sendBroadcast(intent);
+                    i++;
+                }
+
+
+        intent.putExtra (CONSTANTS.DATA_STATUS,true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        //new ZoneTask().execute();
     }
+//
+//    public class ZoneTask extends AsyncTask<Void, Integer, String> {
+//
+//
+//        @Override
+//        protected void onProgressUpdate(Integer... values) {
+//            mBroadcaster.broadcastIntentWithState(values[0]);
+//        }
+//
+//        @Override
+//        protected String doInBackground(Void... params) {
+//            int i = 1;
+//            ArrayList<String> zIDs = ZoneList.getInstance().getZoneIDs();
+//            for (String ID : zIDs) {
+//                ZoneList.getInstance().setFullness(ID);
+//                publishProgress((i/zIDs.size())*100);
+//                i++;
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String s) {
+//            //let things know loading is complete
+//            //loadingComplete();
+//        }
+//    }
 }

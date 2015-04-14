@@ -1,25 +1,36 @@
 package uwp.cs.edu.parkingtracker;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
-import uwp.cs.edu.parkingtracker.R;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class NavigateActivity extends ActionBarActivity {
+public class NavigateActivity extends FragmentActivity implements LocationListener{
     // Instance variables begin
     private String drawerItems[] = {"Parking", "Links"};
     private DrawerLayout mDrawerLayout;
@@ -27,6 +38,10 @@ public class NavigateActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    protected GoogleMap map;
+    private LocationManager locationManager;
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
 
 
     @Override
@@ -59,7 +74,14 @@ public class NavigateActivity extends ActionBarActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
+                //parking option selected
+                if (position == 0) {
+                    Intent mIntent  = new Intent(NavigateActivity.this, ParkingActivity.class);
+                    startActivity(mIntent);
+                    finish();
+                }
+
+                //Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
             }
         });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -88,6 +110,33 @@ public class NavigateActivity extends ActionBarActivity {
         getActionBar().setHomeButtonEnabled(true);
 
         // END  NAV DRAWER
+        setUpMap();
+        fillSpinner();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+        map.animateCamera(cameraUpdate);
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
 
@@ -145,4 +194,26 @@ public class NavigateActivity extends ActionBarActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    private void fillSpinner () {
+        List<String> spinnerList = new ArrayList<String>(CONSTANTS.buildings.keySet());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerList);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner sItems = (Spinner) findViewById(R.id.bSpinner);
+        sItems.setAdapter(adapter);
+    }
+    private void setUpMap() {
+        if (map == null) {
+            map = ((SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map)).getMap();
+            if (map != null) {
+                map.setMyLocationEnabled(true);
+                LatLng stdCenter = new LatLng
+                        (CONSTANTS.STUDENT_CENTER_C_LAT,CONSTANTS.STUDENT_CENTER_C_LNG);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(stdCenter, 17));
+            }
+        }
+    }
 }

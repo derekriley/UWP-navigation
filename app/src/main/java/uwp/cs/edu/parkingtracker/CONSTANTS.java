@@ -212,6 +212,12 @@ public final class CONSTANTS {
         throw new AssertionError();
     }
 
+    // Defines a key for extra Intent
+    public static final String DATA_STATUS = "uwp.cs.parkingtracker.STATUS";
+
+    // Defines a key for extra Intent
+    public static final String DATA_AMOUNT = "uwp.cs.parkingtracker.AMOUNT";
+
     // REST related strings
     public static final String REST_URL = "http://eisner.io/parkingserver/";
     public static final String VOTE = "v/";
@@ -465,17 +471,16 @@ public final class CONSTANTS {
         buildings.put("Greenquist Hall", new LatLng(42.646397, -87.855553));
         buildings.put("Sports and Activity Center", new LatLng(42.64253, -87.856681));
         buildings.put("Wyllie Hall", new LatLng(42.645505, -87.855124));
-        buildings.put("Rita Tallent Picken Regional Center for Arts and Humanities", new LatLng(42.645257, -87.856353));
+        buildings.put("Rita Tallent Picken", new LatLng(42.645257, -87.856353));
         buildings.put("Molinaro Hall", new LatLng(42.647024, -87.856256));
         buildings.put("Student Center", new LatLng(42.64782, -87.854842));
-        //In wrong spot
-        //buildings.put("Library", new LatLng(42.647679, -87.855405));
-        buildings.put("University Apartments", new LatLng(42.648881, -87.857133));
-        buildings.put("Ranger Hall", new LatLng(42.646904, -87.857972));
-        buildings.put("Pike River Suites", new LatLng(42.648607, -87.854778));
-        buildings.put("Student Health And Counseling Center", new LatLng(42.64796, -87.846231));
-        buildings.put("Tallent Hall", new LatLng(42.647518, -87.847593));
-        buildings.put("Facilities Management Complex", new LatLng(42.649597, -87.847796));
+        //buildings.put("Library", new LatLng(42.645545, -87.854982));
+        //buildings.put("University Apartments", new LatLng(42.648881, -87.857133));
+        //buildings.put("Ranger Hall", new LatLng(42.646904, -87.857972));
+        //buildings.put("Pike River Suites", new LatLng(42.648607, -87.854778));
+        //buildings.put("Student Health And Counseling Center", new LatLng(42.64796, -87.846231));
+        //buildings.put("Tallent Hall", new LatLng(42.647518, -87.847593));
+        //buildings.put("Facilities Management Complex", new LatLng(42.649597, -87.847796));
         parkingLots.put("Parking Lot A", new LatLng(42.648019, -87.853306));
         parkingLots.put("Parking Lot B", new LatLng(42.645004, -87.858295));
         parkingLots.put("Parking Lot C", new LatLng(42.643951, -87.858026));

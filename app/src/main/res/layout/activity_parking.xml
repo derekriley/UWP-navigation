@@ -8,87 +8,23 @@
     android:gravity="center_horizontal"
     android:background="#ff000000"
     android:id="@+id/drawer_layout">
-
-    <!--<FrameLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_weight="2"-->
-        <!--android:padding="16dp">-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text=" Refresh Map "-->
-            <!--android:id="@+id/basic_user_refresh_button"-->
-            <!--android:layout_gravity="left|bottom"-->
-            <!--android:background="#ff219fff" />-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text=" Other Lots "-->
-            <!--android:id="@+id/basic_user_other_lots_button"-->
-            <!--android:layout_gravity="right|bottom"-->
-            <!--android:background="#ff219fff" />-->
-
-        <!--<Button-->
-            <!--style="?android:attr/buttonStyleSmall"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Expert"-->
-            <!--android:id="@+id/basic_user_expert_button"-->
-            <!--android:layout_gravity="center_horizontal|bottom"-->
-            <!--android:visibility="visible"-->
-            <!--android:singleLine="false"-->
-            <!--android:background="@android:color/black"-->
-            <!--android:onClick="goToExpert"-->
-            <!--android:clickable="true"-->
-            <!--android:enabled="true"-->
-            <!--android:focusable="true"-->
-            <!--android:focusableInTouchMode="true" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text="Date + Time:"-->
-            <!--android:id="@+id/basic_user_date_and_time_textView"-->
-            <!--android:layout_gravity="left|center_vertical"-->
-            <!--android:textSize="13dp"-->
-            <!--android:textColor="#ffffffff" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="165dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:id="@+id/basic_user_date_and_time_output_textView"-->
-            <!--android:layout_gravity="right|center_vertical"-->
-            <!--android:textSize="13dp"-->
-            <!--android:textIsSelectable="false"-->
-            <!--android:editable="false"-->
-            <!--android:enabled="false"-->
-            <!--android:textColor="#ffffffff" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Parking Info : Student Center Lot \n                Shake to Vote!"-->
-            <!--android:id="@+id/basic_user_header_textView"-->
-            <!--android:layout_gravity="center_horizontal|top"-->
-            <!--android:textColor="#ffffffff"-->
-            <!--android:textSize="15dp" />-->
-
-    <!--</FrameLayout>-->
-
-    <!-- Fragment frame that contains the MapFragment.
-         By adding the fragment XML here we don't need to code in the creation of the MapFragment
-         into the BasicUser Java Class.-->
     <FrameLayout
-        android:id="@+id/fragmentContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:id="@+id/progressLayout">
+        <ProgressBar
+            android:layout_width="fill_parent"
+            android:id="@+id/loadingProgress"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:visibility="visible"/>
+        </FrameLayout>
+    <FrameLayout
+        android:id="@+id/mapLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginTop="5dp">
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/map"
             android:layout_width="match_parent"
