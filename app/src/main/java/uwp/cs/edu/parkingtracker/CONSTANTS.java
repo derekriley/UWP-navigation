@@ -327,6 +327,16 @@ public final class CONSTANTS {
             .add(A_Row_4_Point_2, A_Row_4_Point_3, A_Row_5_Point_3, A_Row_5_Point_2);
     //Student_Center (A) Polygons End
 
+
+    //Student Center Building Coordinates
+    static final LatLng STDNT_ROW_1_Point_1 = new LatLng(42.648062, -87.855849);
+    static final LatLng STDNT_ROW_1_Point_2 = new LatLng(42.648048, -87.854766);
+    static final LatLng STDNT_ROW_2_Point_1 = new LatLng(42.647773, -87.854766);
+    static final LatLng STDNT_ROW_2_Point_2 = new LatLng(42.647765, -87.85448);
+    static final LatLng STDNT_ROW_3_Point_1 = new LatLng(42.647343, -87.855845);
+    static final LatLng STDNT_ROW_3_Point_2 = new LatLng(42.647331, -87.854499);
+    //Student Center Building Coordinates end
+
     //Rita_Main (B) Coordinates Begin
     static final LatLng B_Row_1_Point_1 = new LatLng(42.645479, -87.859190);
     static final LatLng B_Row_1_Point_2 = new LatLng(42.645479, -87.858650);
