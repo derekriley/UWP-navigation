@@ -290,7 +290,7 @@ public final class CONSTANTS {
             .add(T_Row_3_Point_2, T_Row_3_Point_3, T_Row_4_Point_3, T_Row_4_Point_2);
     //Talent (T) Polygons End
 
-    //Student_Center (A) Coordinates Begin
+    //Student_Center ( Coordinates Begin
     static final LatLng A_Row_1_Point_1 = new LatLng(42.649125, -87.853941);
 
     static final LatLng A_Row_2_Point_1 = new LatLng(42.648511, -87.854008);
@@ -348,6 +348,10 @@ public final class CONSTANTS {
     static final LatLng B_Row_4_Point_2 = new LatLng(42.644486, -87.858366);
     static final LatLng B_Row_4_Point_3 = new LatLng(42.644463, -87.857418);
     //Rita_Main (B) Coordinates End
+
+    //Rita Main Building Coordinates
+
+    //Rita Main Building Coordinates end
 
     //Rita_Main (B) Polygons Begin
     static final PolygonOptions B_Zone_1 = new PolygonOptions()
@@ -454,6 +458,21 @@ public final class CONSTANTS {
     static final PolygonOptions E_Zone_1 = new PolygonOptions()
             .add(E_Row_1_Point_1, E_Row_1_Point_2, E_Row_2_Point_2, E_Row_2_Point_1);
     //SAC_Overflow (E) Polygons End
+
+
+    //Wyllie Building Coordinates
+    static final LatLng WHYL_ROW_1_Point_1 = new LatLng(42.645925, -87.855242);
+    static final LatLng WHYL_ROW_1_Point_2 = new LatLng(42.645923, -87.854458);
+    static final LatLng WHYL_ROW_2_Point_1 = new LatLng(42.644967, -87.854523);
+    static final LatLng WHYL_ROW_2_Point_2 = new LatLng(42.644963, -87.855573);
+    static final LatLng WHYL_ROW_3_Point_1 = new LatLng(42.645798, -87.855591);
+    static final LatLng WHYL_ROW_3_Point_2 = new LatLng(42.6458, -87.855227);
+
+
+    //Wyllie Building Coordinates end
+
+
+
 
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
