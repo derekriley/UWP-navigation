@@ -349,9 +349,7 @@ public final class CONSTANTS {
     static final LatLng B_Row_4_Point_3 = new LatLng(42.644463, -87.857418);
     //Rita_Main (B) Coordinates End
 
-    //Rita Main Building Coordinates
 
-    //Rita Main Building Coordinates end
 
     //Rita_Main (B) Polygons Begin
     static final PolygonOptions B_Zone_1 = new PolygonOptions()
@@ -371,6 +369,19 @@ public final class CONSTANTS {
     static final PolygonOptions B_Zone_8 = new PolygonOptions()
             .add(B_Row_3_Point_3, B_Row_3_Point_5, B_Row_4_Point_3, B_Row_4_Point_2);
     //Rita_Main (B) Polygons End
+
+    //Rita Main Building Coordinates
+    static final LatLng RITA_ROW_1_Point_1 = new LatLng(42.645668, -87.85703);
+    static final LatLng RITA_ROW_1_Point_2 = new LatLng(42.645659, -87.856179);
+    static final LatLng RITA_ROW_2_Point_1 = new LatLng(42.645353, -87.856202);
+    static final LatLng RITA_ROW_2_Point_2 = new LatLng(42.645345, -87.855583);
+    static final LatLng RITA_ROW_3_Point_1 = new LatLng(42.644853, -87.8556);
+    static final LatLng RITA_ROW_3_Point_2 = new LatLng(42.644846, -87.85626);
+    static final LatLng RITA_ROW_4_Point_1 = new LatLng(42.644555, -87.856259);
+    static final LatLng RITA_ROW_4_Point_2 = new LatLng(42.644567, -87.857059);
+    static final LatLng RITA_ROW_5_Point_1 = new LatLng(42.645658, -87.857029);
+
+    //Rita Main Building Coordinates end
 
     //Rita_Overflow (C) Coordinates Begin
     static final LatLng C_Row_1_Point_1 = new LatLng(42.644346, -87.858951);
@@ -467,8 +478,6 @@ public final class CONSTANTS {
     static final LatLng WHYL_ROW_2_Point_2 = new LatLng(42.644963, -87.855573);
     static final LatLng WHYL_ROW_3_Point_1 = new LatLng(42.645798, -87.855591);
     static final LatLng WHYL_ROW_3_Point_2 = new LatLng(42.6458, -87.855227);
-
-
     //Wyllie Building Coordinates end
 
 
