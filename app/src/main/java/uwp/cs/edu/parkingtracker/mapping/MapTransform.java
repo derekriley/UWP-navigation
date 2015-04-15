@@ -196,8 +196,12 @@
 package uwp.cs.edu.parkingtracker.mapping;
 
 import android.graphics.Point;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -205,10 +209,13 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
@@ -227,6 +234,8 @@ public class MapTransform {
     // Instance variable begin
     private GoogleMap mMap;
     private FragmentActivity passedActivity;
+    private SlidingUpPanelLayout slidingUpPanel;
+    private TextView slidingUpText;
     // Instance variable end
 
     /**
@@ -242,6 +251,8 @@ public class MapTransform {
         // Get a handle to the Map Fragment
         this.mMap = ((MySupportMapFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
+        this.slidingUpText = (TextView)passedActivity.findViewById(R.id.slidetext);
+        this.slidingUpPanel = (SlidingUpPanelLayout)passedActivity.findViewById(R.id.sliding_layout);
     }
 
 
@@ -259,7 +270,46 @@ public class MapTransform {
         // makes the map focus on the Student Center parking lot.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
         new MapTask().execute(ZoneList.getInstance());
-        //attachMarkersToMap();
+        attachMarkersToMap();
+
+        //hook marker clicks to showing sliding panel
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+//                slidingUpPanel.setPanelHeight(68);
+                slidingUpText.setText(marker.getTitle());
+                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                ListView lv = (ListView)slidingUpPanel.findViewById(R.id.list);
+                List<String> zoneStrings = new ArrayList<String>();
+                for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
+                    double avgLat = 0;
+                    double avgLng = 0;
+                    for(LatLng l: entry.getValue().getPoints()){
+                        avgLat+=l.latitude;
+                        avgLng+=l.longitude;
+                    }
+                    avgLat/=entry.getValue().getPoints().size();
+                    avgLng/=entry.getValue().getPoints().size();
+                    float results[] = {0};
+                    Location.distanceBetween(avgLat,avgLng,marker.getPosition().latitude,marker.getPosition().longitude,results);
+                    //TODO: add fullness to string
+                    zoneStrings.add(entry.getKey() + " - " + results[0] + " meters");
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(passedActivity, android.R.layout.simple_list_item_1, zoneStrings);
+                lv.setAdapter(adapter);
+                slidingUpPanel.setDragView(passedActivity.findViewById(R.id.sliding_layout_child2));
+                slidingUpPanel.setEnableDragViewTouchEvents(true);
+                return true;
+            }
+        });
+        //hook non-marker clicks to hiding sliding panel
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            }
+        });
+
     }
 
     public void drawPolygon (PolygonOptions polygonOptions) {
@@ -271,7 +321,9 @@ public class MapTransform {
      * */
     public void refreshMap() {
         mMap.clear();
+        attachMarkersToMap();
         new MapTask().execute(ZoneList.getInstance());
+
     }
 
     /**

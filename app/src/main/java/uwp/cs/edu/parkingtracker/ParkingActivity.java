@@ -200,7 +200,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.location.LocationManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -220,6 +219,7 @@ import android.widget.ProgressBar;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.model.LatLng;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
 import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
@@ -251,7 +251,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
 
     // Service
-    final Intent mServiceIntent = new Intent(this, ZoneService.class);
+//    final Intent mServiceIntent = new Intent(this, ZoneService.class);
 
     protected DeviceListeners deviceListeners = null;
     protected MapTransform mapTransform;
@@ -274,6 +274,8 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parking);
+
+
         progress = (ProgressBar) findViewById(R.id.loadingProgress);
         // Google Analytics
 
@@ -311,10 +313,18 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         timerHandler.postDelayed(timerRunnable, 0);
 
 
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //hide bottom sliding panel
+                ((SlidingUpPanelLayout)findViewById(R.id.sliding_layout)).setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            }
+        },1000);
+
         // Setup map.
         mapTransform = new MapTransform(ParkingActivity.this);
         mapTransform.setUpMap();
-
     }
 
     @Override
