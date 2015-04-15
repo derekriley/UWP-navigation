@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 
         // TODO uncomment me
         //if(pref.getString("role","") == "") {
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create(); //Read Update
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Choose Role");
             alertDialog.setMessage("Are you a student or a visitor of UW-Parkside?");
             alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Student", new DialogInterface.OnClickListener() {

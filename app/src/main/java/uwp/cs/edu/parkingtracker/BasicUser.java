@@ -90,36 +90,13 @@ public class BasicUser extends FragmentActivity {
                 .build());
         /* Google Analytics */
 
-        // get role for drawer customization
-        SharedPreferences pref = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        if(pref.getString("role","") == "student") {
-            Toast.makeText(getApplicationContext(),"ROLES YESYESYES", Toast.LENGTH_LONG).show();
-            drawerItems = new String[]{"Parking", "Navigate", "Other", "D2L", "SOLAR", "Campus Connect", "uwp.edu"};
-        }
-        Toast.makeText(getApplicationContext(),"ROLES no: " + pref.getString("role","hello"), Toast.LENGTH_LONG).show();
-
         /*    START NAV DRAWER     */
         //added nav drawer
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, drawerItems));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
 
-                switch (drawerItems[position]){
-                    case "D2L":
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-                        startActivity(browserIntent);
-                        break;
-                }
-            }
-        });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
@@ -180,7 +157,40 @@ public class BasicUser extends FragmentActivity {
 //        myTask = new ParkingLotTimer(this.deviceListeners,mServiceIntent);
 //        myTimer = new Timer();
 //        myTimer.schedule(myTask, 1000, 9000);
+    }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        // get role for drawer customization
+        SharedPreferences pref = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        if(pref.getString("role","") == "student") {
+            drawerItems = new String[]{"Parking", "Navigate", "Other", "D2L", "SOLAR", "Campus Connect", "uwp.edu"};
+        }
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, drawerItems));
+        // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
+
+                switch (drawerItems[position]){
+                    case "D2L":
+                        openUrl("https://uwp.courses.wisconsin.edu/Shibboleth.sso/Login?target=https://uwp.courses.wisconsin.edu/d2l/shibbolethSSO/deepLinkLogin.d2l");
+                        break;
+                    case "SOLAR":
+                        openUrl("https://solar.uwp.edu/solar/signon.html");
+                        break;
+                    case "Campus Connect":
+                        openUrl("https://campusconnect.uwp.edu/");
+                        break;
+                    case "uwp.edu":
+                        openUrl("http://www.uwp.edu/");
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -253,6 +263,11 @@ public class BasicUser extends FragmentActivity {
             showParkDialogFragment(zInfo);
         }
 
+    }
+
+    private void openUrl(String url){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 
 }
