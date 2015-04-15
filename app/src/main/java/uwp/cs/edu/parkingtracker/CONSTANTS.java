@@ -480,8 +480,15 @@ public final class CONSTANTS {
     static final LatLng WHYL_ROW_3_Point_2 = new LatLng(42.6458, -87.855227);
     //Wyllie Building Coordinates end
 
+    //GreenQuist hall Coordinates
+    static final LatLng GRNQ_ROW_1_Point_1 = new LatLng(42.646652, -87.855866);
+    static final LatLng GRNQ_ROW_1_Point_2 = new LatLng(42.646654, -87.8549);
+    static final LatLng GRNQ_ROW_2_Point_1 = new LatLng(42.646244, -87.855216);
+    static final LatLng GRNQ_ROW_2_Point_2 = new LatLng(42.646254, -87.854913);
+    static final LatLng GRNQ_ROW_3_Point_1 = new LatLng(42.64578, -87.855897);
+    static final LatLng GRNQ_ROW_3_Point_2 = new LatLng(42.6458, -87.855234);
 
-
+    //GreenQuist Hall Coordinates end
 
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
