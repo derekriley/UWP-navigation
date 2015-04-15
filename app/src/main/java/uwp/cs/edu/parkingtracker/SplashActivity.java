@@ -216,7 +216,7 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent menuIntent = new Intent(SplashActivity.this, MenuActivity.class);
+                Intent menuIntent = new Intent(SplashActivity.this, MainActivity.class);
                 SplashActivity.this.startActivity(menuIntent);
                 SplashActivity.this.finish();
             }

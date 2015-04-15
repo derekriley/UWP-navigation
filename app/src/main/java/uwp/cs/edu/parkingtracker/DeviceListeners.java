@@ -250,7 +250,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 
     public Location getLocation() {
         if (location == null) {
-            locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
         }
         return location;
     }

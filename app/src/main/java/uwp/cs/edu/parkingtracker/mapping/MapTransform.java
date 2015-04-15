@@ -209,7 +209,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.R;
@@ -227,6 +226,7 @@ public class MapTransform {
     // Instance variable begin
     private GoogleMap mMap;
     private FragmentActivity passedActivity;
+    private LatLng parkingSpot = null;
     // Instance variable end
 
     /**
@@ -246,7 +246,6 @@ public class MapTransform {
 
 
 
-
     /**
      * Positions map to specified lot coordinates, lays out the parking lot zones, and
      * adds the markers required for user interaction.
@@ -258,8 +257,7 @@ public class MapTransform {
         MapsInitializer.initialize(passedActivity);
         // makes the map focus on the Student Center parking lot.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
-        new MapTask().execute(ZoneList.getInstance());
-        //attachMarkersToMap();
+        //new MapTask().execute(ZoneList.getInstance());
     }
 
     public void drawPolygon (PolygonOptions polygonOptions) {
@@ -272,34 +270,17 @@ public class MapTransform {
     public void refreshMap() {
         mMap.clear();
         new MapTask().execute(ZoneList.getInstance());
-    }
-
-    /**
-     * Physically attach the markers to the google map fragment. Done in one batch to minimize
-     * interruption to the main UI Thread.
-     * */
-    private void attachMarkersToMap() {
-        //add building markers
-        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
-            String key = entry.getKey();
-            LatLng value = entry.getValue();
-            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
+        if (parkingSpot != null) {
+            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
         }
     }
-    public void attachMarkerToMap(LatLng point) {
-        //add marker to the map for the saved parking spot
 
-
-
-            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(point).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
-
-//        //add parking markers
-//        for (Map.Entry<String, LatLng> entry : CONSTANTS.parkingLots.entrySet()) {
-//            String key = entry.getKey();
-//            LatLng value = entry.getValue();
-//            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
-//        }
+    public void attachParkingSpot(LatLng point) {
+        parkingSpot = point;
+        //TODO: Save parking spot to local file for retrieval when re-loading app
+        mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
     }
+
     /**
      * Returns a call to another method in ZoneList Class that returns a zone id, this zone id is identified
      * based upon the point chosen, the parameters to this function are passed from the basic user class

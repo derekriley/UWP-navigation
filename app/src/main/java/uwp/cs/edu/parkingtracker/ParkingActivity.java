@@ -200,7 +200,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.location.LocationManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -238,7 +237,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
  public class ParkingActivity extends FragmentActivity {
 
     // Instance variables begin
-    private String drawerItems[] = {"Navigate", "Other","Save Parking Spot"};
+    private String drawerItems[] = {"Navigate", "Other", "Save Parking Spot"};
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -247,8 +246,6 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     private ProgressBar progress;
     private LatLng mSaveSpot;
     private DeviceListeners mDevice;
-
-
 
     // Service
     final Intent mServiceIntent = new Intent(this, ZoneService.class);
@@ -261,10 +258,10 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         if (deviceListeners == null) {
             // Instantiate new device listener.
             deviceListeners = new DeviceListeners(this);
-// Attach listener to the refresh, expert, and other lots buttons.
-// findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
-// findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
-// findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
+    // Attach listener to the refresh, expert, and other lots buttons.
+    // findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
+    // findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
+    // findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
         }
         return deviceListeners;
     }
@@ -273,8 +270,9 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parking);
+        setContentView(R.layout.activity_main);
         progress = (ProgressBar) findViewById(R.id.loadingProgress);
+        progress.setMax(CONSTANTS.zones.size());
         // Google Analytics
 
         // Get tracker.
@@ -309,7 +307,6 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
             }
         };
         timerHandler.postDelayed(timerRunnable, 0);
-
 
         // Setup map.
         mapTransform = new MapTransform(ParkingActivity.this);
@@ -437,9 +434,9 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
                     //we got a new location and we call the get location method with our instance of the Device listener class
                     mSaveSpot = new LatLng(location1.getLatitude(),location1.getLongitude());
                     //our mSaveSpot and we convert our location
-                    mapTransform.attachMarkerToMap(mSaveSpot);
-                }
+                    mapTransform.attachParkingSpot(mSaveSpot);
 
+                }
                 //Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
             }
         });
@@ -510,6 +507,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
                 progress.setProgress(status);
             }
             if (complete) {
+                progress.setProgress(0);
                 showLoadingBar(false);
                 mapTransform.refreshMap();
             }

@@ -204,6 +204,7 @@ public class NavigateActivity extends FragmentActivity implements LocationListen
         Spinner sItems = (Spinner) findViewById(R.id.bSpinner);
         sItems.setAdapter(adapter);
     }
+
     private void setUpMap() {
         if (map == null) {
             map = ((SupportMapFragment) getSupportFragmentManager()
