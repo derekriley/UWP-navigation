@@ -513,6 +513,15 @@ public final class CONSTANTS {
     //Molinaro Building Coordinates end
 
 
+    //Sac building Coordinates
+    static final LatLng SAC_ROW_1_Point_1 = new LatLng(42.643081, -87.857589);
+    static final LatLng SAC_ROW_1_Point_2 = new LatLng(42.643051, -87.855677);
+    static final LatLng SAC_ROW_2_Point_1 = new LatLng(42.642096, -87.857624);
+    static final LatLng SAC_ROW_2_Point_2 = new LatLng(42.642046, -87.855669);
+
+    //Sac building Coordinates end
+
+
 
 
     // Map Constants
