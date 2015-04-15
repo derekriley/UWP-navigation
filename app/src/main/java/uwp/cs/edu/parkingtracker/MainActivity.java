@@ -1,6 +1,9 @@
 package uwp.cs.edu.parkingtracker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -24,21 +27,25 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // check if role preference is given, if not ask
-        SharedPreferences pref = getPreferences(0);
+        SharedPreferences pref = getSharedPreferences(PREFS_NAME,0);
 
-        // TODO delete debug toasts
-        if(pref.getString("role","") == "") {
-            Toast.makeText(getApplicationContext(), "no pref given", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), pref.getString("role",""), Toast.LENGTH_LONG).show();
-        }
-
-        // overwriting role settings for testing purposes
-        // TODO: delete this
-        SharedPreferences.Editor prefEditor = pref.edit();
-        prefEditor.putString("role", "");
-        prefEditor.commit();
-
+        // TODO uncomment me
+        //if(pref.getString("role","") == "") {
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create(); //Read Update
+            alertDialog.setTitle("Choose Role");
+            alertDialog.setMessage("Are you a student or a visitor of UW-Parkside?");
+            alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Student", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    setRole("student");
+                }
+            });
+            alertDialog.setButton(Dialog.BUTTON_NEUTRAL, "Visitor", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    setRole("visitor");
+                }
+            });
+            alertDialog.show();
+       // }
 
         getActionBar().hide();
 
@@ -57,7 +64,19 @@ public class MainActivity extends Activity {
 
         pBar = (ProgressBar)findViewById(R.id.parkingProgressBar);
         new LoadTask().execute();
+
+
     }
+    private void setRole(String role) {
+        SharedPreferences pref = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor prefEditor = pref.edit();
+        prefEditor.putString("role", role);
+        prefEditor.commit();
+
+        // TODO delete me
+        Toast.makeText(getApplicationContext(),"Your role is now: " + pref.getString("role",""), Toast.LENGTH_LONG).show();
+    }
+
     private class LoadTask extends AsyncTask<Void, Void, Void> {
 
         /** This method runs on a background thread (not on the UI thread) */

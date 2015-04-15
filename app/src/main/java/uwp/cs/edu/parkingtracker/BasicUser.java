@@ -19,7 +19,9 @@
 package uwp.cs.edu.parkingtracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -88,6 +90,14 @@ public class BasicUser extends FragmentActivity {
                 .build());
         /* Google Analytics */
 
+        // get role for drawer customization
+        SharedPreferences pref = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        if(pref.getString("role","") == "student") {
+            Toast.makeText(getApplicationContext(),"ROLES YESYESYES", Toast.LENGTH_LONG).show();
+            drawerItems = new String[]{"Parking", "Navigate", "Other", "D2L", "SOLAR", "Campus Connect", "uwp.edu"};
+        }
+        Toast.makeText(getApplicationContext(),"ROLES no: " + pref.getString("role","hello"), Toast.LENGTH_LONG).show();
+
         /*    START NAV DRAWER     */
         //added nav drawer
         mTitle = mDrawerTitle = getTitle();
@@ -101,6 +111,13 @@ public class BasicUser extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
+
+                switch (drawerItems[position]){
+                    case "D2L":
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                        startActivity(browserIntent);
+                        break;
+                }
             }
         });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
