@@ -1,13 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_centerInParent="true"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="uwp.cs.edu.parkingtracker.MenuActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="uwp.cs.edu.parkingtracker.MenuFragment">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -28,12 +21,12 @@
                 android:onClick="parkingClick"
                 android:text="@string/parking"
                 android:enabled="true" />
-            <ProgressBar
+           <!-- <ProgressBar
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/parkingProgressBar"
-                android:layout_column="2" />
+                android:layout_column="2" />-->
         </TableRow>
 
         <TableRow
@@ -68,5 +61,5 @@
 
 
     </TableLayout>
-</RelativeLayout>
 
+</FrameLayout>
