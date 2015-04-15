@@ -500,6 +500,21 @@ public final class CONSTANTS {
 
     //GreenQuist Hall Coordinates end
 
+    //Molinaro building coordinates
+    static final LatLng MOL_ROW_1_Point_1 = new LatLng(42.647207, -87.856888);
+    static final LatLng MOL_ROW_1_Point_2 = new LatLng(42.647195, -87.855965);
+    static final LatLng MOL_ROW_2_Point_1 = new LatLng(42.647023, -87.856901);
+    static final LatLng MOL_ROW_2_Point_2 = new LatLng(42.647003, -87.854994);
+    static final LatLng MOL_ROW_3_Point_1 = new LatLng(42.647017, -87.857083);
+    static final LatLng MOL_ROW_4_Point_1 = new LatLng(42.646816, -87.85708);
+    static final LatLng MOL_ROW_4_Point_2 = new LatLng(42.646773, -87.855586);
+    static final LatLng MOL_ROW_5_Point_1 = new LatLng(42.646647, -87.855586);
+    static final LatLng MOL_ROW_5_Point_2 = new LatLng(42.646651, -87.855028);
+    //Molinaro Building Coordinates end
+
+
+
+
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
     public static final float DEFAULT_LINE_WIDTH = 5;
