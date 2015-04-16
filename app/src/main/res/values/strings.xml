@@ -41,6 +41,10 @@
     <string name="parking">Parking Tracker</string>
     <string name="title_activity_navigate">Navigate</string>
     <string name="action_parking">Park</string>
+    <string name="option_student">Student</string>
+    <string name="option_visitor">Visitor</string>
+    <string name="visitor">Visitors</string>
+    <string name="student">Students</string>
 
 
 </resources>

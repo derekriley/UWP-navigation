@@ -278,6 +278,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
      */
     @Override
     public void onLocationChanged(Location location) {
+        //passedActivity.setLocation(location);
         if ((location.getLatitude() >= 42.647382) && (location.getLatitude() <= 42.647717)) {
             if ((location.getLongitude() >= -87.854570) && location.getLongitude() <= -87.854157) {
                 //Toast.makeText(this.passedActivity.getApplicationContext(), passedActivity.zone2,

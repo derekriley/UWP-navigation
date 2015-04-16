@@ -205,7 +205,6 @@ import android.widget.FrameLayout;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import uwp.cs.edu.parkingtracker.MainActivity;
-import uwp.cs.edu.parkingtracker.ParkingActivity;
 
 /**
  * Created by Russ on 3/18/2015.

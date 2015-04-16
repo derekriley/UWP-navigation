@@ -196,32 +196,25 @@
 package uwp.cs.edu.parkingtracker;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-
-import uwp.cs.edu.parkingtracker.parking.ZoneList;
 
 /**
 * Creates a menu activity layout that will help the user choose between the
 * parking application and the navigation application
 * */
 public class MenuActivity extends Activity {
-    ProgressBar pBar;
-
+    public static final String PREFS_NAME = "UwpNavSettings";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        getActionBar().hide();
 
         // Google Analytics
         // Get tracker.
@@ -236,69 +229,83 @@ public class MenuActivity extends Activity {
                 .build());
         // Google Analytics
 
-        Button navBut = (Button)findViewById(R.id.buttonNavigate);
-        navBut.setEnabled(true);
-        Button btn = (Button)findViewById(R.id.buttonParking);
-        btn.setEnabled(true);
-
         //pBar = (ProgressBar)findViewById(R.id.parkingProgressBar);
 //        final Intent mServiceIntent = new Intent(this, ZoneService.class);
 //        startService(mServiceIntent);
         //new LoadTask().execute();
     }
-    private class LoadTask extends AsyncTask<Void, Void, Void> {
+//    private class LoadTask extends AsyncTask<Void, Void, Void> {
+//
+//        /**
+//         * This method runs on a background thread (not on the UI thread)
+//         * */
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            ZoneList.getInstance();
+//            return null;
+//        }
+//
+//        /**
+//         * Called after doInBackground() method
+//         * This method runs on the UI thread
+//         * */
+//        @Override
+//        protected void onPostExecute(Void v) {
+//
+//        }
+//    }
 
-        /**
-         * This method runs on a background thread (not on the UI thread)
-         * */
-        @Override
-        protected Void doInBackground(Void... params) {
-            ZoneList.getInstance();
-
-            return null;
-        }
-
-        /**
-         * Called after doInBackground() method
-         * This method runs on the UI thread
-         * */
-        @Override
-        protected void onPostExecute(Void v) {
-            Button btn = (Button)findViewById(R.id.buttonParking);
-            btn.setEnabled(true);
-            pBar.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Starts a new parking activity upon clicking on the parking button
-     * from the main application selection screen. This click in the app
-     * essentially starts the parking lot voting portion of the application
-     * */
-    public void parkingClick(View view) {
-        Intent mIntent  = new Intent(MenuActivity.this, ParkingActivity.class);
+    public void studentClick(View v) {
+        setRole("student");
+        Intent mIntent  = new Intent(MenuActivity.this, MainActivity.class);
         startActivity(mIntent);
-        finish();
     }
 
-    //Starts navigation activity
-    public void navClick(View view) {
-        Intent mIntent  = new Intent(MenuActivity.this, NavigateActivity.class);
+    public void visitorClick(View v) {
+        setRole("visitor");
+        Intent mIntent  = new Intent(MenuActivity.this, MainActivity.class);
         startActivity(mIntent);
-        finish();
     }
 
-    private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean complete = intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false);
-            if(!complete) {
-                pBar.setVisibility(View.VISIBLE);
-            }
-            if (complete) {
-                pBar.setVisibility(View.GONE);
-            }
-        }
-    };
+    private void setRole(String role) {
+        SharedPreferences pref = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor prefEditor = pref.edit();
+        prefEditor.putString("role", role);
+        prefEditor.commit();
+
+        // TODO delete me
+        Toast.makeText(getApplicationContext(), "Your role is now: " + pref.getString("role", ""), Toast.LENGTH_LONG).show();
+    }
+
+//    /**
+//     * Starts a new parking activity upon clicking on the parking button
+//     * from the main application selection screen. This click in the app
+//     * essentially starts the parking lot voting portion of the application
+//     * */
+//    public void parkingClick(View view) {
+//        Intent mIntent  = new Intent(MenuActivity.this, MainActivity.class);
+//        startActivity(mIntent);
+//        finish();
+//    }
+
+//    //Starts navigation activity
+//    public void navClick(View view) {
+//        Intent mIntent  = new Intent(MenuActivity.this, NavigateActivity.class);
+//        startActivity(mIntent);
+//        finish();
+//    }
+
+//    private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            boolean complete = intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false);
+//            if(!complete) {
+//                pBar.setVisibility(View.VISIBLE);
+//            }
+//            if (complete) {
+//                pBar.setVisibility(View.GONE);
+//            }
+//        }
+//    };
 
 }
