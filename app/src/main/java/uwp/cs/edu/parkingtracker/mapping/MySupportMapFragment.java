@@ -204,6 +204,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
+import uwp.cs.edu.parkingtracker.MainActivity;
 import uwp.cs.edu.parkingtracker.ParkingActivity;
 
 /**
@@ -212,12 +213,12 @@ import uwp.cs.edu.parkingtracker.ParkingActivity;
 public class MySupportMapFragment extends SupportMapFragment {
     private View mOriginalContentView;
     private TouchableWrapper mTouchView;
-    private ParkingActivity mActivity;
+    private MainActivity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity = (ParkingActivity) getActivity();
+        mActivity = (MainActivity) getActivity();
     }
 
     @Override

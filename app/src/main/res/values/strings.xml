@@ -41,4 +41,7 @@
     <string name="parking">Parking Tracker</string>
     <string name="title_activity_navigate">Navigate</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

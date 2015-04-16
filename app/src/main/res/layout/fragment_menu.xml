@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="uwp.cs.edu.parkingtracker.MenuFragment">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TableRow
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/buttonParking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="parkingClick"
+                android:text="@string/parking"
+                android:enabled="true" />
+           <!-- <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/parkingProgressBar"
+                android:layout_column="2" />-->
+        </TableRow>
+
+        <TableRow
+            android:gravity="center">
+            <Button
+                android:id="@+id/buttonNavigate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="navClick"
+                android:text="@string/navi"
+                android:enabled="false"/>
+        </TableRow>
+
+        <TableRow
+            android:gravity="center">>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/other"
+                android:enabled="false"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        </TableRow>
+
+
+    </TableLayout>
+
+</FrameLayout>

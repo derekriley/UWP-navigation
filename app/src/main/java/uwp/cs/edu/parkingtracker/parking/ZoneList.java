@@ -270,6 +270,7 @@ public class ZoneList {
     //thread-safe hashmap
     private ConcurrentHashMap<String,Zone> zoneMap;
     public static volatile ZoneList mInstance = null;
+    private boolean beingUsed = false;
 
      //Constructor - creates from constants map
     private ZoneList() {
@@ -295,19 +296,25 @@ public class ZoneList {
     public synchronized ArrayList<String> getZoneIDs () {
         synchronized (zoneMap) {
             ArrayList<String> zIDS = new ArrayList<>();
-            zIDS.addAll(zoneMap.keySet());
+            if (!beingUsed) {
+                beingUsed = true;
+                zIDS.addAll(zoneMap.keySet());
+                beingUsed = false;
+
+            }
             return zIDS;
         }
     }
 
     public synchronized boolean setFullness (String zID) {
         try {
+            beingUsed = true;
             Zone z = zoneMap.get(zID);
             z.setFullness(DatabaseExchange.getFullness(zID));
-            zoneMap.put(zID,z);
+            zoneMap.put(zID, z);
+            beingUsed = false;
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -318,12 +325,16 @@ public class ZoneList {
      */
     public synchronized ArrayList<PolygonOptions> getPolys() {
         ArrayList<PolygonOptions> polys = new ArrayList<>();
-        Map<String, Zone> tempMap = new HashMap<>(zoneMap);
-        for (Map.Entry<String, Zone> e : tempMap.entrySet()) {
-            //String key = e.getKey();
-            Zone z = e.getValue();
-            polys.add(z.getPolygonOptions());
+        if (!beingUsed) {
+            beingUsed = true;
+            Map<String, Zone> tempMap = new HashMap<>(zoneMap);
+            for (Map.Entry<String, Zone> e : tempMap.entrySet()) {
+                //String key = e.getKey();
+                Zone z = e.getValue();
+                polys.add(z.getPolygonOptions());
+            }
         }
+        beingUsed = false;
         return polys;
     }
 

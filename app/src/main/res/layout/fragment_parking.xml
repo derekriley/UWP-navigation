@@ -1,0 +1,29 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="uwp.cs.edu.parkingtracker.ParkingFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:id="@+id/progressLayout"
+        android:layout_marginTop="50dp">
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:id="@+id/loadingProgress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible"/>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/mapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp">
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="uwp.cs.edu.parkingtracker.mapping.MySupportMapFragment"/>
+    </FrameLayout>
+</FrameLayout>
