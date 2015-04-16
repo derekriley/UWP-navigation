@@ -196,8 +196,12 @@
 package uwp.cs.edu.parkingtracker.mapping;
 
 import android.graphics.Point;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -205,10 +209,14 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.R;
@@ -226,7 +234,8 @@ public class MapTransform {
     // Instance variable begin
     private GoogleMap mMap;
     private FragmentActivity passedActivity;
-    private LatLng parkingSpot = null;
+    private SlidingUpPanelLayout slidingUpPanel;
+    private TextView slidingUpText;
     // Instance variable end
 
     /**
@@ -241,7 +250,10 @@ public class MapTransform {
         // Get a handle to the Map Fragment
         this.mMap = ((MySupportMapFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
+        this.slidingUpText = (TextView)passedActivity.findViewById(R.id.slidetext);
+        this.slidingUpPanel = (SlidingUpPanelLayout)passedActivity.findViewById(R.id.sliding_layout);
     }
+
 
 
 
@@ -256,7 +268,47 @@ public class MapTransform {
         MapsInitializer.initialize(passedActivity);
         // makes the map focus on the Student Center parking lot.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
-        //new MapTask().execute(ZoneList.getInstance());
+        new MapTask().execute(ZoneList.getInstance());
+        attachMarkersToMap();
+
+        //hook marker clicks to showing sliding panel
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+//                slidingUpPanel.setPanelHeight(68);
+                slidingUpText.setText(marker.getTitle());
+                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                ListView lv = (ListView)slidingUpPanel.findViewById(R.id.list);
+                List<String> zoneStrings = new ArrayList<String>();
+                for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
+                    double avgLat = 0;
+                    double avgLng = 0;
+                    for(LatLng l: entry.getValue().getPoints()){
+                        avgLat+=l.latitude;
+                        avgLng+=l.longitude;
+                    }
+                    avgLat/=entry.getValue().getPoints().size();
+                    avgLng/=entry.getValue().getPoints().size();
+                    float results[] = {0};
+                    Location.distanceBetween(avgLat,avgLng,marker.getPosition().latitude,marker.getPosition().longitude,results);
+                    //TODO: add fullness to string
+                    zoneStrings.add(entry.getKey() + " - " + results[0] + " meters");
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(passedActivity, android.R.layout.simple_list_item_1, zoneStrings);
+                lv.setAdapter(adapter);
+                slidingUpPanel.setDragView(passedActivity.findViewById(R.id.sliding_layout_child2));
+                slidingUpPanel.setEnableDragViewTouchEvents(true);
+                return true;
+            }
+        });
+        //hook non-marker clicks to hiding sliding panel
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            }
+        });
+
     }
 
     public void drawPolygon (PolygonOptions polygonOptions) {
@@ -268,18 +320,37 @@ public class MapTransform {
      * */
     public void refreshMap() {
         mMap.clear();
+        attachMarkersToMap();
         new MapTask().execute(ZoneList.getInstance());
-        if (parkingSpot != null) {
-            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+
+    }
+
+    /**
+     * Physically attach the markers to the google map fragment. Done in one batch to minimize
+     * interruption to the main UI Thread.
+     * */
+    private void attachMarkersToMap() {
+        //add building markers
+        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
+            String key = entry.getKey();
+            LatLng value = entry.getValue();
+            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
         }
     }
+    public void attachMarkerToMap(LatLng point) {
+        //add marker to the map for the saved parking spot
 
-    public void attachParkingSpot(LatLng point) {
-        parkingSpot = point;
-        //TODO: Save parking spot to local file for retrieval when re-loading app
-        mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+
+
+            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(point).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+
+//        //add parking markers
+//        for (Map.Entry<String, LatLng> entry : CONSTANTS.parkingLots.entrySet()) {
+//            String key = entry.getKey();
+//            LatLng value = entry.getValue();
+//            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+//        }
     }
-
     /**
      * Returns a call to another method in ZoneList Class that returns a zone id, this zone id is identified
      * based upon the point chosen, the parameters to this function are passed from the basic user class

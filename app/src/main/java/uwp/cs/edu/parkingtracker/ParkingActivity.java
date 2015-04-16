@@ -216,7 +216,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.model.LatLng;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
 import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
@@ -235,7 +238,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
  public class ParkingActivity extends FragmentActivity {
 
     // Instance variables begin
-    private String drawerItems[] = {"Navigate", "Other", "Save Parking Spot"};
+    private String drawerItems[] = {"Navigate", "Other","Save Parking Spot"};
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -245,8 +248,10 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     private LatLng mSaveSpot;
     private DeviceListeners mDevice;
 
+
+
     // Service
-    final Intent mServiceIntent = new Intent(this, ZoneService.class);
+//    final Intent mServiceIntent = new Intent(this, ZoneService.class);
 
     protected DeviceListeners deviceListeners = null;
     protected MapTransform mapTransform;
@@ -256,10 +261,10 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         if (deviceListeners == null) {
             // Instantiate new device listener.
             deviceListeners = new DeviceListeners(this);
-    // Attach listener to the refresh, expert, and other lots buttons.
-    // findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
-    // findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
-    // findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
+// Attach listener to the refresh, expert, and other lots buttons.
+// findViewById(R.id.basic_user_refresh_button).setOnClickListener(deviceListeners);
+// findViewById(R.id.basic_user_expert_button).setOnLongClickListener(deviceListeners);
+// findViewById(R.id.basic_user_other_lots_button).setOnClickListener(deviceListeners);
         }
         return deviceListeners;
     }
@@ -268,10 +273,23 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        progress = (ProgressBar) findViewById(R.id.loadingProgress);
-        progress.setMax(CONSTANTS.zones.size());
+        setContentView(R.layout.activity_parking);
 
+
+        progress = (ProgressBar) findViewById(R.id.loadingProgress);
+        // Google Analytics
+
+        // Get tracker.
+        Tracker t = ((ThisApp) getApplication()).getTracker();
+
+        // Set screen name.
+        t.setScreenName("ParkingActivity");
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder()
+                .setNewSession()
+                .build());
+        // Google Analytics
 
         setUpNavDrawer();
 
@@ -294,10 +312,19 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         };
         timerHandler.postDelayed(timerRunnable, 0);
 
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //hide bottom sliding panel
+                ((SlidingUpPanelLayout)findViewById(R.id.sliding_layout)).setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            }
+        },1000);
+
         // Setup map.
         mapTransform = new MapTransform(ParkingActivity.this);
         mapTransform.setUpMap();
-
     }
 
     @Override
@@ -420,14 +447,14 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
                     //we got a new location and we call the get location method with our instance of the Device listener class
                     mSaveSpot = new LatLng(location1.getLatitude(),location1.getLongitude());
                     //our mSaveSpot and we convert our location
-                    mapTransform.attachParkingSpot(mSaveSpot);
-
+                    mapTransform.attachMarkerToMap(mSaveSpot);
                 }
+
                 //Toast.makeText(getApplicationContext(), "item " + position + "selected", Toast.LENGTH_LONG).show();
             }
         });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_ab_drawer, R.string.drawer_open, R.string.drawer_close) {
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
             /*
             *  Called when a drawer has settled in a completely closed state.
@@ -493,7 +520,6 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
                 progress.setProgress(status);
             }
             if (complete) {
-                progress.setProgress(0);
                 showLoadingBar(false);
                 mapTransform.refreshMap();
             }
