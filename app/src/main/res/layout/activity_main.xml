@@ -14,16 +14,33 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:id="@+id/progressLayout"
+        android:layout_marginTop="50dp">
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:id="@+id/loadingProgress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:tag="map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="uwp.cs.edu.parkingtracker.mapping.MySupportMapFragment"/>
+    </FrameLayout>
 </RelativeLayout>
 
 <ListView
-android:layout_width="260dp"
+android:layout_width="200dp"
 android:layout_height="match_parent"
 android:layout_gravity="start"
 android:background="@color/windowBackgroundColor"/>
+
 
 </android.support.v4.widget.DrawerLayout>

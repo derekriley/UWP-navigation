@@ -1,6 +1,5 @@
 package uwp.cs.edu.parkingtracker;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -9,33 +8,45 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import uwp.cs.edu.parkingtracker.mapping.MapTransform;
+import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
 
 /**
- * Created by nathaneisner on 4/14/15.
+ * Created by nate eisner on 4/14/15.
  */
 public class MainActivity extends ActionBarActivity {
     private static MainActivity Instance;
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    final private int FRAG_CONTAINER = R.id.fragment_container;
+    private ProgressBar progress;
+    private MapTransform mapTransform;
 
-    public static MainActivity getInstance() {  return Instance; }
+    protected DeviceListeners deviceListeners = null;
+
+    public static MainActivity getInstance() {
+        return Instance;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.GONE);
 
-        //set fragment to menu to start off
-        MenuFragment firstFragment = new MenuFragment();
-        // Add the fragment to the 'fragment_container' FrameLayout
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(FRAG_CONTAINER,firstFragment);
-        ft.commit();
+        setupTools();
 
+        setupGoogleAnalytics();
+
+        // Setup map.
+        mapTransform = new MapTransform(MainActivity.this);
+        mapTransform.setUpMap();
 
         // Being restored from a previous state,
         // then we don't need to do anything and should return or else
@@ -63,58 +74,82 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onButtonSelected(int position) {
-//        if (position == 0) {
-//            //parking selected
-//            ParkingFragment parkingFragment = new ParkingFragment();
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//            ft.replace(FRAG_CONTAINER,parkingFragment);
-//            ft.addToBackStack(null);
-//            ft.commit();
-//        }
-//        if (position == 1) {
-//            //navigation selected
-//            ParkingFragment parkingFragment = new ParkingFragment();
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//            ft.replace(FRAG_CONTAINER,parkingFragment);
-//            ft.addToBackStack(null);
-//            ft.commit();
-//        }
-//    }
+    private void setupGoogleAnalytics () {
+        // Google Analytics
+
+        // Get tracker.
+        Tracker t = ((ThisApp) getApplication()).getTracker();
+
+        // Set screen name.
+        t.setScreenName("Main");
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder()
+                .setNewSession()
+                .build());
+    }
+
+    //shows parkdialogfragment
+    public void showParkDialogFragment(String zID) {
+        ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
+        parkDialogFragment.setListener(deviceListeners);
+        parkDialogFragment.setzID(zID);
+        parkDialogFragment.show(getSupportFragmentManager(), "map");
+    }
 
     /*
     * Triggers a call to get the tapped zone from other methods
     *
     * */
     public void tapEvent(int x, int y) {
-//        String zInfo = mapTransform.getZoneTapped(x, y);
-//        if (zInfo != null) {
-//            showParkDialogFragment(zInfo);
-//        }
+        String zInfo = mapTransform.getZoneTapped(x, y);
+        if (zInfo != null) {
+            showParkDialogFragment(zInfo);
+        }
 
     }
 
-    public void parkingClick(View v) {
-        //parking selected
-        setupTools();
-        ParkingFragment parkingFragment = new ParkingFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(FRAG_CONTAINER,parkingFragment);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
 
+    //setup toolbar draw loadingbar
     public void setupTools() {
-        //toolbar
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            //toolbar
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+
+                    switch (menuItem.getItemId()) {
+                        case R.id.action_park:
+                            Toast.makeText(MainActivity.this, "Park", Toast.LENGTH_SHORT).show();
+                            return true;
+                    }
+
+                    return false;
+                }
+            });
+            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         //drawer
         drawer = (DrawerLayout) findViewById(R.id.drawer);
-        drawer.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+        if (drawer != null) {
+            drawer.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+        }
+        if (progress != null) {
+            progress = (ProgressBar) findViewById(R.id.loadingProgress);
+            progress.setMax(CONSTANTS.zones.size());
+        }
+    }
+
+    //gets devicelisteners
+    public DeviceListeners getDeviceListeners() {
+        if (deviceListeners == null) {
+            // Instantiate new device listener.
+            deviceListeners = new DeviceListeners(this);
+        }
+        return deviceListeners;
     }
 }

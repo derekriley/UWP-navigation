@@ -228,7 +228,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     private Location location = null;
 
     // Passed Activity.
-    private ParkingActivity passedActivity = null;
+    private MainActivity passedActivity = null;
     // Instance Variables End
 
     // Getters : Lazy Instantiation
@@ -260,7 +260,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
      *
      * @param passedActivity
      */
-    public DeviceListeners(ParkingActivity passedActivity) {
+    public DeviceListeners(MainActivity passedActivity) {
         // Set the instance variables.
         this.passedActivity = passedActivity;
         // Set up sensor manager.
@@ -487,7 +487,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
         //Offer additional options when the view is held.
         Toast.makeText(passedActivity.getApplicationContext(), "Expert Button Held Down",
                 Toast.LENGTH_SHORT).show();
-        passedActivity.goToExpert(v);
+        //passedActivity.goToExpert(v);
         return true;
     }
 }

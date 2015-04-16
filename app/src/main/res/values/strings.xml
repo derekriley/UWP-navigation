@@ -40,8 +40,7 @@
     <string name="other">Other</string>
     <string name="parking">Parking Tracker</string>
     <string name="title_activity_navigate">Navigate</string>
+    <string name="action_parking">Park</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

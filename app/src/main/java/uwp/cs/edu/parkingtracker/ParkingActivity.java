@@ -216,8 +216,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.model.LatLng;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
@@ -273,19 +271,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
         setContentView(R.layout.activity_main);
         progress = (ProgressBar) findViewById(R.id.loadingProgress);
         progress.setMax(CONSTANTS.zones.size());
-        // Google Analytics
 
-        // Get tracker.
-        Tracker t = ((ThisApp) getApplication()).getTracker();
-
-        // Set screen name.
-        t.setScreenName("ParkingActivity");
-
-        // Send a screen view.
-        t.send(new HitBuilders.ScreenViewBuilder()
-                .setNewSession()
-                .build());
-        // Google Analytics
 
         setUpNavDrawer();
 
@@ -441,7 +427,7 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
             }
         });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+                R.drawable.ic_ab_drawer, R.string.drawer_open, R.string.drawer_close) {
 
             /*
             *  Called when a drawer has settled in a completely closed state.

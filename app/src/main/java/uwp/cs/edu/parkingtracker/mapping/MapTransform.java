@@ -177,7 +177,7 @@
  *
  *   END OF TERMS AND CONDITIONS
  *
- *   Copyright 2014 University Of Wisconsin Parkside
+ /*   Copyright 2014 University Of Wisconsin Parkside
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -237,7 +237,6 @@ public class MapTransform {
     public MapTransform(FragmentActivity activity) {
         // Set instance variables.
         this.passedActivity = activity;
-
 
         // Get a handle to the Map Fragment
         this.mMap = ((MySupportMapFragment) activity.getSupportFragmentManager()
