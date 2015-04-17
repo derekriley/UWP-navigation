@@ -162,13 +162,16 @@ public class BasicUser extends FragmentActivity {
     @Override
     public void onStart(){
         super.onStart();
+
         // get role for drawer customization
         SharedPreferences pref = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        if(pref.getString("role","") == "student") {
+
+        if(pref.getString("role","").equals("student")) {
             drawerItems = new String[]{"Parking", "Navigate", "Other", "D2L", "SOLAR", "Campus Connect", "uwp.edu"};
         }
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, drawerItems));
+
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

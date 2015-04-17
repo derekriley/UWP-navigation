@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
         // check if role preference is given, if not ask
         SharedPreferences pref = getSharedPreferences(PREFS_NAME,0);
 
-        // TODO uncomment me
+        // TODO uncomented for testing purposes
         //if(pref.getString("role","") == "") {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Choose Role");
@@ -72,9 +72,6 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor prefEditor = pref.edit();
         prefEditor.putString("role", role);
         prefEditor.commit();
-
-        // TODO delete me
-        Toast.makeText(getApplicationContext(),"Your role is now: " + pref.getString("role",""), Toast.LENGTH_LONG).show();
     }
 
     private class LoadTask extends AsyncTask<Void, Void, Void> {
