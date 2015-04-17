@@ -14,44 +14,27 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/buttonParking"
+                android:id="@+id/buttonStudents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="parkingClick"
-                android:text="@string/parking"
+                android:onClick="studentClick"
+                android:text="@string/student"
                 android:enabled="true" />
-           <!-- <ProgressBar
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/parkingProgressBar"
-                android:layout_column="2" />-->
         </TableRow>
 
         <TableRow
             android:gravity="center">
             <Button
-                android:id="@+id/buttonNavigate"
+                android:id="@+id/buttonVisitors"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="navClick"
-                android:text="@string/navi"
-                android:enabled="false"/>
+                android:onClick="visitorClick"
+                android:text="@string/visitor"
+                android:enabled="true"/>
         </TableRow>
 
-        <TableRow
-            android:gravity="center">>
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/other"
-                android:enabled="false"/>
-        </TableRow>
 
         <TableRow
             android:layout_width="fill_parent"

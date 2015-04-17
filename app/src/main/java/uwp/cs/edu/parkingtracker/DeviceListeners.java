@@ -228,7 +228,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     private Location location = null;
 
     // Passed Activity.
-    private ParkingActivity passedActivity = null;
+    private MainActivity passedActivity = null;
     // Instance Variables End
 
     // Getters : Lazy Instantiation
@@ -260,7 +260,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
      *
      * @param passedActivity
      */
-    public DeviceListeners(ParkingActivity passedActivity) {
+    public DeviceListeners(MainActivity passedActivity) {
         // Set the instance variables.
         this.passedActivity = passedActivity;
         // Set up sensor manager.
@@ -278,6 +278,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
      */
     @Override
     public void onLocationChanged(Location location) {
+        //passedActivity.setLocation(location);
         if ((location.getLatitude() >= 42.647382) && (location.getLatitude() <= 42.647717)) {
             if ((location.getLongitude() >= -87.854570) && location.getLongitude() <= -87.854157) {
                 //Toast.makeText(this.passedActivity.getApplicationContext(), passedActivity.zone2,
@@ -487,7 +488,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
         //Offer additional options when the view is held.
         Toast.makeText(passedActivity.getApplicationContext(), "Expert Button Held Down",
                 Toast.LENGTH_SHORT).show();
-        passedActivity.goToExpert(v);
+        //passedActivity.goToExpert(v);
         return true;
     }
 }
