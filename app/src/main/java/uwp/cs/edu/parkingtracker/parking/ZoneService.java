@@ -198,6 +198,7 @@ package uwp.cs.edu.parkingtracker.parking;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.format.Time;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -212,6 +213,9 @@ import uwp.cs.edu.parkingtracker.CONSTANTS;
 public class ZoneService extends IntentService {
 
     public static final String ACTION = "uwp.cs.edu.parkingtracker.ZoneService";
+    private Time startTime = new Time();
+    //time for service to stay alive
+    private final int SERVICE_TIME = 30000;
 
     /**
      * An IntentService must always have a constructor that calls the super constructor. The
@@ -224,6 +228,7 @@ public class ZoneService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
+        startTime.setToNow();
         Log.d("ZoneService", "Loading from server");
         final Intent intent = new Intent(ACTION);
         intent.putExtra (CONSTANTS.DATA_STATUS,false);
@@ -231,16 +236,23 @@ public class ZoneService extends IntentService {
                 int i = 1;
                 ArrayList<String> zIDs = ZoneList.getInstance().getZoneIDs();
                 for (String ID : zIDs) {
+                    checkTime();
                     ZoneList.getInstance().setFullness(ID);
                     intent.putExtra (CONSTANTS.DATA_AMOUNT, i);
                     LocalBroadcastManager.getInstance(ZoneService.this).sendBroadcast(intent);
                     i++;
                 }
-
-
         intent.putExtra (CONSTANTS.DATA_STATUS,true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        //new ZoneTask().execute();
+    }
+
+    //checks to see if service is taking to long
+    private void checkTime() {
+        Time checkedTime = new Time();
+        checkedTime.setToNow();
+        if (checkedTime.toMillis(false) - startTime.toMillis(false) > SERVICE_TIME) {
+            stopSelf();
+        }
     }
 //
 //    public class ZoneTask extends AsyncTask<Void, Integer, String> {
