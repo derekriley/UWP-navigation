@@ -290,7 +290,7 @@ public final class CONSTANTS {
             .add(T_ROW_3_POINT_2, T_ROW_3_POINT_3, T_ROW_4_POINT_3, T_ROW_4_POINT_2);
     //Talent (T) Polygons End
 
-    //Student_Center ( Coordinates Begin
+    //Student Center (A) Coordinates Begin
     static final LatLng A_ROW_1_POINT_1 = new LatLng(42.649125, -87.853941);
 
     static final LatLng A_ROW_2_POINT_1 = new LatLng(42.648511, -87.854008);
@@ -308,9 +308,9 @@ public final class CONSTANTS {
     static final LatLng A_ROW_5_POINT_1 = new LatLng(42.647479, -87.854288);
     static final LatLng A_ROW_5_POINT_2 = new LatLng(42.647420, -87.853387);
     static final LatLng A_ROW_5_POINT_3 = new LatLng(42.647421, -87.852199);
-    //Student_Center (A) Coordinates End
+    //Student Center (A) Coordinates End
 
-    //Student_Center (A) Polygons Begin
+    //Student Center (A) Polygons Begin
     static final PolygonOptions A_ZONE_1 = new PolygonOptions()
             .add(A_ROW_1_POINT_1, A_ROW_2_POINT_3, A_ROW_2_POINT_2, A_ROW_2_POINT_1);
     static final PolygonOptions A_ZONE_2 = new PolygonOptions()
@@ -325,19 +325,9 @@ public final class CONSTANTS {
             .add(A_ROW_4_POINT_1, A_ROW_4_POINT_2, A_ROW_5_POINT_2, A_ROW_5_POINT_1);
     static final PolygonOptions A_ZONE_7 = new PolygonOptions()
             .add(A_ROW_4_POINT_2, A_ROW_4_POINT_3, A_ROW_5_POINT_3, A_ROW_5_POINT_2);
-    //Student_Center (A) Polygons End
+    //Student Center (A) Polygons End
 
-
-    //Student Center Building Coordinates
-    static final LatLng STDNT_ROW_1_POINT_1 = new LatLng(42.648062, -87.855849);
-    static final LatLng STDNT_ROW_1_POINT_2 = new LatLng(42.648048, -87.854766);
-    static final LatLng STDNT_ROW_2_POINT_1 = new LatLng(42.647773, -87.854766);
-    static final LatLng STDNT_ROW_2_POINT_2 = new LatLng(42.647765, -87.85448);
-    static final LatLng STDNT_ROW_3_POINT_1 = new LatLng(42.647343, -87.855845);
-    static final LatLng STDNT_ROW_3_POINT_2 = new LatLng(42.647331, -87.854499);
-    //Student Center Building Coordinates end
-
-    //Rita_Main (B) Coordinates Begin
+    //Rita Main (B) Coordinates Begin
     static final LatLng B_ROW_1_POINT_1 = new LatLng(42.645479, -87.859190);
     static final LatLng B_ROW_1_POINT_2 = new LatLng(42.645479, -87.858650);
     static final LatLng B_ROW_1_POINT_3 = new LatLng(42.645479, -87.858105);
@@ -357,11 +347,11 @@ public final class CONSTANTS {
     static final LatLng B_ROW_4_POINT_1 = new LatLng(42.644529, -87.859247);
     static final LatLng B_ROW_4_POINT_2 = new LatLng(42.644486, -87.858366);
     static final LatLng B_ROW_4_POINT_3 = new LatLng(42.644463, -87.857418);
-    //Rita_Main (B) Coordinates End
+    //Rita Main (B) Coordinates End
 
 
 
-    //Rita_Main (B) Polygons Begin
+    //Rita Main (B) Polygons Begin
     static final PolygonOptions B_ZONE_1 = new PolygonOptions()
             .add(B_ROW_1_POINT_1, B_ROW_1_POINT_2, B_ROW_2_POINT_2, B_ROW_2_POINT_1);
     static final PolygonOptions B_ZONE_2 = new PolygonOptions()
@@ -378,22 +368,9 @@ public final class CONSTANTS {
             .add(B_ROW_3_POINT_1, B_ROW_3_POINT_3, B_ROW_4_POINT_2, B_ROW_4_POINT_1);
     static final PolygonOptions B_ZONE_8 = new PolygonOptions()
             .add(B_ROW_3_POINT_3, B_ROW_3_POINT_5, B_ROW_4_POINT_3, B_ROW_4_POINT_2);
-    //Rita_Main (B) Polygons End
+    //Rita Main (B) Polygons End
 
-    //Rita Main Building Coordinates
-    static final LatLng RITA_ROW_1_POINT_1 = new LatLng(42.645668, -87.85703);
-    static final LatLng RITA_ROW_1_POINT_2 = new LatLng(42.645659, -87.856179);
-    static final LatLng RITA_ROW_2_POINT_1 = new LatLng(42.645353, -87.856202);
-    static final LatLng RITA_ROW_2_POINT_2 = new LatLng(42.645345, -87.855583);
-    static final LatLng RITA_ROW_3_POINT_1 = new LatLng(42.644853, -87.8556);
-    static final LatLng RITA_ROW_3_POINT_2 = new LatLng(42.644846, -87.85626);
-    static final LatLng RITA_ROW_4_POINT_1 = new LatLng(42.644555, -87.856259);
-    static final LatLng RITA_ROW_4_POINT_2 = new LatLng(42.644567, -87.857059);
-    static final LatLng RITA_ROW_5_POINT_1 = new LatLng(42.645658, -87.857029);
-
-    //Rita Main Building Coordinates end
-
-    //Rita_Overflow (C) Coordinates Begin
+    //Rita Overflow (C) Coordinates Begin
     static final LatLng C_ROW_1_POINT_1 = new LatLng(42.644346, -87.858951);
     static final LatLng C_ROW_1_POINT_2 = new LatLng(42.644347, -87.858080);
     static final LatLng C_ROW_1_POINT_3 = new LatLng(42.644342, -87.857582);
@@ -408,9 +385,9 @@ public final class CONSTANTS {
 
     static final LatLng C_ROW_4_POINT_1 = new LatLng(42.643407, -87.858041);
     static final LatLng C_ROW_4_POINT_2 = new LatLng(42.643386, -87.857100);
-    //Rita_Overflow (C) Coordinates End
+    //Rita Overflow (C) Coordinates End
 
-    //Rita_Overflow (C) Polygons Begin
+    //Rita Overflow (C) Polygons Begin
     static final PolygonOptions C_ZONE_1 = new PolygonOptions()
             .add(C_ROW_1_POINT_1, C_ROW_1_POINT_2, C_ROW_2_POINT_2, C_ROW_2_POINT_1);
     static final PolygonOptions C_ZONE_2 = new PolygonOptions()
@@ -421,9 +398,9 @@ public final class CONSTANTS {
             .add(C_ROW_2_POINT_2, C_ROW_2_POINT_3, C_ROW_3_POINT_3, C_ROW_3_POINT_2);
     static final PolygonOptions C_ZONE_5 = new PolygonOptions()
             .add(C_ROW_3_POINT_2, C_ROW_3_POINT_3, C_ROW_4_POINT_2, C_ROW_4_POINT_1);
-    //Rita_Overflow (C) Polygons End
+    //Rita Overflow (C) Polygons End
 
-    //SAC_Main (D) Coordinates Begin
+    //SAC Main (D) Coordinates Begin
     static final LatLng D_ROW_1_POINT_1 = new LatLng(42.641491, -87.856943);
     static final LatLng D_ROW_1_POINT_2 = new LatLng(42.641751, -87.856552);
     static final LatLng D_ROW_1_POINT_3 = new LatLng(42.641906, -87.856310);
@@ -446,9 +423,9 @@ public final class CONSTANTS {
     static final LatLng D_ROW_5_POINT_1 = new LatLng(42.640517, -87.855700);
     static final LatLng D_ROW_5_POINT_2 = new LatLng(42.640719, -87.855413);
     static final LatLng D_ROW_5_POINT_3 = new LatLng(42.640719, -87.855413);
-    //SAC_Main (D) Coordinates End
+    //SAC Main (D) Coordinates End
 
-    //SAC_Main (D) Polygons Begin
+    //SAC Main (D) Polygons Begin
     static final PolygonOptions D_ZONE_1 = new PolygonOptions()
             .add(D_ROW_1_POINT_1, D_ROW_1_POINT_2, D_ROW_2_POINT_2, D_ROW_2_POINT_1);
     static final PolygonOptions D_ZONE_2 = new PolygonOptions()
@@ -465,32 +442,52 @@ public final class CONSTANTS {
             .add(D_ROW_4_POINT_1, D_ROW_4_POINT_2, D_ROW_5_POINT_2, D_ROW_5_POINT_1);
     static final PolygonOptions D_ZONE_8 = new PolygonOptions()
             .add(D_ROW_4_POINT_2, D_ROW_4_POINT_3, D_ROW_5_POINT_3, D_ROW_5_POINT_2);
-    //SAC_Main (D) Polygons End
+    //SAC Main (D) Polygons End
 
-    //SAC_Overflow (E) Coordinates Begin
+    //SAC Overflow (E) Coordinates Begin
     static final LatLng E_ROW_1_POINT_1 = new LatLng(42.643047, -87.858129);
     static final LatLng E_ROW_1_POINT_2 = new LatLng(42.643041, -87.857582);
 
     static final LatLng E_ROW_2_POINT_1 = new LatLng(42.642373, -87.858154);
     static final LatLng E_ROW_2_POINT_2 = new LatLng(42.642354, -87.857605);
-    //SAC_Overflow (E) Coordinates End
+    //SAC Overflow (E) Coordinates End
 
-    //SAC_Overflow (E) Polygons Begin
+    //SAC Overflow (E) Polygons Begin
     static final PolygonOptions E_ZONE_1 = new PolygonOptions()
             .add(E_ROW_1_POINT_1, E_ROW_1_POINT_2, E_ROW_2_POINT_2, E_ROW_2_POINT_1);
-    //SAC_Overflow (E) Polygons End
+    //SAC Overflow (E) Polygons End
 
+    //Student Center Outline Coordinates Begin
+    static final LatLng SC_ROW_1_POINT_1 = new LatLng (42.648062, -87.855849);
+    static final LatLng SC_ROW_1_POINT_2 = new LatLng (42.648048, -87.854766);
+    static final LatLng SC_ROW_2_POINT_1 = new LatLng (42.647773, -87.854766);
+    static final LatLng SC_ROW_2_POINT_2 = new LatLng (42.647765, -87.85448);
+    static final LatLng SC_ROW_3_POINT_1 = new LatLng (42.647343, -87.855845);
+    static final LatLng SC_ROW_3_POINT_2 = new LatLng (42.647331, -87.854499);
 
-    //Wyllie Building Coordinates
-    static final LatLng WHYL_ROW_1_POINT_1 = new LatLng(42.645925, -87.855242);
-    static final LatLng WHYL_ROW_1_POINT_2 = new LatLng(42.645923, -87.854458);
-    static final LatLng WHYL_ROW_2_POINT_1 = new LatLng(42.644967, -87.854523);
-    static final LatLng WHYL_ROW_2_POINT_2 = new LatLng(42.644963, -87.855573);
-    static final LatLng WHYL_ROW_3_POINT_1 = new LatLng(42.645798, -87.855591);
-    static final LatLng WHYL_ROW_3_POINT_2 = new LatLng(42.6458, -87.855227);
-    //Wyllie Building Coordinates end
+    static final PolygonOptions SC_OUTLINE = new PolygonOptions()
+            .add(SC_ROW_1_POINT_1, SC_ROW_1_POINT_2, SC_ROW_2_POINT_1, SC_ROW_2_POINT_2,
+                    SC_ROW_3_POINT_2, SC_ROW_3_POINT_1);
+    //Student Center Outline Coordinates End
 
-    //GreenQuist hall Coordinates
+    //Molinaro Hall Outline Coordinates Begin
+    static final LatLng MOLN_ROW_1_POINT_1 = new LatLng(42.647207, -87.856888);
+    static final LatLng MOLN_ROW_1_POINT_2 = new LatLng(42.647195, -87.855965);
+    static final LatLng MOLN_ROW_2_POINT_1 = new LatLng(42.647023, -87.856901);
+    static final LatLng MOLN_ROW_2_POINT_2 = new LatLng(42.647003, -87.854994);
+    static final LatLng MOLN_ROW_2_POINT_3 = new LatLng(42.647017, -87.857083);
+    static final LatLng MOLN_ROW_3_POINT_1 = new LatLng(42.646816, -87.85708);
+    static final LatLng MOLN_ROW_3_POINT_2 = new LatLng(42.646773, -87.855586);
+    static final LatLng MOLN_ROW_4_POINT_1 = new LatLng(42.646647, -87.855586);
+    static final LatLng MOLN_ROW_4_POINT_2 = new LatLng(42.646651, -87.855028);
+
+    static final PolygonOptions MOLN_OUTLINE = new PolygonOptions()
+            .add(MOLN_ROW_1_POINT_1, MOLN_ROW_1_POINT_2, MOLN_ROW_2_POINT_3, MOLN_ROW_4_POINT_2,
+                    MOLN_ROW_4_POINT_1, MOLN_ROW_3_POINT_2, MOLN_ROW_3_POINT_1, MOLN_ROW_2_POINT_1,
+                    MOLN_ROW_2_POINT_2);
+    //Molinaro Hall Outline Coordinates End
+
+    //Greenquist Hall Outline Coordinates Begin
     static final LatLng GRNQ_ROW_1_POINT_1 = new LatLng(42.646652, -87.855866);
     static final LatLng GRNQ_ROW_1_POINT_2 = new LatLng(42.646654, -87.8549);
     static final LatLng GRNQ_ROW_2_POINT_1 = new LatLng(42.646244, -87.855216);
@@ -498,31 +495,48 @@ public final class CONSTANTS {
     static final LatLng GRNQ_ROW_3_POINT_1 = new LatLng(42.64578, -87.855897);
     static final LatLng GRNQ_ROW_3_POINT_2 = new LatLng(42.6458, -87.855234);
 
-    //GreenQuist Hall Coordinates end
+    static final PolygonOptions GRNQ_OUTLINE = new PolygonOptions()
+            .add(GRNQ_ROW_1_POINT_1, GRNQ_ROW_1_POINT_2, GRNQ_ROW_2_POINT_2, GRNQ_ROW_2_POINT_1,
+                    GRNQ_ROW_3_POINT_2, GRNQ_ROW_3_POINT_1);
+    //Greenquist Hall Outline Coordinates End
 
-    //Molinaro building coordinates
-    static final LatLng MOL_ROW_1_POINT_1 = new LatLng(42.647207, -87.856888);
-    static final LatLng MOL_ROW_1_POINT_2 = new LatLng(42.647195, -87.855965);
-    static final LatLng MOL_ROW_2_POINT_1 = new LatLng(42.647023, -87.856901);
-    static final LatLng MOL_ROW_2_POINT_2 = new LatLng(42.647003, -87.854994);
-    static final LatLng MOL_ROW_3_POINT_1 = new LatLng(42.647017, -87.857083);
-    static final LatLng MOL_ROW_4_POINT_1 = new LatLng(42.646816, -87.85708);
-    static final LatLng MOL_ROW_4_POINT_2 = new LatLng(42.646773, -87.855586);
-    static final LatLng MOL_ROW_5_POINT_1 = new LatLng(42.646647, -87.855586);
-    static final LatLng MOL_ROW_5_POINT_2 = new LatLng(42.646651, -87.855028);
-    //Molinaro Building Coordinates end
+    //Wyllie Hall Outline Coordinates Begin
+    static final LatLng WHYL_ROW_1_POINT_1 = new LatLng(42.645925, -87.855242);
+    static final LatLng WHYL_ROW_1_POINT_2 = new LatLng(42.645923, -87.854458);
+    static final LatLng WHYL_ROW_2_POINT_1 = new LatLng(42.645798, -87.855591);
+    static final LatLng WHYL_ROW_2_POINT_2 = new LatLng(42.6458, -87.855227);
+    static final LatLng WHYL_ROW_3_POINT_1 = new LatLng(42.644963, -87.855573);
+    static final LatLng WHYL_ROW_3_POINT_2 = new LatLng(42.644967, -87.854523);
 
+    static final PolygonOptions WHYL_OUTLINE = new PolygonOptions()
+            .add(WHYL_ROW_1_POINT_1, WHYL_ROW_1_POINT_2,WHYL_ROW_3_POINT_2, WHYL_ROW_3_POINT_1,
+                    WHYL_ROW_2_POINT_1, WHYL_ROW_2_POINT_2);
+    //Wyllie Hall Outline Coordinates End
 
-    //Sac building Coordinates
+    //Rita Hall Outline Coordinates Begin
+    static final LatLng RITA_ROW_1_POINT_1 = new LatLng (42.645668, -87.85703);
+    static final LatLng RITA_ROW_1_POINT_2 = new LatLng (42.645659, -87.856179);
+    static final LatLng RITA_ROW_2_POINT_1 = new LatLng (42.645353, -87.856202);
+    static final LatLng RITA_ROW_2_POINT_2 = new LatLng (42.645345, -87.855583);
+    static final LatLng RITA_ROW_3_POINT_1 = new LatLng (42.644846, -87.85626);
+    static final LatLng RITA_ROW_3_POINT_2 = new LatLng (42.644853, -87.8556);
+    static final LatLng RITA_ROW_4_POINT_1 = new LatLng (42.644567, -87.857059);
+    static final LatLng RITA_ROW_4_POINT_2 = new LatLng (42.644555, -87.856259);
+
+    static final PolygonOptions RITA_OUTLINE = new PolygonOptions()
+            .add(RITA_ROW_1_POINT_1, RITA_ROW_1_POINT_2, RITA_ROW_2_POINT_1, RITA_ROW_2_POINT_2,
+                    RITA_ROW_3_POINT_2, RITA_ROW_3_POINT_1, RITA_ROW_4_POINT_2, RITA_ROW_4_POINT_1);
+    //Rita Hall Outline Coordinates End
+
+    //SAC Outline Coordinates Begin
     static final LatLng SAC_ROW_1_POINT_1 = new LatLng(42.643081, -87.857589);
     static final LatLng SAC_ROW_1_POINT_2 = new LatLng(42.643051, -87.855677);
     static final LatLng SAC_ROW_2_POINT_1 = new LatLng(42.642096, -87.857624);
     static final LatLng SAC_ROW_2_POINT_2 = new LatLng(42.642046, -87.855669);
 
-    //Sac building Coordinates end
-
-
-
+    static final PolygonOptions SAC_OUTLINE = new PolygonOptions()
+            .add(SAC_ROW_1_POINT_1, SAC_ROW_1_POINT_2, SAC_ROW_2_POINT_2, SAC_ROW_2_POINT_1);
+    //SAC Outline Coordinates End
 
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
@@ -532,9 +546,10 @@ public final class CONSTANTS {
 //    public static final String USERNAME = "david";
 //    public static final String PASSWORD = "1234";
 
-    public static final Map<String, LatLng> buildings = new HashMap<String, LatLng>();
-    public static final Map<String, LatLng> parkingLots = new HashMap<String, LatLng>();
-    public static final Map<String, PolygonOptions> zones = new HashMap<String, PolygonOptions>();
+    public static final Map<String, LatLng> buildings = new HashMap<>();
+    public static final Map<String, PolygonOptions> buildingOutlines = new HashMap<>();
+    public static final Map<String, LatLng> parkingLots = new HashMap<>();
+    public static final Map<String, PolygonOptions> zones = new HashMap<>();
 
     static {
         buildings.put("Greenquist Hall", new LatLng(42.646397, -87.855553));
@@ -556,7 +571,12 @@ public final class CONSTANTS {
         parkingLots.put("Parking Lot D", new LatLng(42.6427, -87.857822));
         parkingLots.put("Parking Lot E", new LatLng(42.641504, -87.856192));
         parkingLots.put("Parking Lot T", new LatLng(42.64854, -87.847608));
-
+        buildingOutlines.put("Student Center",SC_OUTLINE);
+        buildingOutlines.put("Molinaro Hall", MOLN_OUTLINE);
+        buildingOutlines.put("Greenquist Hall", GRNQ_OUTLINE);
+        buildingOutlines.put("Wyllie Hall", WHYL_OUTLINE);
+        buildingOutlines.put("The Rita", RITA_OUTLINE);
+        buildingOutlines.put("The SAC", SAC_OUTLINE);
 
         zones.put("Talent_1", T_ZONE_1);
         zones.put("Talent_2", T_ZONE_2);
