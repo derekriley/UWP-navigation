@@ -9,6 +9,16 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
+        <TableRow
+            android:gravity="center">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </TableRow>
 
         <TableRow
             android:gravity="center">
@@ -41,8 +51,5 @@
             android:layout_height="fill_parent">
 
         </TableRow>
-
-
     </TableLayout>
-
 </FrameLayout>

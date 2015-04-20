@@ -7,4 +7,5 @@
 
     <color name="windowBackgroundColor">#333333</color>
     <color name="black_translucent">#80000000</color>
+    <color name="transparent">#00000000</color>
 </resources>

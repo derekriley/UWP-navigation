@@ -254,31 +254,4 @@ public class ZoneService extends IntentService {
             stopSelf();
         }
     }
-//
-//    public class ZoneTask extends AsyncTask<Void, Integer, String> {
-//
-//
-//        @Override
-//        protected void onProgressUpdate(Integer... values) {
-//            mBroadcaster.broadcastIntentWithState(values[0]);
-//        }
-//
-//        @Override
-//        protected String doInBackground(Void... params) {
-//            int i = 1;
-//            ArrayList<String> zIDs = ZoneList.getInstance().getZoneIDs();
-//            for (String ID : zIDs) {
-//                ZoneList.getInstance().setFullness(ID);
-//                publishProgress((i/zIDs.size())*100);
-//                i++;
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            //let things know loading is complete
-//            //loadingComplete();
-//        }
-//    }
 }

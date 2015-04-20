@@ -201,8 +201,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import uwp.cs.edu.parkingtracker.parking.ZoneService;
-
 /**
  * Creates the splash screen for the application and sets everything accordingly
  * */
@@ -213,9 +211,6 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Service
-        final Intent mServiceIntent = new Intent(this, ZoneService.class);
-        startService(mServiceIntent);
         setContentView(R.layout.activity_splash);
         new Handler().postDelayed(new Runnable() {
             @Override

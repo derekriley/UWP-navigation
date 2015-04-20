@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
@@ -37,33 +39,34 @@ public class MainActivity extends ActionBarActivity {
     private MapTransform mapTransform = null;
     private DeviceListeners deviceListeners = null;
     private final int SERVICE_DELAY = 30000;
-    private boolean serviceComplete;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private ActionBar actionBar;
+    private String[] drawerItems;
+    private SharedPreferences preferences;
+    //Service
+    private Intent mServiceIntent = null;
+    private boolean initialLoad = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        preferences = getSharedPreferences(CONSTANTS.PREFS_NAME, 0);
         setupGoogleAnalytics();
         setupTools();
         setupService();
         setupBottomPanel();
         deviceListeners = getDeviceListeners();
 
-        // Setup map if null else refresh map
+        // Setup map if null
         if (mapTransform == null) {
             mapTransform = new MapTransform(MainActivity.this);
             mapTransform.setUpMap();
-        }
-        if (serviceComplete) {
-            mapTransform.refreshMap();
         }
 
         // Being restored from a previous state,
@@ -72,7 +75,6 @@ public class MainActivity extends ActionBarActivity {
         if (savedInstanceState != null) {
             return;
         }
-
     }
 
     @Override
@@ -85,6 +87,7 @@ public class MainActivity extends ActionBarActivity {
         super.onPause();
         // Unregister the listener when the application is paused
         LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
+        stopService(mServiceIntent);
     }
 
     @Override
@@ -93,6 +96,7 @@ public class MainActivity extends ActionBarActivity {
         // Register for the particular broadcast based on ACTION string
         IntentFilter filter = new IntentFilter(ZoneService.ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
+        setupService();
     }
 
     @Override
@@ -154,17 +158,16 @@ public class MainActivity extends ActionBarActivity {
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
 
-    /*
-    * Triggers a call to get the tapped zone from other methods
-    *
-    * */
-    public void tapEvent(int x, int y) {
-        String zInfo = mapTransform.getZoneTapped(x, y);
-        if (zInfo != null) {
-            showParkDialogFragment(zInfo);
-        }
-
-    }
+//    /*
+//    * Triggers a call to get the tapped zone from other methods
+//    * */
+//    public void tapEvent(int x, int y) {
+//        String zInfo = mapTransform.getZoneTapped(x, y);
+//        if (zInfo != null) {
+//            showParkDialogFragment(zInfo);
+//        }
+//
+//    }
 
     private boolean handleMenuItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -187,26 +190,14 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer);
         mActivityTitle = getTitle().toString();
 
-        addDrawerItems();
         setupDrawer();
+        addDrawerItems();
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }
 
-    private void addDrawerItems() {
-        String[] osArray = { "Link 1", "Link 2", "Link 3", "Link 4", "Link 5" };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
-
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Link", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
+    //sets up side drawer
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
 
@@ -229,11 +220,46 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    //add items to drawer
+    private void addDrawerItems() {
+        // get role for drawer customization
+        String role = preferences.getString("role","");
+        if(role.equals("student")) {
+            drawerItems = new String[]{ "uwp.edu", "D2L", "SOLAR", "Campus Connect"};
+        }
+        else {
+            drawerItems = new String[]{""};
+        }
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItems);
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "Link", Toast.LENGTH_SHORT).show();
+                switch (drawerItems[position]){
+                    case "D2L":
+                        openUrl("https://uwp.courses.wisconsin.edu/Shibboleth.sso/Login?target=https://uwp.courses.wisconsin.edu/d2l/shibbolethSSO/deepLinkLogin.d2l");
+                        break;
+                    case "SOLAR":
+                        openUrl("https://solar.uwp.edu/solar/signon.html");
+                        break;
+                    case "Campus Connect":
+                        openUrl("https://campusconnect.uwp.edu/");
+                        break;
+                    case "uwp.edu":
+                        openUrl("http://www.uwp.edu/");
+                        break;
+                }
+            }
+        });
+    }
+
     //sets up zone service handler
     private void setupService() {
-        //Service
-        final Intent mServiceIntent = new Intent(this, ZoneService.class);
-
+        if (mServiceIntent == null) {
+            mServiceIntent = new Intent(this,ZoneService.class);
+        }
         // Timer
         final Handler timerHandler = new Handler();
         //server refresh timer
@@ -241,15 +267,18 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void run() {
-                if (serviceComplete) {
+                if (!initialLoad) {
                     startService(mServiceIntent);
+                } else {
+                    initialLoad = false;
                 }
                 //restart after SERVICE_DELAY
                 timerHandler.postDelayed(this, SERVICE_DELAY);
             }
         };
-        //start after 500ms
-        timerHandler.postDelayed(timerRunnable, 00);
+        //start service loop
+        timerHandler.postDelayed(timerRunnable, SERVICE_DELAY+100);
+
     }
 
     //gets devicelisteners
@@ -261,6 +290,7 @@ public class MainActivity extends ActionBarActivity {
         return deviceListeners;
     }
 
+    //setup the bottom panel
     private void setupBottomPanel() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -271,10 +301,10 @@ public class MainActivity extends ActionBarActivity {
         },1000);
     }
 
-
-    public void serviceStatus (Intent intent) {
-        boolean loadComplete= intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false);
-        serviceComplete = loadComplete;
+    //used to launch new browser intent with given url
+    private void openUrl(String url){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     /**
@@ -284,15 +314,15 @@ public class MainActivity extends ActionBarActivity {
     private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            serviceStatus(intent);
-            if(!serviceComplete) {
+            boolean loadComplete= intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false);
+            if(!loadComplete) {
                     if (progress != null) {
                         progress.setVisibility(View.VISIBLE);
                         int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT, 0);
                         progress.setProgress(status);
                     }
             }
-            if (serviceComplete) {
+            if (loadComplete) {
                 progress.setVisibility(View.GONE);
                 mapTransform.refreshMap();
             }

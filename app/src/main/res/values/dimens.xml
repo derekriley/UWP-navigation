@@ -5,4 +5,5 @@
     <dimen name="item_width">192dp</dimen>
     <dimen name="item_height">192dp</dimen>
     <dimen name="spacing_large">16dp</dimen>
+    <dimen name="panel_height">68dp</dimen>
 </resources>

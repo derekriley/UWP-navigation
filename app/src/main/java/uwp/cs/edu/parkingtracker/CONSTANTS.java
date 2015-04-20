@@ -217,6 +217,8 @@ public final class CONSTANTS {
 
     // Defines a key for extra Intent
     public static final String DATA_AMOUNT = "uwp.cs.parkingtracker.AMOUNT";
+    //shared preferences
+    public static final String PREFS_NAME = "UwpNavSettings";
 
     // REST related strings
     public static final String REST_URL = "http://eisner.io/parkingserver/";
@@ -571,6 +573,7 @@ public final class CONSTANTS {
         parkingLots.put("Parking Lot D", new LatLng(42.6427, -87.857822));
         parkingLots.put("Parking Lot E", new LatLng(42.641504, -87.856192));
         parkingLots.put("Parking Lot T", new LatLng(42.64854, -87.847608));
+
         buildingOutlines.put("Student Center",SC_OUTLINE);
         buildingOutlines.put("Molinaro Hall", MOLN_OUTLINE);
         buildingOutlines.put("Greenquist Hall", GRNQ_OUTLINE);

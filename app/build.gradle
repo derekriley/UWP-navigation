@@ -27,6 +27,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.android.gms:play-services:6.1.71'
     compile 'com.android.support:appcompat-v7:21.0.0'
-    compile files('libs/jgrapht-ext-0.9.0-uber.jar')
-    compile project(':library')
+    compile 'com.sothree.slidinguppanel:library:3.+'
 }

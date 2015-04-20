@@ -270,7 +270,7 @@ public class ParkDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle("How full is the lot?")
+                .setTitle("How full is this zone?")
                 .setItems(R.array.lot_options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
