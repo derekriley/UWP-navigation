@@ -1,7 +1,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="uwp.cs.edu.parkingtracker.MenuFragment">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="uwp.cs.edu.parkingtracker.MenuFragment"
+    android:background="@color/windowBackgroundColor">
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="50dp">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/uwp"/>
+    </RelativeLayout>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,7 +41,7 @@
                 android:layout_gravity="center"
                 android:onClick="studentClick"
                 android:text="@string/student"
-                android:enabled="true" />
+                android:enabled="true"/>
         </TableRow>
 
         <TableRow

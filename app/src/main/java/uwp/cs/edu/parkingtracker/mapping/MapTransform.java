@@ -293,18 +293,19 @@ public class MapTransform {
                 if (zoneID != null) {
                     passedActivity.showParkDialogFragment(zoneID);
                 }
-                //TODO: if the click is in a building...show sliding panel
                 String buildingName = buildings.BuildingTapped(latLng);
                 if (buildingName != null) {
                     slidingUpPanel.setPanelHeight(
                             passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
                     buildingSelected(buildingName,latLng);
                     Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
-
                 }
-                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                else {
+                    slidingUpPanel.setPanelHeight(0);
+                }
             }
         });
+
     }
 
     public void drawPolygon (PolygonOptions polygonOptions) {

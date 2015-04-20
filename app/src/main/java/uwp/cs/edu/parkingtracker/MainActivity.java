@@ -230,7 +230,7 @@ public class MainActivity extends ActionBarActivity {
         else {
             drawerItems = new String[]{""};
         }
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItems);
+        mAdapter = new ArrayAdapter<String>(this,R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

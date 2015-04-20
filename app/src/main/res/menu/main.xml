@@ -4,9 +4,6 @@
     tools:context="uwp.cs.edu.parkingtracker.MainActivity">
     <item android:id="@+id/action_park" android:title="@string/action_parking"
         app:showAsAction="always"/>
-    <item android:id="@+id/spacer"
-        android:title="    "
-        app:showAsAction="always"/>
     <!--Optional stuff
     <item android:id="@+id/action_student"
         android:title="@string/option_student"
