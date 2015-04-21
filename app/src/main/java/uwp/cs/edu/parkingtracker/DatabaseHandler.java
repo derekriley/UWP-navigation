@@ -206,6 +206,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHandler extends SQLiteOpenHelper{
 
+    private static final int DATABASE_VERSION =1;
+    private static final String DATABASE_NAME = "parkingSpotSaverDB.db";
 
 
     public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
