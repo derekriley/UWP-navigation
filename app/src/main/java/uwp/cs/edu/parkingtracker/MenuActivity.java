@@ -239,6 +239,7 @@ public class MenuActivity extends Activity {
                 .setNewSession()
                 .build());
         // Google Analytics
+
     }
 
     @Override

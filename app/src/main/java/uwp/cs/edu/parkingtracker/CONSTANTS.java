@@ -224,7 +224,10 @@ public final class CONSTANTS {
     public static final String REST_URL = "http://eisner.io/parkingserver/";
     public static final String VOTE = "v/";
     public static final String VOTE_AVG = "va/";
-    public static final String AUTH_KEY = "192112630731";
+    public static final String TEST = "test";
+    public static final String USER = "android";
+    public static final String PASS = "m@g!calTh!ng$";
+
     //    public static final String GET_ZONES = "z";
 //    public static final String UPDATE = "update/";
 //    public static final String EXPERT = "expert/";

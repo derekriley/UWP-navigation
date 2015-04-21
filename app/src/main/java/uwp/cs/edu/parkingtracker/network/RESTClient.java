@@ -196,6 +196,7 @@
 package uwp.cs.edu.parkingtracker.network;
 
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -341,6 +342,7 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String> {
         this.url = new URL(CONSTANTS.REST_URL + apiCall);
 
         this.connection = (HttpURLConnection) this.url.openConnection();
+        this.connection = doLogin(this.connection);
 
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
             throw new IOException("HTTP CONNECTION != 200: "
@@ -372,6 +374,7 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String> {
     private void pushResultsToDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException {
         this.url = new URL(CONSTANTS.REST_URL + apiCall);
         this.connection = (HttpURLConnection) this.url.openConnection();
+        this.connection = doLogin(this.connection);
         Log.i("APICALL: ", apiCall);
         Log.i("URL: ", this.url.toString());
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -382,5 +385,26 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String> {
             connection.disconnect();
             result = "Success";
         }
+    }
+
+    /**
+     * Logs in to server
+     * @param urlConnection
+     * @return
+     * @throws MalformedURLException
+     * @throws ProtocolException
+     * @throws IOException
+     */
+    private HttpURLConnection doLogin(HttpURLConnection urlConnection) throws MalformedURLException, ProtocolException, IOException {
+
+        byte[] auth = (CONSTANTS.USER + ":" + CONSTANTS.PASS).getBytes();
+        String basic = Base64.encodeToString(auth, Base64.NO_WRAP);
+        urlConnection.setRequestProperty("Authorization", "Basic " + basic);
+
+//        //throws Exception
+//        int response = urlConnection.getResponseCode();
+//        Log.i("TEST URL: ", url.toString());
+//        Log.i("Login Response: ",String.valueOf(response));
+        return urlConnection;
     }
 }

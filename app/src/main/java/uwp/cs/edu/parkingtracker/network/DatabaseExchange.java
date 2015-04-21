@@ -215,7 +215,7 @@ public class DatabaseExchange {
     public static void sendVote(String zID, int vote) {
         ArrayList<String> params = new ArrayList<>();
         params.add(CONSTANTS.PUT);
-        params.add(CONSTANTS.VOTE + zID + "/" + vote + "/" + CONSTANTS.AUTH_KEY);
+        params.add(CONSTANTS.VOTE + zID + "/" + vote );
         new RESTClient().execute(params);
     }
 
@@ -225,7 +225,7 @@ public class DatabaseExchange {
     public static String getFullness(String zID) {
         ArrayList<String> params = new ArrayList<>();
         params.add(CONSTANTS.GET);
-        params.add(CONSTANTS.VOTE_AVG + zID + "/" + CONSTANTS.AUTH_KEY);
+        params.add(CONSTANTS.VOTE_AVG + zID );
         String returnValue = "";
         try {
             returnValue = new RESTClient().execute(params).get();
