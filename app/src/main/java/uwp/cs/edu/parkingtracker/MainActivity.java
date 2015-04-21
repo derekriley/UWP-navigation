@@ -211,6 +211,8 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+
+
     //change items to drawer based off of role
     private void modifyDrawerItems(String role) {
         //STUDENT ROLE
