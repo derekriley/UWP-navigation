@@ -4,7 +4,7 @@
     tools:context="uwp.cs.edu.parkingtracker.MainActivity">
     <item android:id="@+id/action_park" android:title="@string/action_parking"
         app:showAsAction="always"/>
-    <!--Optional stuff
+
     <item android:id="@+id/action_student"
         android:title="@string/option_student"
         android:orderInCategory="100"
@@ -12,5 +12,5 @@
     <item android:id="@+id/action_visitor"
         android:title="@string/option_visitor"
         android:orderInCategory="200"
-        app:showAsAction="never" />-->
+        app:showAsAction="never" />
 </menu>

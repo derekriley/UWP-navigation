@@ -158,17 +158,6 @@ public class MainActivity extends ActionBarActivity {
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
 
-//    /*
-//    * Triggers a call to get the tapped zone from other methods
-//    * */
-//    public void tapEvent(int x, int y) {
-//        String zInfo = mapTransform.getZoneTapped(x, y);
-//        if (zInfo != null) {
-//            showParkDialogFragment(zInfo);
-//        }
-//
-//    }
-
     private boolean handleMenuItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_park:
@@ -191,7 +180,9 @@ public class MainActivity extends ActionBarActivity {
         mActivityTitle = getTitle().toString();
 
         setupDrawer();
-        addDrawerItems();
+        // get role for drawer customization
+        String role = preferences.getString("role","");
+        modifyDrawerItems(role);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
@@ -220,17 +211,17 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    //add items to drawer
-    private void addDrawerItems() {
-        // get role for drawer customization
-        String role = preferences.getString("role","");
+    //change items to drawer based off of role
+    private void modifyDrawerItems(String role) {
+        //STUDENT ROLE
         if(role.equals("student")) {
             drawerItems = new String[]{ "uwp.edu", "D2L", "SOLAR", "Campus Connect"};
         }
-        else {
+        if(role.equals("visitors")) {
+            //TODO: CHANGE LINKS BASED OFF OF VISITOR
             drawerItems = new String[]{""};
         }
-        mAdapter = new ArrayAdapter<String>(this,R.layout.color_textview, drawerItems);
+        mAdapter = new ArrayAdapter<>(this,R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

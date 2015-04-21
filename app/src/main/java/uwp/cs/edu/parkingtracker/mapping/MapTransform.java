@@ -203,7 +203,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -297,11 +296,13 @@ public class MapTransform {
                 if (buildingName != null) {
                     slidingUpPanel.setPanelHeight(
                             passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
+                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     buildingSelected(buildingName,latLng);
-                    Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     slidingUpPanel.setPanelHeight(0);
+                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
             }
         });
