@@ -220,7 +220,7 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    //change items to drawer based off of role
+    //change items to drawer based off of role.
     private void modifyDrawerItems(String role) {
         //STUDENT ROLE
         if(role.equals("student")) {
