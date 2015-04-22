@@ -165,6 +165,13 @@ public class MainActivity extends ActionBarActivity {
                 mapTransform.attachNewParkingSpot();
                 Toast.makeText(MainActivity.this, "Parked!", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.action_student:
+                modifyDrawerItems("student");
+                return true;
+            case R.id.action_visitor:
+                modifyDrawerItems("visitor");
+                return true;
+
         }
 
         return false;
@@ -213,13 +220,13 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    //change items to drawer based off of role
+    //change items to drawer based off of role.
     private void modifyDrawerItems(String role) {
         //STUDENT ROLE
         if(role.equals("student")) {
             drawerItems = new String[]{ "uwp.edu", "D2L", "SOLAR", "Campus Connect"};
         }
-        if(role.equals("visitors")) {
+        if(role.equals("visitor")) {
             //TODO: CHANGE LINKS BASED OFF OF VISITOR
             drawerItems = new String[]{""};
         }

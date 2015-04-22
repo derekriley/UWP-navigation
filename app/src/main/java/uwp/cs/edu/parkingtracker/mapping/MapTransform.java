@@ -200,7 +200,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -210,26 +210,36 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.MainActivity;
+import uwp.cs.edu.parkingtracker.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.R;
+import uwp.cs.edu.parkingtracker.navigation.PathProvider;
+import uwp.cs.edu.parkingtracker.navigation.StraightLinePathProvider;
+import uwp.cs.edu.parkingtracker.parking.ParkingZoneOption;
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
+
+import static uwp.cs.edu.parkingtracker.parking.ZoneList.Zone;
+import static uwp.cs.edu.parkingtracker.parking.ZoneList.getInstance;
 
 /**
  * Created by David on 11/21/14.
  * Modified by Nate
- *
+ * <p/>
  * Contains all methods that deal with creating the map that will be displayed
  * on the application
- * */
+ */
 public class MapTransform {
 
     // Instance variable begin
@@ -258,20 +268,19 @@ public class MapTransform {
         this.mMap = ((SupportMapFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
 
-        this.slidingUpText = (TextView)passedActivity.findViewById(R.id.slidetext);
-        this.slidingUpPanel = (SlidingUpPanelLayout)passedActivity.findViewById(R.id.sliding_layout);
+        this.slidingUpText = (TextView) passedActivity.findViewById(R.id.slidetext);
+        this.slidingUpPanel = (SlidingUpPanelLayout) passedActivity.findViewById(R.id.sliding_layout);
         this.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        this.lv = (ListView)slidingUpPanel.findViewById(R.id.list);
+        this.lv = (ListView) slidingUpPanel.findViewById(R.id.list);
         this.buildings = new BuildingList();
         this.slidingUpPanel.setPanelHeight(0);
     }
 
 
-
     /**
      * Positions map to specified lot coordinates, lays out the parking lot zones, and
      * adds the markers required for user interaction.
-     * */
+     */
     public void setUpMap() {
         float zoomFactor = CONSTANTS.DEFAULT_ZOOM_FACTOR;
         MapsInitializer.initialize(passedActivity);
@@ -297,10 +306,9 @@ public class MapTransform {
                     slidingUpPanel.setPanelHeight(
                             passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    buildingSelected(buildingName,latLng);
+                    buildingSelected(buildingName, latLng);
                     //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     slidingUpPanel.setPanelHeight(0);
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
@@ -309,22 +317,22 @@ public class MapTransform {
 
     }
 
-    public void drawPolygon (PolygonOptions polygonOptions) {
+    public void drawPolygon(PolygonOptions polygonOptions) {
         mMap.addPolygon(polygonOptions);
     }
 
     /**
      * Clears map and redraws
-     * */
+     */
     public void refreshMap() {
         //clear map
         mMap.clear();
         //start to redraw zones
-        new MapTask().execute(ZoneList.getInstance());
-        Log.d("MAP","REFRESH");
+        new MapTask().execute(getInstance());
+        Log.d("MAP", "REFRESH");
         //attachMarkersToMap();
         //parking spot
-        if (isParked ()) {
+        if (isParked()) {
             mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
         }
     }
@@ -332,7 +340,7 @@ public class MapTransform {
     /**
      * Physically attach the markers to the google map fragment. Done in one batch to minimize
      * interruption to the main UI Thread.
-     * */
+     */
 //    private void attachMarkersToMap() {
 //        //add building markers
 //        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
@@ -341,7 +349,6 @@ public class MapTransform {
 //            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
 //        }
 //    }
-
     public void attachNewParkingSpot() {
         //sets parking spot from current location
         parkingSpot = getLocation();
@@ -350,7 +357,7 @@ public class MapTransform {
     }
 
     //true is previously parked
-    public boolean isParked () {
+    public boolean isParked() {
         if (parkingSpot == null) {
             return false;
         }
@@ -358,18 +365,18 @@ public class MapTransform {
     }
 
     //returns current location from gps
-    public LatLng getLocation () {
+    public LatLng getLocation() {
         Location location = mMap.getMyLocation();
-        return new LatLng(location.getLatitude(),location.getLongitude());
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
     /**
      * Returns a call to another method in ZoneList Class that returns a zone id, this zone id is identified
      * based upon the point chosen, the parameters to this function are passed from the basic user class
      * in the method known as TapEvent
-     * */
+     */
     public String getZoneTapped(LatLng point) {
-        return ZoneList.getInstance().zoneTapped(point);
+        return getInstance().zoneTapped(point);
     }
 
     /**
@@ -392,29 +399,67 @@ public class MapTransform {
         }
     }
 
-    public void buildingSelected (String name,LatLng point) {
-                slidingUpPanel.setVisibility(View.VISIBLE);
-                slidingUpText.setText(name);
-                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    public void buildingSelected(String name, LatLng point) {
+        slidingUpPanel.setVisibility(View.VISIBLE);
+        slidingUpText.setText(name);
+        slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
-                List<String> zoneStrings = new ArrayList<>();
-                for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
-                    double avgLat = 0;
-                    double avgLng = 0;
-                    for(LatLng l: entry.getValue().getPoints()){
-                        avgLat+=l.latitude;
-                        avgLng+=l.longitude;
-                    }
-                    avgLat/=entry.getValue().getPoints().size();
-                    avgLng/=entry.getValue().getPoints().size();
-                    float results[] = {0};
-                    Location.distanceBetween(avgLat,avgLng,point.latitude,point.longitude,results);
-                    //TODO: add fullness to string
-                    zoneStrings.add(entry.getKey() + " - " + results[0] + " meters");
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(passedActivity, android.R.layout.simple_list_item_1, zoneStrings);
-                lv.setAdapter(adapter);
-                slidingUpPanel.setEnableDragViewTouchEvents(true);
+        PathProvider pathProvider = new StraightLinePathProvider();
+        List<ParkingZoneOption> options = new ArrayList<ParkingZoneOption>();
+        for (Zone z : getInstance().getZones().values()) {
+            double avgLat = 0;
+            double avgLng = 0;
+            for (LatLng l : z.getPolygonOptions().getPoints()) {
+                avgLat += l.latitude;
+                avgLng += l.longitude;
+            }
+            avgLat /= z.getPolygonOptions().getPoints().size();
+            avgLng /= z.getPolygonOptions().getPoints().size();
+            PolylineOptions path = pathProvider.getPath(new LatLng(avgLat,avgLng),point);
+            float pathLength = calculatePathLength(path);
+            options.add(new ParkingZoneOption(z.getZoneId().replace("_", " "), pathLength, z, path));
+        }
+
+        ParkingZoneOptionAdapter adapter = new ParkingZoneOptionAdapter(passedActivity, R.layout.listview_item_row, options);
+//        View header = (View) passedActivity.getLayoutInflater().inflate(R.layout.listview_header_row, null);
+//        lv.addHeaderView(header);
+        adapter.sort(new Comparator<ParkingZoneOption>() {
+            @Override
+            public int compare(ParkingZoneOption lhs, ParkingZoneOption rhs) {
+                return lhs.compareTo(rhs);
+            }
+        });
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParkingZoneOption pzo = (ParkingZoneOption)lv.getItemAtPosition(position);
+                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                Polyline drawnPath = mMap.addPolyline(pzo.path);
+                LatLngBounds.Builder bc = new LatLngBounds.Builder();
+                for (LatLng l: pzo.path.getPoints()) bc.include(l);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(),50));
+            }
+        });
+
+        slidingUpPanel.setEnableDragViewTouchEvents(true);
+    }
+
+    protected float calculatePathLength(PolylineOptions plo) {
+        float totalDistance = 0;
+        for(int i = 1; i < plo.getPoints().size(); i++) {
+//            float results[] = {};
+//            Location.distanceBetween(plo.getPoints().get(i).latitude,plo.getPoints().get(i).longitude,plo.getPoints().get(i-1).latitude,plo.getPoints().get(i-1).longitude,results);
+            Location currLocation = new Location("this");
+            currLocation.setLatitude(plo.getPoints().get(i).latitude);
+            currLocation.setLongitude(plo.getPoints().get(i).longitude);
+            Location lastLocation = new Location("this");
+            lastLocation.setLatitude(plo.getPoints().get(i-1).latitude);
+            lastLocation.setLongitude(plo.getPoints().get(i-1).longitude);
+            totalDistance += lastLocation.distanceTo(currLocation);
+//            totalDistance+=results[0];
+        }
+        return totalDistance;
     }
 
 }
