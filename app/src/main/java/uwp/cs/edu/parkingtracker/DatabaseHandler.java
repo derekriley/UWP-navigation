@@ -199,6 +199,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Joseph on 4/21/2015.
  *
@@ -208,19 +210,38 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     private static final int DATABASE_VERSION =1;
     private static final String DATABASE_NAME = "parkingSpotSaverDB.db";
-
+    public static final String TABLE_GPSPOINT = "gpspoint";
+    public static final String COLUMN_LATITUDE = "latitude";
+    public static final String COLUMN_LONGITUDE = "longitude";
 
     public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        String CREATE_PRODUCTS_TABLE = "CREATE TABLE " +
+                TABLE_GPSPOINT + "("
+                + COLUMN_LATITUDE
+                + " FLOAT," + COLUMN_LONGITUDE + " FLOAT" + ")";
+        db.execSQL(CREATE_PRODUCTS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GPSPOINT);
+        onCreate(db);
+    }
+    public void addProduct(LatLng gpsPoint) {
+
+      //  ContentValues values = new ContentValues();
+      //  values.put(COLUMN_LATITUDE, gpsPoint.latitude);
+      //  values.put(COLUMN_LONGITUDE, gpsPoint.longitude);
+
+      //  SQLiteDatabase db = this.getWritableDatabase();
+
+      //  db.insert(TABLE_GPSPOINT, null, values);
+      //  db.close();
 
     }
 }
