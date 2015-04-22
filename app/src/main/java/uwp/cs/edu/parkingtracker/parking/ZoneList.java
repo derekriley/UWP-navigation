@@ -345,4 +345,12 @@ public class ZoneList extends MapObject{
         return null;
     }
 
+    /**
+     * Gets Zones for list purposes
+     * @return ArrayList polys
+     */
+    public synchronized Map<String,Zone> getZones() {
+       return zoneMap;
+    }
+
 }
