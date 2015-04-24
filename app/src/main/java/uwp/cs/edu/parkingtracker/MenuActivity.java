@@ -196,13 +196,12 @@
 package uwp.cs.edu.parkingtracker;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -269,26 +268,17 @@ public class MenuActivity extends Activity {
 
     private void startMainActivity() {
 
-        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        progressBar.setIndeterminate(true);
-        progressBar.setVisibility(View.VISIBLE);
+        ProgressDialog pd = new ProgressDialog(this);
+        pd.setIndeterminate(true);
+        pd.show();
 
         //Service
         final Intent mServiceIntent = new Intent(this, ZoneService.class);
         startService(mServiceIntent);
         Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
         startActivity(mIntent);
-        progressBar.setVisibility(View.GONE);
+        pd.dismiss();
+
     }
 
-    /**
-     * Custom BroadcastReceiver for loading zones, displaying progress and calling to refresh map
-     * when complete
-     */
-    private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean loadComplete= intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false);
-        }
-    };
 }

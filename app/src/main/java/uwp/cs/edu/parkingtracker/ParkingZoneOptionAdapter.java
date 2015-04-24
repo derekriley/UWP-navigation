@@ -51,21 +51,19 @@ public class ParkingZoneOptionAdapter extends ArrayAdapter<ParkingZoneOption> {
 
         String distance = String.format("%.0f",parkingZoneOption.distance);
         String strFullness = "";
-        int fullnessColor = 0;
-        if (Double.valueOf(parkingZoneOption.zone.getFullness()) > 6.66) {
+        if (parkingZoneOption.color == Color.RED) {
             strFullness="Full";
-            fullnessColor = Color.RED;
         }
-        if (Double.valueOf(parkingZoneOption.zone.getFullness()) >= 3.33 && Double.valueOf(parkingZoneOption.zone.getFullness()) <= 6.66) {
+        if (parkingZoneOption.color == Color.YELLOW) {
             strFullness="Half Full";
-            fullnessColor = Color.YELLOW;
         }
-        if (Double.valueOf(parkingZoneOption.zone.getFullness()) < 3.33) {
+        if (parkingZoneOption.color == Color.GREEN) {
             strFullness="Empty";
-            fullnessColor = Color.GREEN;
         }
+        int fullnessColor = parkingZoneOption.color;
         String strDistance = String.format("%.0fm",parkingZoneOption.distance);
-        holder.txtTitle.setText(parkingZoneOption.title);
+        String title = parkingZoneOption.id.replace("_", " ");
+        holder.txtTitle.setText(title);
 
         holder.txtDistance.setText(strDistance);
         holder.txtFullness.setText(strFullness);
