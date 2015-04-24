@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.List;
 
 /**
+ *
  * Created by nathaneisner on 4/19/15.
  */
 public class MapObject {

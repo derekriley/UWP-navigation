@@ -215,7 +215,7 @@ public class ZoneService extends IntentService {
     public static final String ACTION = "uwp.cs.edu.parkingtracker.ZoneService";
     private Time startTime = new Time();
     //time for service to stay alive
-    private final int SERVICE_TIME = 30000;
+    private final int SERVICE_TIME = 60000;
 
     /**
      * An IntentService must always have a constructor that calls the super constructor. The
@@ -242,6 +242,13 @@ public class ZoneService extends IntentService {
                     LocalBroadcastManager.getInstance(ZoneService.this).sendBroadcast(intent);
                     i++;
                 }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        final Intent intent = new Intent(ACTION);
         intent.putExtra (CONSTANTS.DATA_STATUS,true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }

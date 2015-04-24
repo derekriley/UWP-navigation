@@ -195,8 +195,8 @@
 
 package uwp.cs.edu.parkingtracker.mapping;
 
+import android.app.ProgressDialog;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -212,6 +212,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -219,7 +220,10 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.MainActivity;
@@ -230,9 +234,6 @@ import uwp.cs.edu.parkingtracker.navigation.StraightLinePathProvider;
 import uwp.cs.edu.parkingtracker.parking.ParkingZoneOption;
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
 
-import static uwp.cs.edu.parkingtracker.parking.ZoneList.Zone;
-import static uwp.cs.edu.parkingtracker.parking.ZoneList.getInstance;
-
 /**
  * Created by David on 11/21/14.
  * Modified by Nate
@@ -240,19 +241,22 @@ import static uwp.cs.edu.parkingtracker.parking.ZoneList.getInstance;
  * Contains all methods that deal with creating the map that will be displayed
  * on the application
  */
-public class MapTransform {
+public class MapTransform extends MapObject{
 
     // Instance variable begin
     private GoogleMap mMap;
     private MainActivity passedActivity;
     private LatLng parkingSpot = null;
-    private LocationManager locationManager;
-    private static final long MIN_TIME = 400;
-    private static final float MIN_DISTANCE = 1000;
+//    private LocationManager locationManager;
+//    private static final long MIN_TIME = 400;
+//    private static final float MIN_DISTANCE = 1000;
+    private ProgressDialog pD;
     private SlidingUpPanelLayout slidingUpPanel;
     private TextView slidingUpText;
     private BuildingList buildings;
     private ListView lv;
+    private Map<String,ZonePoly> zonePolyMap;
+    private Polyline drawnPath = null;
     // Instance variable end
 
     /**
@@ -274,6 +278,8 @@ public class MapTransform {
         this.lv = (ListView) slidingUpPanel.findViewById(R.id.list);
         this.buildings = new BuildingList();
         this.slidingUpPanel.setPanelHeight(0);
+        this.zonePolyMap = new HashMap<>();
+
     }
 
 
@@ -282,13 +288,17 @@ public class MapTransform {
      * adds the markers required for user interaction.
      */
     public void setUpMap() {
+        buildPolyMap();
+        pD = new ProgressDialog(passedActivity,R.style.TransparentProgressDialog);
+        pD.setIndeterminate(true);
+        pD.setCancelable(false);
+        pD.show();
         float zoomFactor = CONSTANTS.DEFAULT_ZOOM_FACTOR;
         MapsInitializer.initialize(passedActivity);
-        // makes the map focus on the Student Center parking lot.
+        // makes the map focus on a spot
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(42.646056, -87.855468), zoomFactor));
         mMap.setMyLocationEnabled(true);
-
-
+        drawPolygons();
         slidingUpPanel.setDragView(passedActivity.findViewById(R.id.sliding_layout_child2));
         slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         //hook non-marker clicks to hiding sliding panel
@@ -317,20 +327,40 @@ public class MapTransform {
 
     }
 
-    public void drawPolygon(PolygonOptions polygonOptions) {
-        mMap.addPolygon(polygonOptions);
+    //Builds the ZonePoly Hashmap from the CONSTANTS
+    private void buildPolyMap() {
+        Iterator it = CONSTANTS.zones.entrySet().iterator();
+        while (it.hasNext()) {
+            ZonePoly zp;
+            Map.Entry pair = (Map.Entry)it.next();
+            zp = new ZonePoly((String)pair.getKey());
+            zp.setPolygonOptions((PolygonOptions)pair.getValue());
+            zonePolyMap.put((String)pair.getKey(),zp);
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+    }
+
+    //draws a polygon and saves the polygon object into the HashMap
+    public void drawPolygons() {
+        for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
+            ZonePoly zonePoly = entry.getValue();
+            zonePoly.setPolygon(mMap.addPolygon(zonePoly.getPolygonOptions()));
+            zonePolyMap.put(zonePoly.getID(),zonePoly);
+        }
+
     }
 
     /**
      * Clears map and redraws
      */
     public void refreshMap() {
-        //clear map
-        mMap.clear();
         //start to redraw zones
-        new MapTask().execute(getInstance());
+        if (pD.isShowing()) {
+            pD.dismiss();
+        }
+        new MapTask().execute();
         Log.d("MAP", "REFRESH");
-        //attachMarkersToMap();
+
         //parking spot
         if (isParked()) {
             mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
@@ -341,14 +371,15 @@ public class MapTransform {
      * Physically attach the markers to the google map fragment. Done in one batch to minimize
      * interruption to the main UI Thread.
      */
-//    private void attachMarkersToMap() {
-//        //add building markers
-//        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
-//            String key = entry.getKey();
-//            LatLng value = entry.getValue();
-//            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university)));
-//        }
-//    }
+    private void attachMarkersToMap() {
+        //add building markers
+        for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
+            String key = entry.getKey();
+            LatLng value = entry.getValue();
+            mMap.addMarker(new MarkerOptions().title(key).position(value).icon(BitmapDescriptorFactory.fromResource(R.drawable.university))).showInfoWindow();
+        }
+    }
+
     public void attachNewParkingSpot() {
         //sets parking spot from current location
         parkingSpot = getLocation();
@@ -371,31 +402,47 @@ public class MapTransform {
     }
 
     /**
-     * Returns a call to another method in ZoneList Class that returns a zone id, this zone id is identified
+     * Returns a zone id, this zone id is identified
      * based upon the point chosen, the parameters to this function are passed from the basic user class
      * in the method known as TapEvent
      */
     public String getZoneTapped(LatLng point) {
-        return getInstance().zoneTapped(point);
+        for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
+            ZonePoly temp = entry.getValue();
+            if (pointInPolygon(point, temp.getPolygonOptions())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     /**
-     * Task to draw Polygons on map from ZoneList
+     * Task to update Polygons on map from ZoneList
      */
-    public class MapTask extends AsyncTask<ZoneList, PolygonOptions, Void> {
+    public class MapTask extends AsyncTask<Void, String, Void> {
 
         @Override
-        protected Void doInBackground(ZoneList... params) {
-            ZoneList zL = params[0];
-            ArrayList<PolygonOptions> polygons = zL.getPolys();
-            for (PolygonOptions pO : polygons)
-                publishProgress(pO);
+        protected Void doInBackground(Void... params) {
+            for (String zID : zonePolyMap.keySet()) {
+                String color = String.valueOf(ZoneList.getInstance().getColor(zID));
+                onProgressUpdate(zID, color);
+            }
             return null;
         }
 
         @Override
-        protected void onProgressUpdate(PolygonOptions... values) {
-            drawPolygon(values[0]);
+        protected void onProgressUpdate(String... values) {
+            ZonePoly zp = zonePolyMap.get(values[0]);
+            zp.setColor(Integer.valueOf(values[1]));
+            zonePolyMap.put(values[0],zp);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            for (ZonePoly zp : zonePolyMap.values()) {
+                zp.colorPoly();
+            }
         }
     }
 
@@ -405,19 +452,23 @@ public class MapTransform {
         slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
         PathProvider pathProvider = new StraightLinePathProvider();
-        List<ParkingZoneOption> options = new ArrayList<ParkingZoneOption>();
-        for (Zone z : getInstance().getZones().values()) {
+        List<ParkingZoneOption> options = new ArrayList<>();
+        for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
+            ZonePoly zp = entry.getValue();
+            PolygonOptions polygonOptions = zp.getPolygonOptions();
             double avgLat = 0;
             double avgLng = 0;
-            for (LatLng l : z.getPolygonOptions().getPoints()) {
+            for (LatLng l : polygonOptions.getPoints()) {
                 avgLat += l.latitude;
                 avgLng += l.longitude;
             }
-            avgLat /= z.getPolygonOptions().getPoints().size();
-            avgLng /= z.getPolygonOptions().getPoints().size();
+            avgLat /= polygonOptions.getPoints().size();
+            avgLng /= polygonOptions.getPoints().size();
             PolylineOptions path = pathProvider.getPath(new LatLng(avgLat,avgLng),point);
             float pathLength = calculatePathLength(path);
-            options.add(new ParkingZoneOption(z.getZoneId().replace("_", " "), pathLength, z, path));
+            String id = zp.getID();
+            int color = zp.getColor();
+            options.add(new ParkingZoneOption(id, pathLength, color , path));
         }
 
         ParkingZoneOptionAdapter adapter = new ParkingZoneOptionAdapter(passedActivity, R.layout.listview_item_row, options);
@@ -435,7 +486,10 @@ public class MapTransform {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParkingZoneOption pzo = (ParkingZoneOption)lv.getItemAtPosition(position);
                 slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                Polyline drawnPath = mMap.addPolyline(pzo.path);
+                if (drawnPath != null) {
+                    drawnPath.remove();
+               }
+                drawnPath = mMap.addPolyline(pzo.path);
                 LatLngBounds.Builder bc = new LatLngBounds.Builder();
                 for (LatLng l: pzo.path.getPoints()) bc.include(l);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(),50));
@@ -460,6 +514,55 @@ public class MapTransform {
 //            totalDistance+=results[0];
         }
         return totalDistance;
+
+
     }
 
+    public class ZonePoly {
+        private Polygon polygon;
+        private String ID;
+        private PolygonOptions polygonOptions;
+        private int color = -1;
+
+        private ZonePoly(String ID) {
+            this.ID = ID;
+        }
+
+        public void setPolygon(Polygon polygon) {
+            this.polygon = polygon;
+            if (this.color != -1) {
+                this.polygon.setFillColor(this.color);
+            }
+        }
+
+        public void setPolygonOptions(PolygonOptions polygonOptions) {
+            this.polygonOptions = polygonOptions;
+        }
+
+        public PolygonOptions getPolygonOptions() {
+            return polygonOptions;
+        }
+
+        public Polygon getPolygon() {
+            return polygon;
+        }
+
+        public String getID() {
+            return ID;
+        }
+
+        public void setColor(int color) {
+            this.color = color;
+        }
+
+        public int getColor() {
+            return color;
+        }
+
+        public void colorPoly() {
+            if (this.color != -1) {
+                polygon.setFillColor(color);
+            }
+        }
+    }
 }

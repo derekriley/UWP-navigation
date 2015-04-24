@@ -376,30 +376,30 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
                 if ((loco.getLongitude() <= -87.853320)) {
 
                     if ((loco.getLatitude() <= 42.648890) && (loco.getLatitude() >= 42.648476)) {
-                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 1",
-                                Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(passedActivity.getApplicationContext(), "Zone 1",
+                                //Toast.LENGTH_SHORT).show();
 //                        passedActivity.zone = "1";
                     } else if ((loco.getLatitude() <= 42.648475) && (loco.getLatitude() >= 42.648069)) {
-                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 2",
-                                Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(passedActivity.getApplicationContext(), "Zone 2",
+                          //      Toast.LENGTH_SHORT).show();
                         //passedActivity.zone = "2";
                     } else if ((loco.getLatitude() <= 42.648068) && (loco.getLatitude() >= 42.647660)) {
-                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 3",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 3",
+//                                Toast.LENGTH_SHORT).show();
                         //BasicUser.zone = "3";
                     }
                 } else if ((loco.getLongitude() > -87.853320)) {
                     if ((loco.getLatitude() <= 42.648890) && (loco.getLatitude() >= 42.648476)) {
-                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 4",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 4",
+//                                Toast.LENGTH_SHORT).show();
                         //passedActivity.zone = "4";
                     } else if ((loco.getLatitude() <= 42.648475) && (loco.getLatitude() >= 42.648069)) {
-                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 5",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 5",
+//                                Toast.LENGTH_SHORT).show();
                         //BasicUser.zone = "5";
                     } else if ((loco.getLatitude() <= 42.648068) && (loco.getLatitude() >= 42.647660)) {
-                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 6",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(passedActivity.getApplicationContext(), "Zone 6",
+//                                Toast.LENGTH_SHORT).show();
                         //passedActivity.zone = "6";
                     }
                 }

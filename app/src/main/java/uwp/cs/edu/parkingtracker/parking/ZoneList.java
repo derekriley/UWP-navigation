@@ -198,11 +198,9 @@ package uwp.cs.edu.parkingtracker.parking;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -217,10 +215,10 @@ import uwp.cs.edu.parkingtracker.network.DatabaseExchange;
  * */
 public class ZoneList extends MapObject{
 
-    public static class Zone {
+    private static class Zone {
         private String zoneId;
-        private PolygonOptions polygonOptions;
         private String fullness;
+        private int color;
 
         public Zone() {
             this.fullness = "0";
@@ -234,12 +232,8 @@ public class ZoneList extends MapObject{
             this.zoneId = zoneId;
         }
 
-        public PolygonOptions getPolygonOptions() {
-            return polygonOptions;
-        }
-
-        public void setPolygonOptions(PolygonOptions polygonOptions) {
-            this.polygonOptions = polygonOptions;
+        public String getFullness() {
+            return fullness;
         }
 
         /**
@@ -249,25 +243,23 @@ public class ZoneList extends MapObject{
         public void setFullness(String fullness) {
             this.fullness = fullness;
             if (Double.valueOf(fullness) > 6.66) {
-                this.polygonOptions.fillColor(Color.RED);
+                this.color = Color.RED;
             }
             if (Double.valueOf(fullness) >= 3.33 && Double.valueOf(fullness) <= 6.66) {
-                this.polygonOptions.fillColor(Color.YELLOW);
+                this.color = Color.YELLOW;
             }
             if (Double.valueOf(fullness) < 3.33) {
-                this.polygonOptions.fillColor(Color.GREEN);
+                this.color = Color.GREEN;
             }
         }
 
-        public String getFullness() {
-            return fullness;
+        public int getColor() {
+            return color;
         }
 
-        public Zone(String zoneId, PolygonOptions polygonOptions) {
+        public Zone(String zoneId) {
             this.fullness = "0";
             this.zoneId = zoneId;
-            this.polygonOptions = polygonOptions;
-
         }
     }
 
@@ -280,7 +272,7 @@ public class ZoneList extends MapObject{
     private ZoneList() {
         zoneMap = new ConcurrentHashMap<>();
         for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
-            Zone z = new Zone(entry.getKey(), entry.getValue());
+            Zone z = new Zone(entry.getKey());
             zoneMap.put(z.getZoneId(), z);
         }
     }
@@ -317,40 +309,11 @@ public class ZoneList extends MapObject{
         }
     }
 
-    /**
-     * Gets PolygonOptions from Zones for drawing purposes
-     * @return ArrayList polys
-     */
-    public synchronized ArrayList<PolygonOptions> getPolys() {
-        ArrayList<PolygonOptions> polys = new ArrayList<>();
-
-            Map<String, Zone> tempMap = new HashMap<>(zoneMap);
-            for (Map.Entry<String, Zone> e : tempMap.entrySet()) {
-                //String key = e.getKey();
-                Zone z = e.getValue();
-                polys.add(z.getPolygonOptions());
-            }
-        return polys;
-    }
-    /**
-     * Returns a Zone Id
-     * */
-    public String zoneTapped(LatLng point) {
-        ArrayList<Zone> zones = new ArrayList<>(zoneMap.values());
-        for (Zone z : zones) {
-            if (pointInPolygon(point, z.getPolygonOptions())) {
-                return z.getZoneId();
-            }
-        }
-        return null;
+    public synchronized int getColor(String zID) {
+        return zoneMap.get(zID).getColor();
     }
 
-    /**
-     * Gets Zones for list purposes
-     * @return ArrayList polys
-     */
-    public synchronized Map<String,Zone> getZones() {
-       return zoneMap;
+    public synchronized String getFullness(String zID) {
+        return zoneMap.get(zID).getFullness();
     }
-
 }

@@ -32,7 +32,7 @@
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_gravity="center_horizontal|top"
             android:visibility="visible"
-            android:progressTint="@color/colorSecondaryDark"
+            android:progressDrawable="@drawable/progress"
             />
     <fragment
         android:layout_marginTop="5dp"

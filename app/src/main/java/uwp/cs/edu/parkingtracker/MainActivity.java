@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,39 +49,42 @@ public class MainActivity extends ActionBarActivity {
     private ActionBar actionBar;
     private String[] drawerItems;
     private SharedPreferences preferences;
+    private boolean loadComplete;
     //Service
     private Intent mServiceIntent = null;
-    private boolean initialLoad = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Instance = this;
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            //mapTransform.setUpMap();
+            setupTools();
+            return;
+        }
         setContentView(R.layout.activity_main);
+        //get prefs for roles
         preferences = getSharedPreferences(CONSTANTS.PREFS_NAME, 0);
         setupGoogleAnalytics();
         setupTools();
-        setupService();
         setupBottomPanel();
         deviceListeners = getDeviceListeners();
 
-        // Setup map if null
+
         if (mapTransform == null) {
             mapTransform = new MapTransform(MainActivity.this);
             mapTransform.setUpMap();
         }
+        //mapTransform.refreshMap();
 
-        // Being restored from a previous state,
-        // then we don't need to do anything and should return or else
-        // we could end up with overlapping fragments.
-        if (savedInstanceState != null) {
-            return;
-        }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (!loadComplete && mServiceIntent != null) {
+            stopService(mServiceIntent);
+        }
     }
 
     @Override
@@ -87,7 +92,9 @@ public class MainActivity extends ActionBarActivity {
         super.onPause();
         // Unregister the listener when the application is paused
         LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
-        stopService(mServiceIntent);
+        if (!loadComplete && mServiceIntent != null) {
+            stopService(mServiceIntent);
+        }
     }
 
     @Override
@@ -96,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
         // Register for the particular broadcast based on ACTION string
         IntentFilter filter = new IntentFilter(ZoneService.ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
-        setupService();
+        //setupService();
     }
 
     @Override
@@ -182,6 +189,8 @@ public class MainActivity extends ActionBarActivity {
         progress = (ProgressBar) findViewById(R.id.loadingProgress);
         if (progress != null) {
             progress.setMax(CONSTANTS.zones.size());
+            progress.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            progress.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         }
         mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer);
         mActivityTitle = getTitle().toString();
@@ -218,8 +227,6 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-
-
     //change items to drawer based off of role.
     private void modifyDrawerItems(String role) {
         //STUDENT ROLE
@@ -255,32 +262,6 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    //sets up zone service handler
-    private void setupService() {
-        if (mServiceIntent == null) {
-            mServiceIntent = new Intent(this,ZoneService.class);
-        }
-        // Timer
-        final Handler timerHandler = new Handler();
-        //server refresh timer
-        Runnable timerRunnable = new Runnable() {
-
-            @Override
-            public void run() {
-                if (!initialLoad) {
-                    startService(mServiceIntent);
-                } else {
-                    initialLoad = false;
-                }
-                //restart after SERVICE_DELAY
-                timerHandler.postDelayed(this, SERVICE_DELAY);
-            }
-        };
-        //start service loop
-        timerHandler.postDelayed(timerRunnable, SERVICE_DELAY+100);
-
-    }
-
     //gets devicelisteners
     public DeviceListeners getDeviceListeners() {
         if (deviceListeners == null) {
@@ -314,7 +295,7 @@ public class MainActivity extends ActionBarActivity {
     private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean loadComplete= intent.getBooleanExtra(CONSTANTS.DATA_STATUS,false);
+            loadComplete = intent.getBooleanExtra(CONSTANTS.DATA_STATUS,true);
             if(!loadComplete) {
                     if (progress != null) {
                         progress.setVisibility(View.VISIBLE);
@@ -323,8 +304,22 @@ public class MainActivity extends ActionBarActivity {
                     }
             }
             if (loadComplete) {
-                progress.setVisibility(View.GONE);
+                progress.setProgress(0);
                 mapTransform.refreshMap();
+                mServiceIntent = new Intent(MainActivity.this,ZoneService.class);
+                // Timer
+                final Handler timerHandler = new Handler();
+                //server refresh timer
+                Runnable timerRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startService(mServiceIntent);
+                        return;
+                    }
+                };
+                //start service loop
+                timerHandler.postDelayed(timerRunnable, SERVICE_DELAY);
+
             }
         }
     };
