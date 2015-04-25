@@ -226,6 +226,7 @@ import java.util.List;
 import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
+import uwp.cs.edu.parkingtracker.DatabaseHandler;
 import uwp.cs.edu.parkingtracker.MainActivity;
 import uwp.cs.edu.parkingtracker.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.R;
@@ -257,6 +258,7 @@ public class MapTransform extends MapObject{
     private ListView lv;
     private Map<String,ZonePoly> zonePolyMap;
     private Polyline drawnPath = null;
+    private DatabaseHandler database1 = new DatabaseHandler(passedActivity);
     // Instance variable end
 
     /**
@@ -385,6 +387,23 @@ public class MapTransform extends MapObject{
         parkingSpot = getLocation();
         //TODO: Save parking spot to local file for retrieval when re-loading app
         mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+
+        database1.addGpsPoint(parkingSpot);
+
+
+    }
+    //this is the method it gets the latlng value of the parking spot from the local(Database Handler not the server)database
+
+    public void getParkingSpot(){
+
+        if(database1.getGpsPoint(1)!= null){
+
+        LatLng parkingvalue = database1.getGpsPoint(1);
+
+            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingvalue).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+
+        }
+
     }
 
     //true is previously parked
