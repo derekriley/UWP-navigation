@@ -228,39 +228,16 @@ public final class CONSTANTS {
     public static final String USER = "android";
     public static final String PASS = "m@g!calTh!ng$";
 
-    //    public static final String GET_ZONES = "z";
-//    public static final String UPDATE = "update/";
-//    public static final String EXPERT = "expert/";
-//    public static final String VECTORSUB = "vectorsub/";
-//    public static final String VECTORADD = "vectoradd/";
     public static final String RESET = "reset/";
 
     // Http Methods
     public static final String GET = "GET";
     public static final String PUT = "PUT";
 
-//    // ParkingLot Description Constants
-//    public static final int STUDENT_CENTER_PARKING_LOT = 0;
 
     // Student Center Coordinates Begin Used for default map view
     public static final double STUDENT_CENTER_C_LAT = 42.648266;
     public static final double STUDENT_CENTER_C_LNG = -87.853041;
-//    // Outer Bounds : POINTs rotate clockwise.
-//    static final LatLng SOUTH_WEST_OUTER_BOUND_POINT = new LatLng(42.647674, -87.854104);
-//    static final LatLng SOUTH_EAST_OUTER_BOUND_POINT = new LatLng(42.647647, -87.852137);
-//    static final LatLng NORTH_EAST_OUTER_BOUND_POINT = new LatLng(42.648412, -87.852153);
-//    static final LatLng NORTH_WEST_OUTER_BOUND_POINT = new LatLng(42.649037, -87.853996);
-//
-//    // Horizontal (East to West) seperators
-//    static final LatLng FIRST_LOWER_ZONE_DIVIDER_EAST_POINT = new LatLng(42.648049, -87.852150);
-//    static final LatLng FIRST_LOWER_ZONE_DIVIDER_WEST_POINT = new LatLng(42.648089, -87.854075);
-//    static final LatLng SECOND_LOWER_ZONE_DIVIDER_EAST_POINT = new LatLng(42.648499, -87.854056);
-//    static final LatLng SECOND_LOWER_ZONE_DIVIDER_WEST_POINT = new LatLng(42.648412, -87.852153);
-//
-//    // Vertical (North to South) seperators
-//    static final LatLng FIRST_VERTICAL_ZONE_DIVIDER_NORTH_POINT = new LatLng(42.648825, -87.853363);
-//    static final LatLng FIRST_VERTICAL_ZONE_DIVIDER_SOUTH_POINT = new LatLng(42.647671, -87.853373);
-//    // Student Center Coordinates End
 
     //Talent (T) Coordinates Begin
     static final LatLng T_ROW_1_POINT_1 = new LatLng(42.649226, -87.848384);
@@ -546,10 +523,6 @@ public final class CONSTANTS {
     // Map Constants
     public static final float DEFAULT_ZOOM_FACTOR = 17;
     public static final float DEFAULT_LINE_WIDTH = 5;
-
-    //Temp. Authorization Constants
-//    public static final String USERNAME = "david";
-//    public static final String PASSWORD = "1234";
 
     public static final Map<String, LatLng> buildings = new HashMap<>();
     public static final Map<String, PolygonOptions> buildingOutlines = new HashMap<>();
