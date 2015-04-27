@@ -1,5 +1,6 @@
 package uwp.cs.edu.parkingtracker;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -50,8 +51,9 @@ public class MainActivity extends ActionBarActivity {
     private String[] drawerItems;
     private SharedPreferences preferences;
     private boolean loadComplete;
-    //Service
     private Intent mServiceIntent = null;
+    private ProgressDialog pD;
+    private Menu actionBarMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +64,20 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
         setContentView(R.layout.activity_main);
+        pD = new ProgressDialog(this, R.style.TransparentProgressDialog);
+        pD.setIndeterminate(true);
+        pD.setCancelable(false);
+        pD.show();
         //get prefs for roles
         preferences = getSharedPreferences(CONSTANTS.PREFS_NAME, 0);
         setupGoogleAnalytics();
         setupTools();
         setupBottomPanel();
         deviceListeners = getDeviceListeners();
-
-
         if (mapTransform == null) {
             mapTransform = new MapTransform(MainActivity.this);
             mapTransform.setUpMap();
         }
-        //mapTransform.refreshMap();
-
-
     }
 
     @Override
@@ -85,6 +86,7 @@ public class MainActivity extends ActionBarActivity {
         if (!loadComplete && mServiceIntent != null) {
             stopService(mServiceIntent);
         }
+        finish();
     }
 
     @Override
@@ -103,7 +105,15 @@ public class MainActivity extends ActionBarActivity {
         // Register for the particular broadcast based on ACTION string
         IntentFilter filter = new IntentFilter(ZoneService.ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
+        mapTransform.setUpMap();
+        mapTransform.drawPolygons();
         //setupService();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //TODO: Implement
     }
 
     @Override
@@ -122,6 +132,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        actionBarMenu = menu;
+        actionBarMenu.findItem(R.id.action_cancel).setVisible(false);
+        //     invalidateOptionsMenu();
         return true;
     }
 
@@ -142,7 +155,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupGoogleAnalytics () {
+    private void setupGoogleAnalytics() {
         // Google Analytics
 
         // Get tracker.
@@ -167,6 +180,10 @@ public class MainActivity extends ActionBarActivity {
 
     private boolean handleMenuItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
+            case R.id.action_cancel:
+                mapTransform.clearPath();
+                setCancelItem(false);
+                return true;
             case R.id.action_park:
                 //TODO: Set a dialog to REPARK? UNPARK?
                 mapTransform.attachNewParkingSpot();
@@ -192,12 +209,13 @@ public class MainActivity extends ActionBarActivity {
             progress.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             progress.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         }
-        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer);
+        mDrawerList = (ListView) findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mActivityTitle = getTitle().toString();
 
         setupDrawer();
         // get role for drawer customization
-        String role = preferences.getString("role","");
+        String role = preferences.getString("role", "");
         modifyDrawerItems(role);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -230,21 +248,21 @@ public class MainActivity extends ActionBarActivity {
     //change items to drawer based off of role.
     private void modifyDrawerItems(String role) {
         //STUDENT ROLE
-        if(role.equals("student")) {
-            drawerItems = new String[]{ "uwp.edu", "D2L", "SOLAR", "Campus Connect"};
+        if (role.equals("student")) {
+            drawerItems = new String[]{"uwp.edu", "D2L", "SOLAR", "Campus Connect"};
         }
-        if(role.equals("visitor")) {
+        if (role.equals("visitor")) {
             //TODO: CHANGE LINKS BASED OFF OF VISITOR
             drawerItems = new String[]{""};
         }
-        mAdapter = new ArrayAdapter<>(this,R.layout.color_textview, drawerItems);
+        mAdapter = new ArrayAdapter<>(this, R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, "Link", Toast.LENGTH_SHORT).show();
-                switch (drawerItems[position]){
+                switch (drawerItems[position]) {
                     case "D2L":
                         openUrl("https://uwp.courses.wisconsin.edu/Shibboleth.sso/Login?target=https://uwp.courses.wisconsin.edu/d2l/shibbolethSSO/deepLinkLogin.d2l");
                         break;
@@ -277,13 +295,15 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 //hide bottom sliding panel
-                ((SlidingUpPanelLayout)findViewById(R.id.sliding_layout)).setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                SlidingUpPanelLayout sUPL = ((SlidingUpPanelLayout) findViewById(R.id.sliding_layout));
+                //sUPL.setVisibility(View.GONE);
+                sUPL.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
-        },1000);
+        }, 1000);
     }
 
     //used to launch new browser intent with given url
-    private void openUrl(String url){
+    private void openUrl(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
     }
@@ -295,32 +315,44 @@ public class MainActivity extends ActionBarActivity {
     private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            loadComplete = intent.getBooleanExtra(CONSTANTS.DATA_STATUS,true);
-            if(!loadComplete) {
-                    if (progress != null) {
-                        progress.setVisibility(View.VISIBLE);
-                        int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT, 0);
-                        progress.setProgress(status);
-                    }
+            loadComplete = intent.getBooleanExtra(CONSTANTS.DATA_STATUS, true);
+            if (!loadComplete) {
+                if (progress != null) {
+                    progress.setVisibility(View.VISIBLE);
+                    int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT, 0);
+                    progress.setProgress(status);
+
+                }
             }
             if (loadComplete) {
-                progress.setProgress(0);
-                mapTransform.refreshMap();
-                mServiceIntent = new Intent(MainActivity.this,ZoneService.class);
-                // Timer
-                final Handler timerHandler = new Handler();
-                //server refresh timer
-                Runnable timerRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        startService(mServiceIntent);
-                        return;
-                    }
-                };
-                //start service loop
-                timerHandler.postDelayed(timerRunnable, SERVICE_DELAY);
-
+                loadingComplete();
             }
         }
     };
+
+    private void loadingComplete() {
+        progress.setProgress(0);
+        if (pD.isShowing()) {
+            pD.dismiss();
+        }
+        mapTransform.refreshMap();
+        mServiceIntent = new Intent(MainActivity.this, ZoneService.class);
+        // Timer
+        final Handler timerHandler = new Handler();
+        //server refresh timer
+        Runnable timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                startService(mServiceIntent);
+                return;
+            }
+        };
+        //start service loop
+        timerHandler.postDelayed(timerRunnable, SERVICE_DELAY);
+    }
+
+    public void setCancelItem(boolean option) {
+        actionBarMenu.findItem(R.id.action_cancel).setVisible(option);
+        //    invalidateOptionsMenu();
+    }
 }

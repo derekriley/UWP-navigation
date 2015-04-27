@@ -2,7 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="uwp.cs.edu.parkingtracker.MainActivity">
-    <item android:id="@+id/action_park" android:title="@string/action_parking"
+    <item android:id="@+id/action_cancel"
+        android:title="Cancel"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+    <item android:id="@+id/action_park"
+        android:title="@string/action_parking"
         app:showAsAction="always"/>
     <item android:id="@+id/action_student"
         android:title="@string/option_student"

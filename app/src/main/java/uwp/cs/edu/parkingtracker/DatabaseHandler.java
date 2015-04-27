@@ -195,40 +195,25 @@
 
 package uwp.cs.edu.parkingtracker;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import uwp.cs.edu.parkingtracker.mapping.MapTransform;
-
 /**
  * Created by Joseph on 4/21/2015.
- *
+ * <p/>
  * This is for handling our sql lite database to store the saved parking spot
  */
-public class DatabaseHandler extends SQLiteOpenHelper{
+public class DatabaseHandler extends SQLiteOpenHelper {
 
-    //Notes for what needs to be implemented
-    //in the maptransform class of the application there is a method that is called getLocation()
-    //that method is used for getting the lat long point to put the marker on the map of the parking spot
-    //we can use that method to get the location of the parking spot to be stored, this should be done though
-    //when another method is called in the same class called attachNewParkingSpot
-    //when that method is called we need to store the data of the gps point in the database
-    //The following lines are ways of taking a currently saved lat Long and setting it to a string
-    //then parsing it back to a double then creating it as a new lat long
-    //LatLng latLng;
-    //Double l1=latlng.latitude;
-    //Double l2=latlng.longitude;
-    //String coordl1 = l1.toString();
-    //String coordl2 = l2.toString();
-    //l1 = Double.parseDouble(coordl1);
-    //l2 = Double.parseDouble(coordl2);
-    //(new latlng(l1, l2))
-    //attempting to replicate code found on this site http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
-    //database version number
-    private static final int DATABASE_VERSION =1;
+    //this is the version for the database
+    private static final int DATABASE_VERSION = 1;
 
     //this is the name of the database
     private static final String DATABASE_NAME = "parkingSpotSaverDB.db";
@@ -236,53 +221,111 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     //table name
     public static final String TABLE_GPSPOINT = "gpspoint";
 
-    //Some column names.. may try to incorporate the long lat in 1 column,
-    public static final String COLUMN_GPSPOINT = "gps";
-
-    // if it doesnt work will use two columns
+    //key for the database
+    public static final String KEY_ID = "id";
+    //column for the latitude
     public static final String COLUMN_LATITUDE = "latitude";
+    //column for the longitude
     public static final String COLUMN_LONGITUDE = "longitude";
+
+    private SQLiteDatabase sqliteDBInstance = null;
+
+    private static DatabaseHandler sInstance;
+
+    public static synchronized DatabaseHandler getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new DatabaseHandler(context.getApplicationContext());
+        }
+        return sInstance;
+    }
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.sqliteDBInstance = getWritableDatabase();
     }
 
+    //this creates the database
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        String CREATE_PRODUCTS_TABLE = "CREATE TABLE " +
-                TABLE_GPSPOINT + "("  + COLUMN_GPSPOINT + "LatLng Gps Point" +")";
+    public void onCreate(SQLiteDatabase sqliteDBInstance) {
+        Log.i("onCreate", "Creating the database...");
+        String DB_CREATE_SCRIPT = "create table " + TABLE_GPSPOINT +
+                " ("+KEY_ID+" integer primary key, "+COLUMN_LATITUDE +
+                " real, "+COLUMN_LONGITUDE+" real);)";
 
 
-                //this is if we use two columns to store the data
-               // + COLUMN_LATITUDE
-                //+ " FLOAT," + COLUMN_LONGITUDE + " FLOAT" + ")";
-        db.execSQL(CREATE_PRODUCTS_TABLE);
+        sqliteDBInstance.execSQL(DB_CREATE_SCRIPT);
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, 1);
+        values.put(COLUMN_LATITUDE, 0);
+        values.put(COLUMN_LONGITUDE, 0);
+        sqliteDBInstance.insert(TABLE_GPSPOINT, null, values);
     }
 
-    //the reason we Call the Parameter of type MapTransform is because the getlocation
-    //method is located in the MapTransform
-    public void addGPSPoint(MapTransform map){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void openDB() throws SQLException
+    {
+        Log.i("openDB", "Checking sqliteDBInstance...");
+        if(this.sqliteDBInstance == null)
+        {
+            Log.i("openDB", "Creating sqliteDBInstance...");
+            this.sqliteDBInstance = this.getWritableDatabase();
+        }
+    }
 
+    public void closeDB()
+    {
+        if(this.sqliteDBInstance != null)
+        {
+            if(this.sqliteDBInstance.isOpen())
+                this.sqliteDBInstance.close();
+        }
+    }
+
+    //this is the method to add the gps points, it overrides the old one everytime
+    public void addGpsPoint(LatLng gpspoints) {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_LATITUDE, gpspoints.latitude);
+        values.put(COLUMN_LONGITUDE, gpspoints.longitude);
+        this.sqliteDBInstance.update(TABLE_GPSPOINT, values, KEY_ID + " = ?", new String[]{String.valueOf(1)});
 
 
     }
 
+    //this gets the gps point
+    public LatLng getGpsPoint(int id) {
+        String[] tableColumns = new String[] {
+                COLUMN_LATITUDE, COLUMN_LONGITUDE};
+        String whereClause = KEY_ID +" = ?";
+        String[] whereArgs = new String[] {
+                "1",
+        };
+        Cursor cursor = sqliteDBInstance.query(TABLE_GPSPOINT, tableColumns, whereClause,
+                whereArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            Float lat = Float.parseFloat(cursor.getString(0));
+            Float lon = Float.parseFloat(cursor.getString(1));
+            cursor.close();
+            if (lat == 0 || lon == 0) {
+                return null;
+            }
+            return new LatLng(lat, lon);
+        }
+        cursor.close();
+        return null;
+
+    }
+
+
+    //this upgrades the database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GPSPOINT);
         onCreate(db);
     }
-    public void addProduct(LatLng gpsPoint) {
 
-      //  ContentValues values = new ContentValues();
-      //  values.put(COLUMN_LATITUDE, gpsPoint.latitude);
-      //  values.put(COLUMN_LONGITUDE, gpsPoint.longitude);
-
-      //  SQLiteDatabase db = this.getWritableDatabase();
-
-      //  db.insert(TABLE_GPSPOINT, null, values);
-      //  db.close();
-
-    }
 }
