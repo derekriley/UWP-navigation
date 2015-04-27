@@ -251,9 +251,6 @@ public class MapTransform extends MapObject {
     private GoogleMap mMap;
     private MainActivity passedActivity;
     private LatLng parkingSpot = null;
-    //    private LocationManager locationManager;
-//    private static final long MIN_TIME = 400;
-//    private static final float MIN_DISTANCE = 1000;
     private SlidingUpPanelLayout slidingUpPanel;
     private TextView slidingUpText;
     private BuildingList buildings;
@@ -283,6 +280,8 @@ public class MapTransform extends MapObject {
         this.buildings = new BuildingList();
         this.slidingUpPanel.setPanelHeight(0);
         this.zonePolyMap = new HashMap<>();
+        this.pD = new ProgressDialog(passedActivity,R.style.TransparentProgressDialog);
+
     }
 
 
@@ -292,12 +291,6 @@ public class MapTransform extends MapObject {
      */
     public void setUpMap() {
         buildPolyMap();
-
-        pD = new ProgressDialog(passedActivity, R.style.TransparentProgressDialog);
-        pD.setIndeterminate(true);
-        pD.setCancelable(false);
-        pD.show();
-
         float zoomFactor = CONSTANTS.DEFAULT_ZOOM_FACTOR;
         MapsInitializer.initialize(passedActivity);
         // makes the map focus on a spot
@@ -347,8 +340,7 @@ public class MapTransform extends MapObject {
                     slidingUpPanel.setPanelHeight(0);
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
-            }
-        });
+        }});
     }
 
 
@@ -380,9 +372,7 @@ public class MapTransform extends MapObject {
      */
     public void refreshMap() {
         //start to redraw zones
-        if (pD.isShowing()) {
-            pD.dismiss();
-        }
+
         new MapTask().execute();
         Log.d("MAP", "REFRESH");
 

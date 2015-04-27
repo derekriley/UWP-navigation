@@ -1,5 +1,6 @@
 package uwp.cs.edu.parkingtracker;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -51,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
     private SharedPreferences preferences;
     private boolean loadComplete;
     private Intent mServiceIntent = null;
+    private ProgressDialog pD;
     private Menu actionBarMenu;
 
     @Override
@@ -62,6 +64,10 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
         setContentView(R.layout.activity_main);
+        pD = new ProgressDialog(this, R.style.TransparentProgressDialog);
+        pD.setIndeterminate(true);
+        pD.setCancelable(false);
+        pD.show();
         //get prefs for roles
         preferences = getSharedPreferences(CONSTANTS.PREFS_NAME, 0);
         setupGoogleAnalytics();
@@ -326,6 +332,9 @@ public class MainActivity extends ActionBarActivity {
 
     private void loadingComplete() {
         progress.setProgress(0);
+        if (pD.isShowing()) {
+            pD.dismiss();
+        }
         mapTransform.refreshMap();
         mServiceIntent = new Intent(MainActivity.this, ZoneService.class);
         // Timer
