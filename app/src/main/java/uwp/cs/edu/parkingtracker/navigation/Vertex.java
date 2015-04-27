@@ -11,7 +11,7 @@ class Vertex implements Comparable<Vertex> {
 
     public final String name;
     public ArrayList<Edge> adjacencies = new ArrayList();
-    public ArrayList<String> neigh = new ArrayList();
+    public ArrayList<String> neighbors = new ArrayList();
     public double minDistance = Double.POSITIVE_INFINITY;
     public Vertex previous;
     public double lat;

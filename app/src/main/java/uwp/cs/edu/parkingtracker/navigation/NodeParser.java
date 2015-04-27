@@ -34,7 +34,7 @@ public class NodeParser {
     // radius of earth in km
     private static final int RADIUS = 6371;
 
-    //map used to contain all vertices
+    //map used to contain all vertices. <Vertex Id, Vertex>
     private static HashMap<String, Vertex> nodeMap = new HashMap();
 
 
@@ -69,7 +69,7 @@ public class NodeParser {
             String neighbors[] = nodeNeigh.split(" ");
 
             Vertex temp = new Vertex(nodeId);
-            temp.neigh = new ArrayList(Arrays.asList(neighbors));
+            temp.neighbors = new ArrayList(Arrays.asList(neighbors));
             temp.lat = Double.parseDouble(nodeLong);
             temp.lon = Double.parseDouble(nodeLat);
 
@@ -85,21 +85,26 @@ public class NodeParser {
         for (String key : keySet) {
             // current vertex
             Vertex temp = nodeMap.get(key);
-            ArrayList<String> neighbors = new ArrayList(temp.neigh);
+            ArrayList<String> neighbors = new ArrayList(temp.neighbors);
             double weight;
 
             // for each neighbor
             for (int i = 0; i < neighbors.size(); i++) {
                 // a neighbor to current vertex
                 Vertex targetTemp = nodeMap.get(neighbors.get(i));
-                weight = calculateEdge(targetTemp, temp.lat, temp.lon, targetTemp.lat, targetTemp.lon);
+                weight = calculateEdge(temp, targetTemp);
                 temp.adjacencies.add(new Edge(targetTemp, weight));
             }
 
         }
     }
     // returns the distance between two vertices
-    public static double calculateEdge(Vertex neighbor, double lat, double lon, double lat2, double lon2) {
+    public static double calculateEdge(Vertex current, Vertex neighbor) {
+
+        double lat = current.lat;
+        double lon = current.lon;
+        double lat2 = neighbor.lat;
+        double lon2 = neighbor.lon;
 
         Double latDistance = deg2rad(lat2 - lat);
         Double lonDistance = deg2rad(lon2 - lon);
