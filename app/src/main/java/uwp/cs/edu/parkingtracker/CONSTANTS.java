@@ -557,12 +557,12 @@ public final class CONSTANTS {
     public static final Map<String, PolygonOptions> zones = new HashMap<>();
 
     static {
-        buildings.put("Greenquist Hall", new LatLng(42.646397, -87.855553));
+        buildings.put("Greenquist Hall", new LatLng(42.646397, -87.855475));
         buildings.put("Sports and Activity Center", new LatLng(42.64253, -87.856681));
         buildings.put("Wyllie Hall", new LatLng(42.645505, -87.855124));
         buildings.put("Rita Tallent Picken", new LatLng(42.645257, -87.856353));
         buildings.put("Molinaro Hall", new LatLng(42.647024, -87.856256));
-        buildings.put("Student Center", new LatLng(42.64782, -87.854842));
+        buildings.put("Student Center", new LatLng(42.64782, -87.855225));
         //buildings.put("Library", new LatLng(42.645545, -87.854982));
         //buildings.put("University Apartments", new LatLng(42.648881, -87.857133));
         //buildings.put("Ranger Hall", new LatLng(42.646904, -87.857972));
@@ -582,7 +582,7 @@ public final class CONSTANTS {
         buildingOutlines.put("Greenquist Hall", GRNQ_OUTLINE);
         buildingOutlines.put("Wyllie Hall", WHYL_OUTLINE);
         buildingOutlines.put("The Rita", RITA_OUTLINE);
-        buildingOutlines.put("The SAC", SAC_OUTLINE);
+        buildingOutlines.put("Sports and Activity Center", SAC_OUTLINE);
 
         zones.put("Talent_1", T_ZONE_1);
         zones.put("Talent_2", T_ZONE_2);
