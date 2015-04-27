@@ -12,33 +12,29 @@ import java.util.Locale;
  */
 
 public class NodeParser {
-    /**
-     * Column index of the building column.
-     */
+
+     // Column index of the building column.
     private static final int BUILDING = 0;
-    /**
-     * Column index of the node type column.
-     */
+
+     // Column index of the node type column.
     private static final int NODE_TYPE = 1;
-    /**
-     * Column index of the node longitude column.
-     */
+
+     // Column index of the node longitude column.
     private static final int NODE_LONG = 2;
-    /**
-     * Column index of the node latitude column.
-     */
+
+     // Column index of the node latitude column.
     private static final int NODE_LAT = 3;
-    /**
-     * Column index of the node id column.
-     */
+
+     // Column index of the node id column.
     private static final int NODE_ID = 4;
-    /**
-     * Column index of the node neighbors column.
-     */
+
+     // Column index of the node neighbors column.
     private static final int NODE_NEIGHBORS = 5;
 
+    // radius of earth in km
     private static final int RADIUS = 6371;
 
+    //map used to contain all vertices
     private static HashMap<String, Vertex> nodeMap = new HashMap();
 
 
@@ -56,7 +52,7 @@ public class NodeParser {
             e.printStackTrace();
         }
 
-        fillVertex();
+        setAdjacencies();
 
     }
 
@@ -70,10 +66,10 @@ public class NodeParser {
             String nodeId = cells[NODE_ID].toUpperCase(Locale.ENGLISH);
             String nodeNeigh = cells[NODE_NEIGHBORS].toUpperCase(Locale.ENGLISH);
 
-            String tests[] = nodeNeigh.split(" ");
+            String neighbors[] = nodeNeigh.split(" ");
 
             Vertex temp = new Vertex(nodeId);
-            temp.neigh = new ArrayList(Arrays.asList(tests));
+            temp.neigh = new ArrayList(Arrays.asList(neighbors));
             temp.lat = Double.parseDouble(nodeLong);
             temp.lon = Double.parseDouble(nodeLat);
 
@@ -82,23 +78,27 @@ public class NodeParser {
         }
     }
 
-    private static void fillVertex() {
+    // updates the nodemap to set the adjacencies for each vertex
+    private static void setAdjacencies() {
 
         ArrayList<String> keySet = new ArrayList(nodeMap.keySet());
         for (String key : keySet) {
+            // current vertex
             Vertex temp = nodeMap.get(key);
-            ArrayList<String> neighs = new ArrayList(temp.neigh);
+            ArrayList<String> neighbors = new ArrayList(temp.neigh);
             double weight;
 
-            for (int i = 0; i < neighs.size(); i++) {
-                Vertex targetTemp = nodeMap.get(neighs.get(i));
+            // for each neighbor
+            for (int i = 0; i < neighbors.size(); i++) {
+                // a neighbor to current vertex
+                Vertex targetTemp = nodeMap.get(neighbors.get(i));
                 weight = calculateEdge(targetTemp, temp.lat, temp.lon, targetTemp.lat, targetTemp.lon);
                 temp.adjacencies.add(new Edge(targetTemp, weight));
             }
 
         }
     }
-
+    // returns the distance between two vertices
     public static double calculateEdge(Vertex neighbor, double lat, double lon, double lat2, double lon2) {
 
         Double latDistance = deg2rad(lat2 - lat);
