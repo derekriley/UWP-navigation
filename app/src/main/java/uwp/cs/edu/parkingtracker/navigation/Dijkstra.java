@@ -18,19 +18,19 @@ class Dijkstra {
         vertexQueue.add(source);
 
         while (!vertexQueue.isEmpty()) {
-            Vertex u = vertexQueue.poll();
+            Vertex current = vertexQueue.poll();
 
-            // Visit each edge exiting u
-            for (Edge e : u.adjacencies) {
-                Vertex v = e.target;
-                double weight = e.weight;
-                double distanceThroughU = u.minDistance + weight;
-                if (distanceThroughU < v.minDistance) {
-                    vertexQueue.remove(u);
+            // Visit each edge exiting current
+            for (Edge edge : current.adjacencies) {
+                Vertex neighbor = edge.target;
+                double weight = edge.weight;
+                double distanceThroughU = current.minDistance + weight;
+                if (distanceThroughU < neighbor.minDistance) {
+                    vertexQueue.remove(current);
 
-                    v.minDistance = distanceThroughU;
-                    v.previous = u;
-                    vertexQueue.add(v);
+                    neighbor.minDistance = distanceThroughU;
+                    neighbor.previous = current;
+                    vertexQueue.add(neighbor);
                 }
             }
         }
