@@ -224,7 +224,11 @@ public class ParkDialogFragment extends DialogFragment {
     public interface ParkDialogListener {
         public void onDialogEmptyClick(DialogFragment dialog);
 
+        public void onDialogQuarterClick(DialogFragment dialog);
+
         public void onDialogHalfClick(DialogFragment dialog);
+
+        public void onDialogThreeQuartersClick(DialogFragment dialog);
 
         public void onDialogFullClick(DialogFragment dialog);
     }
@@ -279,9 +283,15 @@ public class ParkDialogFragment extends DialogFragment {
                                 mListener.onDialogEmptyClick(ParkDialogFragment.this);
                                 break;
                             case (1):
-                                mListener.onDialogHalfClick(ParkDialogFragment.this);
+                                mListener.onDialogQuarterClick(ParkDialogFragment.this);
                                 break;
                             case (2):
+                                mListener.onDialogHalfClick(ParkDialogFragment.this);
+                                break;
+                            case (3):
+                                mListener.onDialogThreeQuartersClick(ParkDialogFragment.this);
+                                break;
+                            case (4):
                                 mListener.onDialogFullClick(ParkDialogFragment.this);
                                 break;
                             default:

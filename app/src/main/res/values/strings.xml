@@ -13,7 +13,9 @@
 
     <string-array name="lot_options">
         <item>Empty</item>
+        <item>Quarter</item>
         <item>Half Full</item>
+        <item>Three Quarters</item>
         <item>Full</item>
     </string-array>
 

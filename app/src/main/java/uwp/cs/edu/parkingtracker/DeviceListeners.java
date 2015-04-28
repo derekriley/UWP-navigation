@@ -206,6 +206,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import android.support.v4.app.DialogFragment;
 
 import uwp.cs.edu.parkingtracker.network.DatabaseExchange;
 import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
@@ -415,7 +416,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 
     // methods that will update the database depending on the user vote.
     @Override
-    public void onDialogEmptyClick(android.support.v4.app.DialogFragment dialog) {
+    public void onDialogEmptyClick(DialogFragment dialog) {
         // User touched the dialog's positive button
 //        ArrayList<String> params = new ArrayList<>();
 //        params.add(CONSTANTS.PUT);
@@ -429,7 +430,13 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     }
 
     @Override
-    public void onDialogHalfClick(android.support.v4.app.DialogFragment dialog) {
+    public void onDialogQuarterClick(DialogFragment dialog){
+        String zID = ((ParkDialogFragment) dialog).getID();
+        DatabaseExchange.sendVote(zID, 3);
+    }
+
+    @Override
+    public void onDialogHalfClick(DialogFragment dialog) {
 //        // User touched the dialog's neutral button
 //        ArrayList<String> params = new ArrayList<>();
 //        params.add(CONSTANTS.PUT);
@@ -442,7 +449,13 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     }
 
     @Override
-    public void onDialogFullClick(android.support.v4.app.DialogFragment dialog) {
+    public void onDialogThreeQuartersClick(DialogFragment dialog) {
+        String zID = ((ParkDialogFragment) dialog).getID();
+        DatabaseExchange.sendVote(zID, 8);
+    }
+
+    @Override
+    public void onDialogFullClick(DialogFragment dialog) {
         // User touched the dialog's Full
         String zID = ((ParkDialogFragment) dialog).getID();
         DatabaseExchange.sendVote(zID, 10);
