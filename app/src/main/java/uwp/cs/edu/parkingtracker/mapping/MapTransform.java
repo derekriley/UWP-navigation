@@ -233,6 +233,7 @@ import uwp.cs.edu.parkingtracker.DatabaseHandler;
 import uwp.cs.edu.parkingtracker.MainActivity;
 import uwp.cs.edu.parkingtracker.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.R;
+import uwp.cs.edu.parkingtracker.navigation.NodeParser;
 import uwp.cs.edu.parkingtracker.navigation.PathProvider;
 import uwp.cs.edu.parkingtracker.navigation.StraightLinePathProvider;
 import uwp.cs.edu.parkingtracker.parking.ParkingZoneOption;
@@ -281,7 +282,7 @@ public class MapTransform extends MapObject {
         this.slidingUpPanel.setPanelHeight(0);
         this.zonePolyMap = new HashMap<>();
         this.pD = new ProgressDialog(passedActivity,R.style.TransparentProgressDialog);
-
+        NodeParser.getInstance(passedActivity);
     }
 
 
@@ -629,4 +630,5 @@ public class MapTransform extends MapObject {
 
 
     }
+
 }

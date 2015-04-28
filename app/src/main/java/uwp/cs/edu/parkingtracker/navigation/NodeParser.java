@@ -1,6 +1,11 @@
 package uwp.cs.edu.parkingtracker.navigation;
 
-import java.io.*;
+import android.content.Context;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,10 +40,32 @@ public class NodeParser {
     private static final int RADIUS = 6371;
 
     //map used to contain all vertices. <Vertex Id, Vertex>
-    private static HashMap<String, Vertex> nodeMap = new HashMap();
+    public static HashMap<String, Vertex> nodeMap;
 
+    //singleton instance
+    private static NodeParser mInstance = null;
 
-    public static void parseBuildingFile(InputStream inputStream) {
+    //constructor
+    public NodeParser(Context context) {
+        nodeMap = new HashMap<>();
+        int id = context.getResources().getIdentifier("nodemap", "raw", context.getPackageName());
+        InputStream is = context.getResources().openRawResource(id);
+        parseNodeFile(is);
+    }
+
+    //get single instance
+    public static NodeParser getInstance(Context context) {
+        if (mInstance == null) {
+            synchronized (NodeParser.class) {
+                if (mInstance == null) {
+                    mInstance = new NodeParser(context);
+                }
+            }
+        }
+        return mInstance;
+    }
+
+    public static void parseNodeFile(InputStream inputStream) {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 inputStream));
@@ -64,6 +91,7 @@ public class NodeParser {
             String nodeLong = cells[NODE_LONG].toUpperCase(Locale.ENGLISH);
             String nodeLat = cells[NODE_LAT].toUpperCase(Locale.ENGLISH);
             String nodeId = cells[NODE_ID].toUpperCase(Locale.ENGLISH);
+            //
             String nodeNeigh = cells[NODE_NEIGHBORS].toUpperCase(Locale.ENGLISH);
 
             String neighbors[] = nodeNeigh.split(" ");
