@@ -1,0 +1,57 @@
+Building,Type,Long.,Lat.,id,neighbors
+Rita,Main Entrance,42.645007,-87.856926,1,28 27
+Rita,Side Entrance,42.644547,-87.856697,2,41 24
+Rita,Side Entrance,42.645053,-87.856097,3,43
+Wyllie ,Main Entrance,42.645051,-87.855159,4,35
+Wyllie ,Side Entrance,42.645276,-87.854565,5,40
+Wyllie ,Side Entrance,42.645237,-87.85554,6,44
+Greenquist,Side Entrance,42.646017,-87.855635,7,33
+Greenquist,Main Entrance,42.646336,-87.855648,8,33
+Greenquist,Side Entrance,42.646631,-87.855578,9,33
+Molinaro,Side Entrance,42.646802,-87.855859,10,33
+Molinaro,Side Entrance,42.646815,-87.855512,11,
+Molinaro,Side Entrance,42.647058,-87.856737,12,
+Molinaro,Side Entrance,42.647226,-87.856167,13,
+Student Center,Side Entrance,42.647351,-87.855358,14,
+Student Center,Side Entrance,42.647364,-87.854974,15,
+Student Center,Main Entrance,42.647403,-87.854709,16,
+Student Center,Side Entrance,42.648057,-87.855336,17,
+Student Center,Side Entrance,42.647593,-87.855816,18,
+SAC,Main Entrance,42.642934,-87.856317,19,26
+SAC,Main Entrance,42.64209,-87.856247,20,
+Lot,Traversal,42.644331,-87.857408,21,27 28 22
+Lot,Traversal,42.644052,-87.857278,22,21 23 24
+Lot ,Traversal,42.643924,-87.857027,23,22 24
+Lot,Traversal,42.643785,-87.857119,24,22 23
+Lot,Traversal,42.643264,-87.856991,25,24 26
+Lot,Traversal,42.643209,-87.856281,26,19 25
+Lot,Traversal,42.64483,-87.85691,27,21 28
+Lot ,Traversal,42.644848,-87.857424,28,27 21
+Lot ,Traversal,42.645435,-87.857405,29,28 30
+Lot ,Traversal,42.645571,-87.857402,30,29 31
+Lot,Traversal,42.645668,-87.857201,31,30 32
+Lot,Traversal,42.645654,-87.855999,32,31 33 6
+Lot,Traversal,42.645727,-87.855803,33,32 6 7
+Lot ,Traversal,42.644874,-87.85561,34,48 44 35
+Lot,Traversal,42.645,-87.855331,35,44 34 36 4
+Lot,Traversal,42.644921,-87.854961,36,35 37 38
+Lot,Traversal,42.645087,-87.854661,37,36 39
+Lot,Traversal,42.644968,-87.854494,38,36 39
+Lot,Traversal,42.645146,-87.854414,39,38 37 40
+Lot,Traversal,42.64528,-87.854425,40,37 38 5
+Lot,Traversal,42.644528,-87.856082,41,42 43 2
+Lot ,Traversal,42.644473,-87.855999,42,26 41
+Lot,Traversal,42.644593,-87.855939,43,41 42 34 3
+Lot,Traversal,42.645097,-87.855579,44,6 34 35
+Lot,Bus Stop,42.64856,-87.848521,45,51
+,,,,,
+Campus Police,Main Entrance,42.647443,-87.847219,47,48
+Lot,Traversal,42.64743,-87.846881,48,47
+Lot,Traversal,42.648016,-87.848529,51,45 52
+Lot ,Traversal,42.647748,-87.849295,52,45 53
+Lot,Traversal,42.647285,-87.850166,53,52 54
+Lot,Traversal,42.6473,-87.853624,54,53 55
+Lot,Traversal,42.647487,-87.854281,55,54 56
+Lot ,Traversal,42.647895,-87.854268,56,55 57
+Lot,Traversal,42.648299,-87.854135,57,56 58
+Lot,Traversal,42.648629,-87.854013,58,57
