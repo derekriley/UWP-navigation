@@ -2,6 +2,8 @@ package uwp.cs.edu.parkingtracker.navigation;
 
 import android.content.Context;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,22 +20,22 @@ import java.util.Locale;
 
 public class NodeParser {
 
-     // Column index of the building column.
+    // Column index of the building column.
     private static final int BUILDING = 0;
 
-     // Column index of the node type column.
+    // Column index of the node type column.
     private static final int NODE_TYPE = 1;
 
-     // Column index of the node longitude column.
+    // Column index of the node longitude column.
     private static final int NODE_LONG = 2;
 
-     // Column index of the node latitude column.
+    // Column index of the node latitude column.
     private static final int NODE_LAT = 3;
 
-     // Column index of the node id column.
+    // Column index of the node id column.
     private static final int NODE_ID = 4;
 
-     // Column index of the node neighbors column.
+    // Column index of the node neighbors column.
     private static final int NODE_NEIGHBORS = 5;
 
     // radius of earth in km
@@ -147,6 +149,26 @@ public class NodeParser {
 
     private static double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
+    }
+
+    // returns the nodeMap as <vertex ID, Vertex>
+    public HashMap <String, Vertex> getNodeMap(){
+        return nodeMap;
+    }
+
+    // returns the nodeMap as <Vertex LatLng, Vertex>
+    public HashMap <LatLng, Vertex> getLatLngNodeMap(){
+
+        ArrayList<String> keySet = new ArrayList(nodeMap.keySet());
+        HashMap <LatLng, Vertex> latLngNodeMap = new HashMap();
+
+        for (String key : keySet) {
+            Vertex temp = this.nodeMap.get(key);
+            LatLng latLngTemp = new LatLng(temp.lat, temp.lon);
+            latLngNodeMap.put(latLngTemp, temp);
+        }
+
+        return latLngNodeMap;
     }
 
 }
