@@ -198,22 +198,22 @@ package uwp.cs.edu.parkingtracker;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import uwp.cs.edu.parkingtracker.mapping.MapTransform;
-
 /**
- * Created by Joseph  and brandon on 4/21/2015.
- *
+ * Created by Joseph on 4/21/2015.
+ * <p/>
  * This is for handling our sql lite database to store the saved parking spot
  */
-public class DatabaseHandler extends SQLiteOpenHelper{
+public class DatabaseHandler extends SQLiteOpenHelper {
 
     //this is the version for the database
-    private static final int DATABASE_VERSION =1;
+    private static final int DATABASE_VERSION = 1;
 
     //this is the name of the database
     private static final String DATABASE_NAME = "parkingSpotSaverDB.db";
@@ -228,54 +228,96 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     //column for the longitude
     public static final String COLUMN_LONGITUDE = "longitude";
 
+    private SQLiteDatabase sqliteDBInstance = null;
+
+    private static DatabaseHandler sInstance;
+
+    public static synchronized DatabaseHandler getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new DatabaseHandler(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.sqliteDBInstance = getWritableDatabase();
     }
 
     //this creates the database
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        String CREATE_PRODUCTS_TABLE = "CREATE TABLE " +
-                TABLE_GPSPOINT + "("
-                + KEY_ID + "Key"
-                + COLUMN_LATITUDE + " Latitude"
-                + COLUMN_LONGITUDE + "Latitude" + ")";
-        db.execSQL(CREATE_PRODUCTS_TABLE);
+    public void onCreate(SQLiteDatabase sqliteDBInstance) {
+        Log.i("onCreate", "Creating the database...");
+        String DB_CREATE_SCRIPT = "create table " + TABLE_GPSPOINT +
+                " ("+KEY_ID+" integer primary key, "+COLUMN_LATITUDE +
+                " real, "+COLUMN_LONGITUDE+" real);)";
+
+
+        sqliteDBInstance.execSQL(DB_CREATE_SCRIPT);
         ContentValues values = new ContentValues();
         values.put(KEY_ID, 1);
         values.put(COLUMN_LATITUDE, 0);
         values.put(COLUMN_LONGITUDE, 0);
-        db.insert(TABLE_GPSPOINT, null, values);
+        sqliteDBInstance.insert(TABLE_GPSPOINT, null, values);
+    }
+
+    public void openDB() throws SQLException
+    {
+        Log.i("openDB", "Checking sqliteDBInstance...");
+        if(this.sqliteDBInstance == null)
+        {
+            Log.i("openDB", "Creating sqliteDBInstance...");
+            this.sqliteDBInstance = this.getWritableDatabase();
+        }
+    }
+
+    public void closeDB()
+    {
+        if(this.sqliteDBInstance != null)
+        {
+            if(this.sqliteDBInstance.isOpen())
+                this.sqliteDBInstance.close();
+        }
     }
 
     //this is the method to add the gps points, it overrides the old one everytime
-    public void addGpsPoint(LatLng gpspoints){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void addGpsPoint(LatLng gpspoints) {
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_LATITUDE, gpspoints.latitude);
         values.put(COLUMN_LONGITUDE, gpspoints.longitude);
-        db.update(TABLE_GPSPOINT, values,KEY_ID + " = ?" , new String[]{ String.valueOf(1) });
+        this.sqliteDBInstance.update(TABLE_GPSPOINT, values, KEY_ID + " = ?", new String[]{String.valueOf(1)});
 
-        db.close();
 
     }
+
     //this gets the gps point
-    public LatLng getGpsPoint(int id){
-        SQLiteDatabase db = this.getReadableDatabase();
+    public LatLng getGpsPoint(int id) {
+        String[] tableColumns = new String[] {
+                COLUMN_LATITUDE, COLUMN_LONGITUDE};
+        String whereClause = KEY_ID +" = ?";
+        String[] whereArgs = new String[] {
+                "1",
+        };
+        Cursor cursor = sqliteDBInstance.query(TABLE_GPSPOINT, tableColumns, whereClause,
+                whereArgs, null, null, null);
 
-        Cursor cursor = db.query(TABLE_GPSPOINT, new String[] {
-                KEY_ID, COLUMN_LATITUDE, COLUMN_LONGITUDE }, KEY_ID + "=?",
-                new String[] {String.valueOf(id)}, null,null,null,null);
-        if (cursor != null){
-            cursor.moveToFirst();
+        if (cursor.moveToFirst()) {
+            Float lat = Float.parseFloat(cursor.getString(0));
+            Float lon = Float.parseFloat(cursor.getString(1));
+            cursor.close();
+            if (lat == 0 || lon == 0) {
+                return null;
+            }
+            return new LatLng(lat, lon);
         }
-       Float lat = Float.parseFloat(cursor.getString(1));
-       Float lon = Float.parseFloat(cursor.getString(2));
+        cursor.close();
+        return null;
 
-        LatLng  latlong = new LatLng(lat,lon);
-
-        return latlong;
     }
 
 
