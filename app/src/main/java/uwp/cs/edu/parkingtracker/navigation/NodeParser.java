@@ -157,13 +157,13 @@ public class NodeParser {
     }
 
     // returns the nodeMap as <Vertex LatLng, Vertex>
-    public HashMap <LatLng, Vertex> getLatLngNodeMap(){
+    public static HashMap <LatLng, Vertex> getLatLngNodeMap(){
 
         ArrayList<String> keySet = new ArrayList(nodeMap.keySet());
         HashMap <LatLng, Vertex> latLngNodeMap = new HashMap();
 
         for (String key : keySet) {
-            Vertex temp = this.nodeMap.get(key);
+            Vertex temp = nodeMap.get(key);
             LatLng latLngTemp = new LatLng(temp.lat, temp.lon);
             latLngNodeMap.put(latLngTemp, temp);
         }
