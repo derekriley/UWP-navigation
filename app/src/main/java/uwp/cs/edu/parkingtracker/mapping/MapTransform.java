@@ -204,6 +204,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -229,13 +230,12 @@ import java.util.List;
 import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
-import uwp.cs.edu.parkingtracker.DatabaseHandler;
 import uwp.cs.edu.parkingtracker.MainActivity;
 import uwp.cs.edu.parkingtracker.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.R;
-import uwp.cs.edu.parkingtracker.navigation.NodeParser;
 import uwp.cs.edu.parkingtracker.navigation.PathProvider;
 import uwp.cs.edu.parkingtracker.navigation.StraightLinePathProvider;
+import uwp.cs.edu.parkingtracker.parking.DatabaseHandler;
 import uwp.cs.edu.parkingtracker.parking.ParkingZoneOption;
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
 
@@ -251,7 +251,7 @@ public class MapTransform extends MapObject {
     // Instance variable begin
     private GoogleMap mMap;
     private MainActivity passedActivity;
-    private LatLng parkingSpot = null;
+    private LatLng parkingLatLng = null;
     private SlidingUpPanelLayout slidingUpPanel;
     private TextView slidingUpText;
     private BuildingList buildings;
@@ -259,6 +259,8 @@ public class MapTransform extends MapObject {
     private Map<String, ZonePoly> zonePolyMap;
     private Polyline drawnPath = null;
     private ProgressDialog pD;
+    private Marker parkingMarker = null;
+
     // Instance variable end
 
     /**
@@ -282,7 +284,8 @@ public class MapTransform extends MapObject {
         this.slidingUpPanel.setPanelHeight(0);
         this.zonePolyMap = new HashMap<>();
         this.pD = new ProgressDialog(passedActivity,R.style.TransparentProgressDialog);
-        NodeParser.getInstance(passedActivity);
+        DatabaseHandler.getInstance(passedActivity);
+        //NodeParser.getInstance(passedActivity);
     }
 
 
@@ -300,8 +303,6 @@ public class MapTransform extends MapObject {
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         drawPolygons();
-        attachMarkersToMap();
-        getParkingSpot();
 
         slidingUpPanel.setDragView(passedActivity.findViewById(R.id.sliding_layout_child2));
         //slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -309,12 +310,16 @@ public class MapTransform extends MapObject {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                String buildingName = marker.getTitle();
-                if (buildingName != null) {
+                String markerTitle = marker.getTitle();
+                if (marker.equals(parkingMarker)) {
+                    Toast.makeText(passedActivity, "You Parked Here!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                if (markerTitle != null) {
                     slidingUpPanel.setPanelHeight(
                             passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    buildingSelected(buildingName, CONSTANTS.buildings.get(buildingName));
+                    buildingSelected(markerTitle, CONSTANTS.buildings.get(markerTitle));
                     //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
                 }
                 return true;
@@ -342,6 +347,8 @@ public class MapTransform extends MapObject {
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
         }});
+        attachMarkersToMap();
+        getParkingSpot();
     }
 
 
@@ -373,20 +380,12 @@ public class MapTransform extends MapObject {
      */
     public void refreshMap() {
         //start to redraw zones
-
         new MapTask().execute();
         Log.d("MAP", "REFRESH");
 
-        //parking spot
-        if (isParked()) {
-            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
-        }
     }
 
-    /**
-     * Physically attach the markers to the google map fragment. Done in one batch to minimize
-     * interruption to the main UI Thread.
-     */
+    //attach building markers to map
     public void attachMarkersToMap() {
         //add building markers
         for (Map.Entry<String, LatLng> entry : CONSTANTS.buildings.entrySet()) {
@@ -394,41 +393,50 @@ public class MapTransform extends MapObject {
             LatLng value = entry.getValue();
             IconGenerator mIconGen = new IconGenerator(passedActivity);
             Bitmap iconBitmap = mIconGen.makeIcon(key);
-            mMap.addMarker(new MarkerOptions().position(value).icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)).title(key));
+            mMap.addMarker(new MarkerOptions().position(value)
+                    .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)).title(key));
         }
     }
 
     //attach a new parking spot to the map
     public void attachNewParkingSpot() {
-        //sets parking spot from current location
-        parkingSpot = getLocation();
-        mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
-        //parkingDB.openDB();
-        DatabaseHandler.getInstance(passedActivity).addGpsPoint(parkingSpot);
-
-
+        if (parkingMarker != null) {
+            //remove marker
+            parkingMarker.remove();
+        }
+        //set location
+        parkingLatLng = getLocation();
+        //make new marker
+        parkingMarker = mMap.addMarker(new MarkerOptions().title("Parking Spot")
+                .position(parkingLatLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+        DatabaseHandler.getInstance(passedActivity).addGpsPoint(parkingLatLng);
     }
-    //this is the method it gets the latlng value of the parking spot from the local(Database Handler not the server)database
 
+    //this is the method it gets the latlng value of the parking spot from
+    // the local database. Used when reloading activity
     public void getParkingSpot() {
-        //parkingDB.openDB();
-        parkingSpot = DatabaseHandler.getInstance(passedActivity).getGpsPoint(1);
-        if (isParked()) {
-            mMap.addMarker(new MarkerOptions().title("Parking Spot").position(parkingSpot).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
-
+        LatLng parkingLocation = DatabaseHandler.getInstance(passedActivity).getGpsPoint(1);
+        if (parkingLocation != null) {
+            parkingLatLng = parkingLocation;
+            parkingMarker = mMap.addMarker(new MarkerOptions().title("Parking Spot")
+                    .position(parkingLatLng).icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.parking)));
         }
-
     }
 
-    //true is previously parked
-    public boolean isParked() {
-        if (parkingSpot == null) {
-            return false;
+    public void removeParkingSpot() {
+        if (parkingMarker != null) {
+            parkingMarker.setVisible(false);
+            parkingMarker.remove();
+            parkingMarker = null;
+            parkingLatLng = null;
+            DatabaseHandler.getInstance(passedActivity).clearPoint();
         }
-        return true;
     }
 
-    //returns current location from gps
+
+    //returns current location from gps in LatLng
     public LatLng getLocation() {
         Location location = mMap.getMyLocation();
         return new LatLng(location.getLatitude(), location.getLongitude());
@@ -630,5 +638,4 @@ public class MapTransform extends MapObject {
 
 
     }
-
 }

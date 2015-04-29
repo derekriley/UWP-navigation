@@ -32,6 +32,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
 import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
+import uwp.cs.edu.parkingtracker.parking.ParkingSpotDialogFragment;
 import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
 /**
@@ -60,7 +61,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            //mapTransform.setUpMap();
             setupTools();
             return;
         }
@@ -75,10 +75,7 @@ public class MainActivity extends ActionBarActivity {
         setupTools();
         setupBottomPanel();
         deviceListeners = getDeviceListeners();
-        if (mapTransform == null) {
-            mapTransform = new MapTransform(MainActivity.this);
-            mapTransform.setUpMap();
-        }
+
     }
 
     @Override
@@ -98,6 +95,8 @@ public class MainActivity extends ActionBarActivity {
         if (!loadComplete && mServiceIntent != null) {
             stopService(mServiceIntent);
         }
+        mapTransform = null;
+        deviceListeners = null;
     }
 
     @Override
@@ -106,15 +105,16 @@ public class MainActivity extends ActionBarActivity {
         // Register for the particular broadcast based on ACTION string
         IntentFilter filter = new IntentFilter(ZoneService.ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
-        mapTransform.setUpMap();
-        mapTransform.drawPolygons();
-        //setupService();
+        if (mapTransform == null) {
+            mapTransform = new MapTransform(MainActivity.this);
+            mapTransform.setUpMap();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //TODO: Implement
+
     }
 
     @Override
@@ -179,6 +179,7 @@ public class MainActivity extends ActionBarActivity {
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
 
+    //handles when a menu item is selected
     private boolean handleMenuItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cancel:
@@ -187,8 +188,9 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_park:
                 //TODO: Set a dialog to REPARK? UNPARK?
-                mapTransform.attachNewParkingSpot();
-                Toast.makeText(MainActivity.this, "Parked!", Toast.LENGTH_SHORT).show();
+                ParkingSpotDialogFragment dia = new ParkingSpotDialogFragment();
+                dia.setMapTransform(mapTransform);
+                dia.show(getFragmentManager(),"Diag");
                 return true;
             case R.id.action_student:
                 modifyDrawerItems("student");
@@ -331,6 +333,7 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+    //ran when service loadingcomplete
     private void loadingComplete() {
         progress.setProgress(0);
         if (pD.isShowing()) {
@@ -352,6 +355,7 @@ public class MainActivity extends ActionBarActivity {
         timerHandler.postDelayed(timerRunnable, SERVICE_DELAY);
     }
 
+    //shows cancel button in the actionbar
     public void setCancelItem(boolean option) {
         actionBarMenu.findItem(R.id.action_cancel).setVisible(option);
         //    invalidateOptionsMenu();
