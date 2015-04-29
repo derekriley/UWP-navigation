@@ -193,7 +193,7 @@
  *
  */
 
-package uwp.cs.edu.parkingtracker;
+package uwp.cs.edu.parkingtracker.parking;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -295,6 +295,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void clearPoint() {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_LATITUDE, 0);
+        values.put(COLUMN_LONGITUDE, 0);
+        this.sqliteDBInstance.update(TABLE_GPSPOINT, values, KEY_ID + " = ?", new String[]{String.valueOf(1)});
+    }
+
     //this gets the gps point
     public LatLng getGpsPoint(int id) {
         String[] tableColumns = new String[] {
@@ -310,14 +318,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Float lat = Float.parseFloat(cursor.getString(0));
             Float lon = Float.parseFloat(cursor.getString(1));
             cursor.close();
-            if (lat == 0 || lon == 0) {
-                return null;
+            if (lat != 0 || lon != 0) {
+                return new LatLng(lat, lon);
             }
-            return new LatLng(lat, lon);
         }
         cursor.close();
         return null;
-
     }
 
 

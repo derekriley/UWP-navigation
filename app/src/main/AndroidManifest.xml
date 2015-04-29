@@ -24,7 +24,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAxZyZdl138liDklHeMHKjGdP5K4IQUlfU" />
+            android:value="AIzaSyDiCohq3VpPkUnkuvVZsi_rxg20uote2Sk" />
 
         <service
             android:name="uwp.cs.edu.parkingtracker.parking.ZoneService" />

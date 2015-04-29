@@ -13,7 +13,9 @@
 
     <string-array name="lot_options">
         <item>Empty</item>
+        <item>Quarter</item>
         <item>Half Full</item>
+        <item>Three Quarters</item>
         <item>Full</item>
     </string-array>
 
@@ -45,6 +47,8 @@
     <string name="option_visitor">Visitor</string>
     <string name="visitor">Visitors</string>
     <string name="student">Students</string>
-
+    <string name="parked_dia">What would you like to do?</string>
+    <string name="to_park">Park</string>
+    <string name="not_park">Un-Park</string>
 
 </resources>
