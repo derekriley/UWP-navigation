@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
@@ -54,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
     private Intent mServiceIntent = null;
     private ProgressDialog pD;
     private Menu actionBarMenu;
-
+    private int  PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,8 @@ public class MainActivity extends ActionBarActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
         mapTransform.setUpMap();
         mapTransform.drawPolygons();
+        checkPlayServices();
+
         //setupService();
     }
 
@@ -253,7 +257,7 @@ public class MainActivity extends ActionBarActivity {
         }
         if (role.equals("visitor")) {
             //TODO: CHANGE LINKS BASED OFF OF VISITOR
-            drawerItems = new String[]{""};
+            drawerItems = new String[]{"Information" , "uwp.edu", "Events", "Admissions" };
         }
         mAdapter = new ArrayAdapter<>(this, R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
@@ -275,6 +279,17 @@ public class MainActivity extends ActionBarActivity {
                     case "uwp.edu":
                         openUrl("http://www.uwp.edu/");
                         break;
+                    case "Events":
+                        openUrl("http://www.uwp.edu/events.cfm");
+                        break;
+                    case "Information":
+                        openUrl("http://www.uwp.edu/explore/aboutuwp/index.cfm");
+                        break;
+                    case "Admissions":
+                        openUrl("http://www.uwp.edu/apply/admissions/index.cfm");
+                        break;
+
+
                 }
             }
         });
@@ -357,4 +372,20 @@ public class MainActivity extends ActionBarActivity {
         actionBarMenu.findItem(R.id.action_cancel).setVisible(option);
         //    invalidateOptionsMenu();
     }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                //Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    };
+
 }
