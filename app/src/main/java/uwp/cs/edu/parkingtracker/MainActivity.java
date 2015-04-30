@@ -34,6 +34,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
 import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
+import uwp.cs.edu.parkingtracker.parking.ParkingSpotDialogFragment;
 import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
 /**
@@ -108,17 +109,16 @@ public class MainActivity extends ActionBarActivity {
         // Register for the particular broadcast based on ACTION string
         IntentFilter filter = new IntentFilter(ZoneService.ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
-        mapTransform.setUpMap();
-        mapTransform.drawPolygons();
-        checkPlayServices();
-
-        //setupService();
+        if (mapTransform == null) {
+            mapTransform = new MapTransform(MainActivity.this);
+            mapTransform.setUpMap();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //TODO: Implement
+
     }
 
     @Override
@@ -190,8 +190,10 @@ public class MainActivity extends ActionBarActivity {
                 setCancelItem(false);
                 return true;
             case R.id.action_park:
-                mapTransform.attachNewParkingSpot();
-                Toast.makeText(MainActivity.this, "Parked!", Toast.LENGTH_SHORT).show();
+                //TODO: Set a dialog to REPARK? UNPARK?
+                ParkingSpotDialogFragment dia = new ParkingSpotDialogFragment();
+                dia.setMapTransform(mapTransform);
+                dia.show(getFragmentManager(), "Diag");
                 return true;
             case R.id.action_student:
                 modifyDrawerItems("student");
