@@ -28,10 +28,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
 import uwp.cs.edu.parkingtracker.parking.ParkDialogFragment;
+import uwp.cs.edu.parkingtracker.parking.ParkingSpotDialogFragment;
 import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
 /**
@@ -54,7 +57,7 @@ public class MainActivity extends ActionBarActivity {
     private Intent mServiceIntent = null;
     private ProgressDialog pD;
     private Menu actionBarMenu;
-
+    private int  PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,15 +109,16 @@ public class MainActivity extends ActionBarActivity {
         // Register for the particular broadcast based on ACTION string
         IntentFilter filter = new IntentFilter(ZoneService.ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(loadingStatus, filter);
-        mapTransform.setUpMap();
-        mapTransform.drawPolygons();
-        //setupService();
+        if (mapTransform == null) {
+            mapTransform = new MapTransform(MainActivity.this);
+            mapTransform.setUpMap();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //TODO: Implement
+
     }
 
     @Override
@@ -186,8 +190,10 @@ public class MainActivity extends ActionBarActivity {
                 setCancelItem(false);
                 return true;
             case R.id.action_park:
-                mapTransform.attachNewParkingSpot();
-                Toast.makeText(MainActivity.this, "Parked!", Toast.LENGTH_SHORT).show();
+                //TODO: Set a dialog to REPARK? UNPARK?
+                ParkingSpotDialogFragment dia = new ParkingSpotDialogFragment();
+                dia.setMapTransform(mapTransform);
+                dia.show(getFragmentManager(), "Diag");
                 return true;
             case R.id.action_student:
                 modifyDrawerItems("student");
@@ -253,7 +259,7 @@ public class MainActivity extends ActionBarActivity {
         }
         if (role.equals("visitor")) {
             //TODO: CHANGE LINKS BASED OFF OF VISITOR
-            drawerItems = new String[]{""};
+            drawerItems = new String[]{"Information" , "uwp.edu", "Events", "Admissions" };
         }
         mAdapter = new ArrayAdapter<>(this, R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
@@ -275,6 +281,17 @@ public class MainActivity extends ActionBarActivity {
                     case "uwp.edu":
                         openUrl("http://www.uwp.edu/");
                         break;
+                    case "Events":
+                        openUrl("http://www.uwp.edu/events.cfm");
+                        break;
+                    case "Information":
+                        openUrl("http://www.uwp.edu/explore/aboutuwp/index.cfm");
+                        break;
+                    case "Admissions":
+                        openUrl("http://www.uwp.edu/apply/admissions/index.cfm");
+                        break;
+
+
                 }
             }
         });
@@ -357,4 +374,20 @@ public class MainActivity extends ActionBarActivity {
         actionBarMenu.findItem(R.id.action_cancel).setVisible(option);
         //    invalidateOptionsMenu();
     }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                //Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    };
+
 }
