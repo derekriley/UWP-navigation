@@ -253,7 +253,10 @@ public class ZoneList extends MapObject{
             if (Double.valueOf(fullness) < 33) {
                 this.color = Color.GREEN;
             }
-            if (Double.valueOf(confidence) > 66){
+            if (Double.valueOf(fullness) < 0){
+                this.color = Color.BLACK;
+            }
+             if (Double.valueOf(confidence) > 66){
                 this.color = Color.argb(255,Color.red(color),Color.green(color),Color.blue(color));
             }
             if (Double.valueOf(confidence) >= 33 && Double.valueOf(confidence) <= 66){
@@ -313,7 +316,7 @@ public class ZoneList extends MapObject{
             Zone z = zoneMap.get(zID);
             String result = DatabaseExchange.getFullness(zID);
             String fullness = result.split(",")[0];
-            String confidence = "";
+            String confidence = "100";
             if (result.split(",").length>1) {
                 confidence = result.split(",")[1];
             }
