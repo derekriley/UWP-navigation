@@ -204,6 +204,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -309,12 +310,16 @@ public class MapTransform extends MapObject {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                String buildingName = marker.getTitle();
-                if (buildingName != null) {
+                String markerTitle = marker.getTitle();
+                if (marker.equals(parkingMarker)) {
+                    Toast.makeText(passedActivity, "You Parked Here!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                if (markerTitle != null) {
                     slidingUpPanel.setPanelHeight(
                             passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    buildingSelected(buildingName, CONSTANTS.buildings.get(buildingName));
+                    buildingSelected(markerTitle, CONSTANTS.buildings.get(markerTitle));
                     //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
                 }
                 return true;
@@ -342,7 +347,7 @@ public class MapTransform extends MapObject {
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
         }});
-
+        attachMarkersToMap();
         getParkingSpot();
     }
 
