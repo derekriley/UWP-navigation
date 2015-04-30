@@ -432,7 +432,7 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
     @Override
     public void onDialogQuarterClick(DialogFragment dialog){
         String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 3);
+        DatabaseExchange.sendVote(zID, 25);
     }
 
     @Override
@@ -444,22 +444,21 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
 //        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/2");
 //        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
         String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 5);
+        DatabaseExchange.sendVote(zID, 50);
 
     }
 
     @Override
     public void onDialogThreeQuartersClick(DialogFragment dialog) {
         String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 8);
+        DatabaseExchange.sendVote(zID, 75);
     }
 
     @Override
     public void onDialogFullClick(DialogFragment dialog) {
         // User touched the dialog's Full
         String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 10);
-
+        DatabaseExchange.sendVote(zID, 100);
     }
 
     /**
