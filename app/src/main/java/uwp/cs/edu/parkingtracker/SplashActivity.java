@@ -206,7 +206,7 @@ import android.os.Handler;
  * */
 public class SplashActivity extends Activity {
     //Introduce a delay
-    private final int WAIT_TIME = 2000;
+    private final int WAIT_TIME = 1300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
