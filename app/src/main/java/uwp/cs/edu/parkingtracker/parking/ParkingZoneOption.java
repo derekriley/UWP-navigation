@@ -24,7 +24,7 @@ public class ParkingZoneOption implements Comparable<ParkingZoneOption>{
         Double fullness1 = Double.valueOf(ZoneList.getInstance().getFullness(id));
         Double fullness2 = Double.valueOf(ZoneList.getInstance().getFullness(otherOption.id));
         int i = 0;
-        if (fullness1 == fullness2 || (fullness1<6.66 && fullness2 < 6.66)) {
+        if (fullness1 == fullness2 || (fullness1<66 && fullness2 < 66)) {
             i = 0;
         }
         else {

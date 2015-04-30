@@ -218,6 +218,7 @@ public class ZoneList extends MapObject{
     private static class Zone {
         private String zoneId;
         private String fullness;
+        private String confidence;
         private int color;
 
         public Zone() {
@@ -240,16 +241,26 @@ public class ZoneList extends MapObject{
          * Used to set fullness of the zone
          * @param fullness - fullness amount
          */
-        public void setFullness(String fullness) {
+        public void setFullness(String fullness, String confidence) {
             this.fullness = fullness;
-            if (Double.valueOf(fullness) > 6.66) {
+            this.confidence=confidence;
+            if (Double.valueOf(fullness) > 66) {
                 this.color = Color.RED;
             }
-            if (Double.valueOf(fullness) >= 3.33 && Double.valueOf(fullness) <= 6.66) {
+            if (Double.valueOf(fullness) >= 33 && Double.valueOf(fullness) <= 66) {
                 this.color = Color.YELLOW;
             }
-            if (Double.valueOf(fullness) < 3.33) {
+            if (Double.valueOf(fullness) < 33) {
                 this.color = Color.GREEN;
+            }
+            if (Double.valueOf(confidence) > 66){
+                this.color = Color.argb(255,Color.red(color),Color.green(color),Color.blue(color));
+            }
+            if (Double.valueOf(confidence) >= 33 && Double.valueOf(confidence) <= 66){
+                this.color = Color.argb(170,Color.red(color),Color.green(color),Color.blue(color));
+            }
+            if (Double.valueOf(confidence) < 33){
+                this.color = Color.argb(85,Color.red(color),Color.green(color),Color.blue(color));
             }
         }
 
@@ -300,7 +311,15 @@ public class ZoneList extends MapObject{
     public synchronized boolean setFullness (String zID) {
         try {
             Zone z = zoneMap.get(zID);
-            z.setFullness(DatabaseExchange.getFullness(zID));
+            String result = DatabaseExchange.getFullness(zID);
+            String fullness = result.split(",")[0];
+            String confidence = "";
+            if (result.split(",").length>1) {
+                confidence = result.split(",")[1];
+            }
+
+            z.setFullness(fullness,confidence);
+
             zoneMap.put(zID, z);
             return true;
         } catch (Exception e) {
