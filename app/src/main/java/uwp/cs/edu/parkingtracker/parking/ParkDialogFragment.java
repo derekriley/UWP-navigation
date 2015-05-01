@@ -204,6 +204,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import uwp.cs.edu.parkingtracker.R;
@@ -219,18 +225,11 @@ public class ParkDialogFragment extends DialogFragment {
     protected String zID;
     protected String fullness;
     protected ParkDialogListener mListener;
+    protected int fullnessValue;
 
 
     public interface ParkDialogListener {
-        public void onDialogEmptyClick(DialogFragment dialog);
-
-        public void onDialogQuarterClick(DialogFragment dialog);
-
-        public void onDialogHalfClick(DialogFragment dialog);
-
-        public void onDialogThreeQuartersClick(DialogFragment dialog);
-
-        public void onDialogFullClick(DialogFragment dialog);
+        public void onDialogSend(DialogFragment dialog, int val);
     }
 
 
@@ -273,35 +272,48 @@ public class ParkDialogFragment extends DialogFragment {
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
-                .setTitle("How full is this zone?")
-                .setItems(R.array.lot_options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case (0):
-                                mListener.onDialogEmptyClick(ParkDialogFragment.this);
-                                break;
-                            case (1):
-                                mListener.onDialogQuarterClick(ParkDialogFragment.this);
-                                break;
-                            case (2):
-                                mListener.onDialogHalfClick(ParkDialogFragment.this);
-                                break;
-                            case (3):
-                                mListener.onDialogThreeQuartersClick(ParkDialogFragment.this);
-                                break;
-                            case (4):
-                                mListener.onDialogFullClick(ParkDialogFragment.this);
-                                break;
-                            default:
-                                Toast.makeText(getActivity().getApplicationContext(), "Not Working",
-                                        Toast.LENGTH_SHORT).show();
-                        }
 
-                    }
-                })
-                .create();
+        AlertDialog.Builder votePopup = new AlertDialog.Builder(getActivity());
+        votePopup.setTitle("How full is this zone?");
+
+        LinearLayout linear = new LinearLayout(getActivity());
+        linear.setOrientation(LinearLayout.VERTICAL);
+        SeekBar fullnessSlider = new SeekBar(getActivity());
+
+        fullnessSlider.setMax(4);
+        final TextView result = new TextView(getActivity());
+        result.setPadding(20, 10, 10 , 10);
+        result.setText("0 %");
+
+        linear.addView(fullnessSlider);
+        linear.addView(result);
+
+        votePopup.setView(linear);
+
+        fullnessSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int fullness, boolean fromUser){
+                fullnessValue = fullness;
+                result.setText(fullness*25 + "%");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        votePopup.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mListener.onDialogSend(ParkDialogFragment.this, fullnessValue);
+                dismiss();
+            }
+        });
+        return votePopup.create();
     }
 
     public String getID () {return this.zID;};

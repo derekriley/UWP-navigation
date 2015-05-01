@@ -414,53 +414,12 @@ public class DeviceListeners implements LocationListener, ParkDialogFragment.Par
         }
     };
 
-    // methods that will update the database depending on the user vote.
-    @Override
-    public void onDialogEmptyClick(DialogFragment dialog) {
-        // User touched the dialog's positive button
-//        ArrayList<String> params = new ArrayList<>();
-//        params.add(CONSTANTS.PUT);
-//        // Adds a vote to the nearly empty column in the availability table
-//        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/1");
-//        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 0);
-
-
-    }
 
     @Override
-    public void onDialogQuarterClick(DialogFragment dialog){
+    public void onDialogSend(DialogFragment dialog, int val){
         String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 25);
+        DatabaseExchange.sendVote(zID, val*25);
     }
-
-    @Override
-    public void onDialogHalfClick(DialogFragment dialog) {
-//        // User touched the dialog's neutral button
-//        ArrayList<String> params = new ArrayList<>();
-//        params.add(CONSTANTS.PUT);
-//        // Adds a vote to the nearly empty column in the availability table
-//        params.add(CONSTANTS.UPDATE + passedActivity.zone + "/2");
-//        new RESTClient(CONSTANTS.REST_API, passedActivity).execute(params);
-        String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 50);
-
-    }
-
-    @Override
-    public void onDialogThreeQuartersClick(DialogFragment dialog) {
-        String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 75);
-    }
-
-    @Override
-    public void onDialogFullClick(DialogFragment dialog) {
-        // User touched the dialog's Full
-        String zID = ((ParkDialogFragment) dialog).getID();
-        DatabaseExchange.sendVote(zID, 100);
-    }
-
     /**
      * Called when a view has been clicked.
      *
