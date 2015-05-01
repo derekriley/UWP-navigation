@@ -152,7 +152,7 @@ public class NodeParser {
     }
 
     // returns the nodeMap as <vertex ID, Vertex>
-    public HashMap <String, Vertex> getNodeMap(){
+    public static HashMap <String, Vertex> getNodeMap(){
         return nodeMap;
     }
 

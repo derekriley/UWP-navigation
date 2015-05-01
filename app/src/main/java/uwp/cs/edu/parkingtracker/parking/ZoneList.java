@@ -220,6 +220,7 @@ public class ZoneList extends MapObject{
         private String fullness;
         private String confidence;
         private int color;
+        String navId;
 
         public Zone() {
             this.fullness = "0";
@@ -235,6 +236,14 @@ public class ZoneList extends MapObject{
 
         public String getFullness() {
             return fullness;
+        }
+
+        public String getNavId() {
+            return navId;
+        }
+
+        public void setNavId(String id) {
+            navId = id;
         }
 
         /**
@@ -285,7 +294,9 @@ public class ZoneList extends MapObject{
         for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
             Zone z = new Zone(entry.getKey());
             zoneMap.put(z.getZoneId(), z);
+            zoneMap.get(z.getZoneId()).setNavId(z.getZoneId());
         }
+
     }
 
     public synchronized static ZoneList getInstance() {

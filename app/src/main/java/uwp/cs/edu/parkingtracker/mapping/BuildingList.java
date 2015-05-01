@@ -17,11 +17,20 @@ public class BuildingList extends MapObject{
 
     private class Building {
         private String name;
+        private String navId;
         private PolygonOptions polygonOptions;
 
         private Building(String n, PolygonOptions pO) {
             this.name = n;
             this.polygonOptions = pO;
+        }
+
+        public String getNavId() {
+            return navId;
+        }
+
+        public void setNavId(String id) {
+            navId = id;
         }
 
         public String getName() {
