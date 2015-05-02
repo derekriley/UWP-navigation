@@ -90,11 +90,10 @@ public class NodeParser {
         String[] cells = line.split(",");
         if (cells.length > 0) {
 
-            String nodeLong = cells[NODE_LONG].toUpperCase(Locale.ENGLISH);
-            String nodeLat = cells[NODE_LAT].toUpperCase(Locale.ENGLISH);
-            String nodeId = cells[NODE_ID].toUpperCase(Locale.ENGLISH);
-            //
-            String nodeNeigh = cells[NODE_NEIGHBORS].toUpperCase(Locale.ENGLISH);
+            String nodeLong = cells[NODE_LONG];
+            String nodeLat = cells[NODE_LAT];
+            String nodeId = cells[NODE_ID];
+            String nodeNeigh = cells[NODE_NEIGHBORS];
 
             String neighbors[] = nodeNeigh.split(" ");
 
@@ -103,7 +102,7 @@ public class NodeParser {
             temp.lat = Double.parseDouble(nodeLong);
             temp.lon = Double.parseDouble(nodeLat);
 
-            nodeMap.put(temp.name, temp);
+            nodeMap.put(nodeId, temp);
 
         }
     }

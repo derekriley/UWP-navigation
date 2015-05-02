@@ -49,6 +49,12 @@ public class BuildingList extends MapObject{
             Building b = new Building(entry.getKey(), entry.getValue());
             buildingHashMap.put(b.getName(), b);
         }
+        buildingHashMap.get("Student Center").setNavId("Student_Center");
+        buildingHashMap.get("Molinaro Hall").setNavId("Molinaro_Hall");
+        buildingHashMap.get("Greenquist Hall").setNavId("Greenquist_Hall");
+        buildingHashMap.get("Wyllie Hall").setNavId("Wyllie_Hall");
+        buildingHashMap.get("The Rita").setNavId("The_Rita");
+        buildingHashMap.get("Sports and Activity Center").setNavId("Sports_and_Activity_Center");
     }
 
     public String BuildingTapped(LatLng point) {
