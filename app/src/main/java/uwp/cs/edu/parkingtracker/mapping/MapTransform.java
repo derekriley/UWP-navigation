@@ -231,11 +231,10 @@ import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.MainActivity;
-import uwp.cs.edu.parkingtracker.ParkingZoneOptionAdapter;
+import uwp.cs.edu.parkingtracker.parking.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.R;
 import uwp.cs.edu.parkingtracker.navigation.NavigationPathProvider;
 import uwp.cs.edu.parkingtracker.navigation.PathProvider;
-import uwp.cs.edu.parkingtracker.navigation.StraightLinePathProvider;
 import uwp.cs.edu.parkingtracker.parking.DatabaseHandler;
 import uwp.cs.edu.parkingtracker.parking.ParkingZoneOption;
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
