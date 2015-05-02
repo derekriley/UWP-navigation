@@ -233,6 +233,7 @@ import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.MainActivity;
 import uwp.cs.edu.parkingtracker.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.R;
+import uwp.cs.edu.parkingtracker.navigation.NavigationPathProvider;
 import uwp.cs.edu.parkingtracker.navigation.PathProvider;
 import uwp.cs.edu.parkingtracker.navigation.StraightLinePathProvider;
 import uwp.cs.edu.parkingtracker.parking.DatabaseHandler;
@@ -577,7 +578,7 @@ public class MapTransform extends MapObject {
 
         @Override
         protected List<ParkingZoneOption> doInBackground(LatLng... params) {
-            PathProvider pathProvider = new StraightLinePathProvider();
+            PathProvider pathProvider = new NavigationPathProvider();
             LatLng point = params[0];
             List<ParkingZoneOption> options = new ArrayList<>();
             for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
@@ -591,12 +592,12 @@ public class MapTransform extends MapObject {
                 }
                 avgLat /= polygonOptions.getPoints().size();
                 avgLng /= polygonOptions.getPoints().size();
+                String id = zp.getID();
+                int color = zp.getColor();
                 //finds path from where they clicked inside the building to a zone
                 //THIS IS WHERE THE ENTRANCE TO THE BUILDING SHOULD BE
                 PolylineOptions path = pathProvider.getPath(new LatLng(avgLat, avgLng), point);
                 float pathLength = calculatePathLength(path);
-                String id = zp.getID();
-                int color = zp.getColor();
                 options.add(new ParkingZoneOption(id, pathLength, color, path));
             }
             return options;
