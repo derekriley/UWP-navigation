@@ -1,15 +1,16 @@
-Rita,Main Entrance,42.645007,-87.856926,1,28 27 64
-Rita,Side Entrance,42.644547,-87.856697,2,41 23 64
-Rita,Side Entrance,42.645053,-87.856097,3,43 64
-Wyllie ,Main Entrance,42.645051,-87.855159,4,35 63
-Wyllie ,Side Entrance,42.645276,-87.854565,5,40 63
-Wyllie ,Side Entrance,42.645237,-87.855540,6,44 32 33 63
-Greenquist,Side Entrance,42.646017,-87.855635,7,33 62
-Greenquist,Main Entrance,42.646336,-87.855648,8,33 62
-Greenquist,Side Entrance,42.646631,-87.855578,9,33 62
-Molinaro,Side Entrance,42.646802,-87.855859,10,33 61
-SAC,Main Entrance,42.642934,-87.856317,19,26 65
-SAC,Main Entrance,42.64209,-87.856247,20,19 65
+
+Rita,Main Entrance,42.645007,-87.856926,1,28 27 The_Rita
+Rita,Side Entrance,42.644547,-87.856697,2,41 23 The_Rita
+Rita,Side Entrance,42.645053,-87.856097,3,43 The_Rita
+Wyllie ,Main Entrance,42.645051,-87.855159,4,35 Wyllie_Hall
+Wyllie ,Side Entrance,42.645276,-87.854565,5,40 Wyllie_Hall
+Wyllie ,Side Entrance,42.645237,-87.855540,6,44 32 33 Wyllie_Hall
+Greenquist,Side Entrance,42.646017,-87.855635,7,33 Greenquist_Hall
+Greenquist,Main Entrance,42.646336,-87.855648,8,33 Greenquist_Hall
+Greenquist,Side Entrance,42.646631,-87.855578,9,33 Greenquist_Hall
+Molinaro,Side Entrance,42.646802,-87.855859,10,33 Molinaro_Hall
+SAC,Main Entrance,42.642934,-87.856317,19,26 Sports_and_Activity_Center
+SAC,Main Entrance,42.64209,-87.856247,20,19 Sports_and_Activity_Center
 Lot,Traversal,42.644331,-87.857408,21,27 28 22
 Lot,Traversal,42.644052,-87.857278,22,21 23 24
 Lot ,Traversal,42.643924,-87.857027,23,22 24
@@ -45,7 +46,7 @@ Student Center,Zone 6,42.647571,-87.853825,Student_Center_6,54 55 Student_Center
 Student Center,Zone 7,42.64751,-87.852865,Student_Center_7,Student_Center_6
 Rita Main,Zone 1,42.645275,-87.858894,Rita_Main_1,Rita_Main_2
 Rita Main,Zone 2,42.645254,-87.858332,Rita_Main_2,Rita_Main_1 Rita_Main_3
-Rita Main,Zone 3,42.645254,-87.857719,Rita_Main_3,29 28 Rita_Main_3
+Rita Main,Zone 3,42.645254,-87.857719,Rita_Main_3,29 28 Rita_Main_2
 Rita Main,Zone 4,42.644902,-87.858889,Rita_Main_4,Rita_Main_5
 Rita Main,Zone 5,42.644882,-87.858365,Rita_Main_5,Rita_Main_4 Rita_Main_6
 Rita Main,Zone 6,42.64487,-87.857768,Rita_Main_6,28 Rita_Main_5
@@ -73,22 +74,22 @@ Tallent,Zone5,42.648153,-87.848014,Talent_5,45 51 Talent_6
 Tallent,Zone6,42.648132,-87.847206,Talent_6,49 Talent_5
 Sac,Traversal,42.643009,-87.85759,105,26 19
 ,,,,,
-Campus Police,Main Entrance,42.647443,-87.847219,47,48 66
+Campus Police,Main Entrance,42.647443,-87.847219,47,48
 Lot,Traversal,42.64743,-87.846881,48,47 49
 Lot,Traversal,42.64798,-87.8469,49,51 48
 Lot,Traversal,42.648016,-87.848529,51,45 52 49
 Lot ,Traversal,42.647748,-87.849295,52,51 53
 Lot,Traversal,42.647285,-87.850166,53,52 54
 Lot,Traversal,42.6473,-87.853624,54,53 55
-Lot,Traversal,42.647487,-87.854281,55,46 54 56
+Lot,Traversal,42.647487,-87.854281,55,46 54 56 60
 Lot ,Traversal,42.647895,-87.854268,56,55 57
 Lot,Traversal,42.648299,-87.854135,57,56 58
 Lot,Traversal,42.648629,-87.854013,58,57
-Student Center,Building,42.647748,-87.855178,Student Center,60
-Student Center,Main Entrance,42.647388,-87.854757,60,55 59
-Molinaro,Building,42.64695,-87.855509,Molinaro Hall,10
-Greenquist,Building,42.646316,-87.855348,Greenquist Hall,7 8 9
-Wyllie,Building,42.645439,-87.854999,Wyllie Hall,4 5 6
-Rita,Building,42.645203,-87856434,The Rita,1 2 3
-SAC,Building,42.642577,-87.85631,Sports and Activity Center,19 20
-Tallent,Building,42.647524,-87.84753,Tallent Hall,47
+Student Center,Building,42.647748,-87.855178,Student_Center,60
+Student Center,Main Entrance,42.647388,-87.854757,60,55 Molinaro_Hall
+Molinaro,Building,42.64695,-87.855509,Molinaro_Hall,10
+Greenquist,Building,42.646316,-87.855348,Greenquist_Hall,7 8 9
+Wyllie,Building,42.645439,-87.854999,Wyllie_Hall,4 5 6
+Rita,Building,42.645203,-87856434,The_Rita,1 2 3
+SAC,Building,42.642577,-87.85631,Sports_and_Activity_Center,19 20
+Tallent,Building,42.647524,-87.84753,Tallent_Hall,47
