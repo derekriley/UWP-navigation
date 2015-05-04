@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 University Of Wisconsin Parkside
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uwp.cs.edu.parkingtracker.navigation;
 
 import android.content.Context;
@@ -11,7 +27,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
 
 
 /**
@@ -90,11 +105,10 @@ public class NodeParser {
         String[] cells = line.split(",");
         if (cells.length > 0) {
 
-            String nodeLong = cells[NODE_LONG].toUpperCase(Locale.ENGLISH);
-            String nodeLat = cells[NODE_LAT].toUpperCase(Locale.ENGLISH);
-            String nodeId = cells[NODE_ID].toUpperCase(Locale.ENGLISH);
-            //
-            String nodeNeigh = cells[NODE_NEIGHBORS].toUpperCase(Locale.ENGLISH);
+            String nodeLong = cells[NODE_LONG];
+            String nodeLat = cells[NODE_LAT];
+            String nodeId = cells[NODE_ID];
+            String nodeNeigh = cells[NODE_NEIGHBORS];
 
             String neighbors[] = nodeNeigh.split(" ");
 
@@ -103,7 +117,7 @@ public class NodeParser {
             temp.lat = Double.parseDouble(nodeLong);
             temp.lon = Double.parseDouble(nodeLat);
 
-            nodeMap.put(temp.name, temp);
+            nodeMap.put(nodeId, temp);
 
         }
     }
@@ -152,7 +166,7 @@ public class NodeParser {
     }
 
     // returns the nodeMap as <vertex ID, Vertex>
-    public HashMap <String, Vertex> getNodeMap(){
+    public static HashMap <String, Vertex> getNodeMap(){
         return nodeMap;
     }
 
