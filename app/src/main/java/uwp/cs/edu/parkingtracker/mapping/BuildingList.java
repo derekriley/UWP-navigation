@@ -77,7 +77,7 @@ public class BuildingList extends MapObject{
         ArrayList<Building> buildings = new ArrayList<>(buildingHashMap.values());
         for (Building b : buildings) {
             if (pointInPolygon(point, b.getPolygonOptions())) {
-                return b.getName();
+                return b.getNavId();
             }
         }
         return null;

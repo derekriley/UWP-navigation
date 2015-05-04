@@ -231,12 +231,13 @@ import java.util.Map;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
 import uwp.cs.edu.parkingtracker.MainActivity;
-import uwp.cs.edu.parkingtracker.parking.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.R;
 import uwp.cs.edu.parkingtracker.navigation.NavigationPathProvider;
+import uwp.cs.edu.parkingtracker.navigation.NodeParser;
 import uwp.cs.edu.parkingtracker.navigation.PathProvider;
 import uwp.cs.edu.parkingtracker.parking.DatabaseHandler;
 import uwp.cs.edu.parkingtracker.parking.ParkingZoneOption;
+import uwp.cs.edu.parkingtracker.parking.ParkingZoneOptionAdapter;
 import uwp.cs.edu.parkingtracker.parking.ZoneList;
 
 /**
@@ -285,7 +286,7 @@ public class MapTransform extends MapObject {
         this.zonePolyMap = new HashMap<>();
         this.pD = new ProgressDialog(passedActivity,R.style.TransparentProgressDialog);
         DatabaseHandler.getInstance(passedActivity);
-        //NodeParser.getInstance(passedActivity);
+        NodeParser.getInstance(passedActivity);
     }
 
 
@@ -595,7 +596,8 @@ public class MapTransform extends MapObject {
                 int color = zp.getColor();
                 //finds path from where they clicked inside the building to a zone
                 //THIS IS WHERE THE ENTRANCE TO THE BUILDING SHOULD BE
-                PolylineOptions path = pathProvider.getPath(new LatLng(avgLat, avgLng), point);
+//                PolylineOptions path = pathProvider.getPath(new LatLng(avgLat, avgLng), point);
+                PolylineOptions path = pathProvider.getPath(id, buildings.BuildingTapped(point));
                 float pathLength = calculatePathLength(path);
                 options.add(new ParkingZoneOption(id, pathLength, color, path));
             }

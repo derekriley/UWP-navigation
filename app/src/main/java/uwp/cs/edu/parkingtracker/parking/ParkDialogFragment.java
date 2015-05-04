@@ -128,6 +128,13 @@ public class ParkDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
+        votePopup.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismiss();
+            }
+        });
         return votePopup.create();
     }
 
