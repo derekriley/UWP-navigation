@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 University Of Wisconsin Parkside
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uwp.cs.edu.parkingtracker;
 
 import android.app.ProgressDialog;
@@ -24,12 +40,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import uwp.cs.edu.parkingtracker.mapping.MapTransform;
@@ -57,27 +70,31 @@ public class MainActivity extends ActionBarActivity {
     private Intent mServiceIntent = null;
     private ProgressDialog pD;
     private Menu actionBarMenu;
-    private int  PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            //mapTransform.setUpMap();
             setupTools();
             return;
         }
         setContentView(R.layout.activity_main);
+        //progress dialog for initial loading
         pD = new ProgressDialog(this, R.style.TransparentProgressDialog);
         pD.setIndeterminate(true);
         pD.setCancelable(false);
         pD.show();
         //get prefs for roles
         preferences = getSharedPreferences(CONSTANTS.PREFS_NAME, 0);
+        //set up different parts
         setupGoogleAnalytics();
         setupTools();
         setupBottomPanel();
         deviceListeners = getDeviceListeners();
+        //create map
         if (mapTransform == null) {
             mapTransform = new MapTransform(MainActivity.this);
             mapTransform.setUpMap();
@@ -98,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
         super.onPause();
         // Unregister the listener when the application is paused
         LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
-        if (!loadComplete && mServiceIntent != null) {
+        if (mServiceIntent != null) {
             stopService(mServiceIntent);
         }
     }
@@ -118,7 +135,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
     }
 
     @Override
@@ -134,15 +151,16 @@ public class MainActivity extends ActionBarActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    //assign options menu to bar menu object
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         actionBarMenu = menu;
         actionBarMenu.findItem(R.id.action_cancel).setVisible(false);
-        //     invalidateOptionsMenu();
         return true;
     }
 
+    //when an option item is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -160,6 +178,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //all google analytics should be set here
     private void setupGoogleAnalytics() {
         // Google Analytics
 
@@ -183,6 +202,7 @@ public class MainActivity extends ActionBarActivity {
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
 
+    //handles and changes from a menu item selected
     private boolean handleMenuItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cancel:
@@ -264,10 +284,11 @@ public class MainActivity extends ActionBarActivity {
         mAdapter = new ArrayAdapter<>(this, R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
 
+        //for handling links in the side drawer
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Link", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Link", Toast.LENGTH_SHORT).show();
                 switch (drawerItems[position]) {
                     case "D2L":
                         openUrl("https://uwp.courses.wisconsin.edu/Shibboleth.sso/Login?target=https://uwp.courses.wisconsin.edu/d2l/shibbolethSSO/deepLinkLogin.d2l");
@@ -325,20 +346,18 @@ public class MainActivity extends ActionBarActivity {
         startActivity(browserIntent);
     }
 
-    /**
-     * Custom BroadcastReceiver for loading zones, displaying progress and calling to refresh map
-     * when complete
-     */
+    //receiver to get loading status and loading amount
     private BroadcastReceiver loadingStatus = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            //gets status of loading
             loadComplete = intent.getBooleanExtra(CONSTANTS.DATA_STATUS, true);
             if (!loadComplete) {
                 if (progress != null) {
                     progress.setVisibility(View.VISIBLE);
+                    //gets amount of zones loaded
                     int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT, 0);
                     progress.setProgress(status);
-
                 }
             }
             if (loadComplete) {
@@ -374,20 +393,5 @@ public class MainActivity extends ActionBarActivity {
         actionBarMenu.findItem(R.id.action_cancel).setVisible(option);
         //    invalidateOptionsMenu();
     }
-
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                //Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    };
 
 }
