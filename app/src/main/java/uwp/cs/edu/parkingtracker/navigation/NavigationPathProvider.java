@@ -21,8 +21,11 @@ import android.graphics.Color;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created by Able on 4/28/2015.
@@ -36,9 +39,9 @@ public class NavigationPathProvider implements PathProvider {
     public PolylineOptions getPath(LatLng start, LatLng finish) {
 
         // computes all possible paths from starting vertex
-        Dijkstra.computePaths(latLngNodeMap.get(start));
+        computePaths(latLngNodeMap.get(start));
         // holds a list of vertices that make up the shortest path between start and finish
-        List <Vertex> path = Dijkstra.getShortestPathTo(latLngNodeMap.get(finish));
+        List <Vertex> path = getShortestPathTo(latLngNodeMap.get(finish));
 
         PolylineOptions options = new PolylineOptions();
 
@@ -55,9 +58,9 @@ public class NavigationPathProvider implements PathProvider {
     public PolylineOptions getPath (String start, String finish) {
 
         // computes all possible paths from starting vertex
-        Dijkstra.computePaths(nodeMap.get(start));
+        computePaths(nodeMap.get(start));
         // holds a list of vertices that make up the shortest path between start and finish
-        List <Vertex> path = Dijkstra.getShortestPathTo(nodeMap.get(finish));
+        List <Vertex> path = getShortestPathTo(nodeMap.get(finish));
 
         PolylineOptions options = new PolylineOptions();
 
@@ -70,5 +73,39 @@ public class NavigationPathProvider implements PathProvider {
         options.color(Color.BLUE);
         return options;
 
+    }
+
+    public static void computePaths(Vertex source) {
+        source.minDistance = 0.;
+        PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
+        vertexQueue.add(source);
+
+        while (!vertexQueue.isEmpty()) {
+            Vertex current = vertexQueue.poll();
+
+            // Visit each edge exiting current
+            for (Edge edge : current.adjacencies) {
+                Vertex neighbor = edge.target;
+                double weight = edge.weight;
+                double distanceThroughU = current.minDistance + weight;
+                if (distanceThroughU < neighbor.minDistance) {
+                    vertexQueue.remove(current);
+
+                    neighbor.minDistance = distanceThroughU;
+                    neighbor.previous = current;
+                    vertexQueue.add(neighbor);
+                }
+            }
+        }
+    }
+
+    public static List<Vertex> getShortestPathTo(Vertex target) {
+        List<Vertex> path = new ArrayList<Vertex>();
+        for (Vertex vertex = target; vertex != null; vertex = vertex.previous) {
+            path.add(vertex);
+        }
+
+        Collections.reverse(path);
+        return path;
     }
 }

@@ -261,6 +261,8 @@ public class MapTransform extends MapObject {
     private Polyline drawnPath = null;
     private ProgressDialog pD;
     private Marker parkingMarker = null;
+    private ArrayList<Marker> buildingMarkers;
+    PathProvider pathProvider;
 
     // Instance variable end
 
@@ -285,8 +287,10 @@ public class MapTransform extends MapObject {
         this.slidingUpPanel.setPanelHeight(0);
         this.zonePolyMap = new HashMap<>();
         this.pD = new ProgressDialog(passedActivity,R.style.TransparentProgressDialog);
+        this.buildingMarkers = new ArrayList<>();
         DatabaseHandler.getInstance(passedActivity);
         NodeParser.getInstance(passedActivity);
+        this.pathProvider = new NavigationPathProvider();
     }
 
 
@@ -347,7 +351,8 @@ public class MapTransform extends MapObject {
                     slidingUpPanel.setPanelHeight(0);
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
-        }});
+            }
+        });
         attachMarkersToMap();
         getParkingSpot();
     }
@@ -394,8 +399,16 @@ public class MapTransform extends MapObject {
             LatLng value = entry.getValue();
             IconGenerator mIconGen = new IconGenerator(passedActivity);
             Bitmap iconBitmap = mIconGen.makeIcon(key);
-            mMap.addMarker(new MarkerOptions().position(value)
-                    .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)).title(key));
+            buildingMarkers.add(mMap.addMarker(new MarkerOptions().position(value)
+                    .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)).title(key)));
+        }
+    }
+
+    public void removeMarkers() {
+        //remove building markers
+        for (Marker m: buildingMarkers) {
+            m.remove();
+            buildingMarkers.remove(m);
         }
     }
 
@@ -413,6 +426,7 @@ public class MapTransform extends MapObject {
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
         DatabaseHandler.getInstance(passedActivity).addGpsPoint(parkingLatLng);
     }
+
 
     //this is the method it gets the latlng value of the parking spot from
     // the local database. Used when reloading activity
@@ -517,7 +531,11 @@ public class MapTransform extends MapObject {
     }
 
     public void clearPath() {
-        drawnPath.remove();
+        if (drawnPath != null)
+            drawnPath.remove();
+        attachMarkersToMap();
+        pathProvider = null;
+        pathProvider = new NavigationPathProvider();
     }
 
     public class ZonePoly {
@@ -573,33 +591,23 @@ public class MapTransform extends MapObject {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pD.show();
+//            pD.show();
         }
 
         @Override
         protected List<ParkingZoneOption> doInBackground(LatLng... params) {
-            PathProvider pathProvider = new NavigationPathProvider();
             LatLng point = params[0];
             List<ParkingZoneOption> options = new ArrayList<>();
             for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
                 ZonePoly zp = entry.getValue();
-                PolygonOptions polygonOptions = zp.getPolygonOptions();
-                double avgLat = 0;
-                double avgLng = 0;
-                for (LatLng l : polygonOptions.getPoints()) {
-                    avgLat += l.latitude;
-                    avgLng += l.longitude;
-                }
-                avgLat /= polygonOptions.getPoints().size();
-                avgLng /= polygonOptions.getPoints().size();
                 String id = zp.getID();
                 int color = zp.getColor();
-                //finds path from where they clicked inside the building to a zone
-                //THIS IS WHERE THE ENTRANCE TO THE BUILDING SHOULD BE
-//                PolylineOptions path = pathProvider.getPath(new LatLng(avgLat, avgLng), point);
-                PolylineOptions path = pathProvider.getPath(id, buildings.BuildingTapped(point));
+                Log.d(buildings.BuildingTapped(point).toString(),point.toString());
+                Log.d("ZoneID",id);
+                PolylineOptions path = pathProvider.getPath(buildings.BuildingTapped(point),id);
                 float pathLength = calculatePathLength(path);
                 options.add(new ParkingZoneOption(id, pathLength, color, path));
+                Log.d(id,String.valueOf(pathLength));
             }
             return options;
         }
@@ -623,21 +631,23 @@ public class MapTransform extends MapObject {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     ParkingZoneOption pzo = (ParkingZoneOption) lv.getItemAtPosition(position);
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    if (drawnPath != null) {
-                        drawnPath.remove();
-                    }
+                    slidingUpPanel = null;
                     passedActivity.setCancelItem(true);
+                    clearPath();
+                    removeMarkers();
                     drawnPath = mMap.addPolyline(pzo.path);
                     LatLngBounds.Builder bc = new LatLngBounds.Builder();
                     for (LatLng l : pzo.path.getPoints()) bc.include(l);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+                    slidingUpPanel = (SlidingUpPanelLayout) passedActivity.findViewById(R.id.sliding_layout);
+                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
                 }
             });
 
             slidingUpPanel.setEnableDragViewTouchEvents(true);
-            pD.dismiss();
+          //  pD.dismiss();
         }
-
 
     }
 }

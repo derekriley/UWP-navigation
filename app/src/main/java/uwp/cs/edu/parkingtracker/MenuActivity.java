@@ -21,14 +21,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.GpsStatus;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +34,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
@@ -50,7 +45,6 @@ public class MenuActivity extends Activity {
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor prefEditor;
-    private GoogleApiClient mGoogleApiClient;
     private int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private TextView statusText;
     private Button studentBtn;
@@ -177,12 +171,10 @@ public class MenuActivity extends Activity {
             setButtons(false);
             statusText.setText("Check Network Connection");
         }
-        else {
+        if (isConnectingToInternet()){
             setButtons(true);
             statusText.setText("");
         }
-
-
     }
 
     //returns the status of internet connectivity
@@ -199,6 +191,7 @@ public class MenuActivity extends Activity {
                     }
 
         }
+        //Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show();
         return false;
     }
 
