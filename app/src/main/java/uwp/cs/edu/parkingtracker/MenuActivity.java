@@ -146,6 +146,7 @@ public class MenuActivity extends Activity {
         Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
         startActivity(mIntent);
         pd.dismiss();
+        finish();
 
     }
 

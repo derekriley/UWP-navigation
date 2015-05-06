@@ -16,9 +16,11 @@
 
 package uwp.cs.edu.parkingtracker;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -33,6 +35,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -210,7 +213,6 @@ public class MainActivity extends ActionBarActivity {
                 setCancelItem(false);
                 return true;
             case R.id.action_park:
-                //TODO: Set a dialog to REPARK? UNPARK?
                 ParkingSpotDialogFragment dia = new ParkingSpotDialogFragment();
                 dia.setMapTransform(mapTransform);
                 dia.show(getFragmentManager(), "Diag");
@@ -394,4 +396,34 @@ public class MainActivity extends ActionBarActivity {
         //    invalidateOptionsMenu();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //Handle the back button
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            //Ask the user if they want to quit
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Exit")
+                    .setMessage("Do you wish to exit?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            //Stop the activity
+                            MainActivity.this.finish();
+                            System.exit(0);
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
+            return true;
+        }
+        else {
+            return super.onKeyDown(keyCode, event);
+        }
+
+    }
 }
