@@ -1,42 +1,43 @@
-
-Rita,Main Entrance,42.645007,-87.856926,1,28 27 The_Rita
+Building,Type,Long.,Lat.,id,neighbors
+Rita,Main Entrance,42.645007,-87.856926,1,28 27 3 44 6 The_Rita
 Rita,Side Entrance,42.644547,-87.856697,2,41 23 The_Rita
 Rita,Side Entrance,42.645053,-87.856097,3,43 The_Rita
 Wyllie ,Main Entrance,42.645051,-87.855159,4,35 Wyllie_Hall
 Wyllie ,Side Entrance,42.645276,-87.854565,5,40 Wyllie_Hall
 Wyllie ,Side Entrance,42.645237,-87.855540,6,44 32 33 Wyllie_Hall
-Greenquist,Side Entrance,42.646017,-87.855635,7,33 Greenquist_Hall
-Greenquist,Main Entrance,42.646336,-87.855648,8,33 Greenquist_Hall
-Greenquist,Side Entrance,42.646631,-87.855578,9,33 Greenquist_Hall
-Molinaro,Side Entrance,42.646802,-87.855859,10,33 Molinaro_Hall
+Greenquist,Side Entrance,42.646017,-87.855635,7,33 8 Greenquist_Hall
+Greenquist,Main Entrance,42.646336,-87.855648,8,33 7 9 Greenquist_Hall
+Greenquist,Side Entrance,42.646631,-87.855578,9,33 10 8 Greenquist_Hall
+Molinaro,Side Entrance,42.646802,-87.855859,10,33 9 11 Molinaro_Hall
+Molinaro,Side Entrance,42.64711,-87.85571,11,10 46 Molinaro_Hall
 SAC,Main Entrance,42.642934,-87.856317,19,26 Sports_and_Activity_Center
-SAC,Main Entrance,42.64209,-87.856247,20,19 Sports_and_Activity_Center
-Lot,Traversal,42.644331,-87.857408,21,27 28 22
-Lot,Traversal,42.644052,-87.857278,22,21 23 24
-Lot ,Traversal,42.643924,-87.857027,23,22 24
-Lot,Traversal,42.643785,-87.857119,24,22 23 25
-Lot,Traversal,42.643264,-87.856991,25,24 26
+SAC,Main Entrance,42.64209,-87.856247,20,SAC_Main_1 Sports_and_Activity_Center
+Lot,Traversal,42.644331,-87.857408,21,27 28 22 Rita_Main_8 Rita_Overflow_2
+Lot,Traversal,42.644052,-87.857278,22,21 23 24 Rita_Overflow_2 Rita_Overflow_4
+Lot ,Traversal,42.643924,-87.857027,23,22 24 2
+Lot,Traversal,42.643785,-87.857119,24,22 23 25 Rita_Overflow_4 Rita_Overflow_5
+Lot,Traversal,42.643264,-87.856991,25,24 26 Rita_Overflow_5
 Lot,Traversal,42.643209,-87.856281,26,19 25 42
-Lot,Traversal,42.644830,-87.856910,27,21 28
-Lot ,Traversal,42.644848,-87.857424,28,27 21 29
-Lot ,Traversal,42.645435,-87.857405,29,28 30
+Lot,Traversal,42.644830,-87.856910,27,21 28 1
+Lot ,Traversal,42.644848,-87.857424,28,27 21 29 1 Rita_Main_3 Rita_Main_6 Rita_Main_8
+Lot ,Traversal,42.645435,-87.857405,29,28 30 Rita_Main_3
 Lot ,Traversal,42.645571,-87.857402,30,29 31
 Lot,Traversal,42.645668,-87.857201,31,30 32
 Lot,Traversal,42.645654,-87.855999,32,31 33 6
-Lot,Traversal,42.645727,-87.855803,33,32 6 7 9
-Lot ,Traversal,42.644874,-87.855610,34,48 44 35
+Lot,Traversal,42.645727,-87.855803,33,32 6 7 9 10
+Lot ,Traversal,42.644874,-87.855610,34,43 44 35
 Lot,Traversal,42.645000,-87.855331,35,44 34 36 4
 Lot,Traversal,42.644921,-87.854961,36,35 37 38
 Lot,Traversal,42.645087,-87.854661,37,36 39
 Lot,Traversal,42.644968,-87.854494,38,36 39
 Lot,Traversal,42.645146,-87.854414,39,38 37 40
-Lot,Traversal,42.645280,-87.854425,40,37 38 5
+Lot,Traversal,42.645280,-87.854425,40,37 39 5
 Lot,Traversal,42.644528,-87.856082,41,42 43 2
-Lot ,Traversal,42.644473,-87.855999,42,26 41 42
+Lot ,Traversal,42.644473,-87.855999,42,26 41 43
 Lot,Traversal,42.644593,-87.855939,43,41 42 34 3
 Lot,Traversal,42.645097,-87.855579,44,6 34 35
-Lot,Bus Stop,42.64856,-87.848521,45,51
-Lot,Traversal,42.647292,-87.855854,46,55 10
+Lot,Bus Stop,42.64856,-87.848521,45,51 Tallent_3 Tallent_1
+Lot,Traversal,42.647292,-87.855854,46,60 11
 Student Center,Zone 1,42.648691,-87.853435,Student_Center_1,58
 Student Center,Zone 2,42.648279,-87.853695,Student_Center_2,57 Student_Center_3
 Student Center,Zone 3,42.648267,-87.852846,Student_Center_3,Student_Center_2
@@ -66,27 +67,27 @@ Sac_Main,Zone5,42.64122,-87.855731,SAC_Main_5,SAC_Main_3 SAC_Main_7
 Sac_Main,Zone6,42.641043,-87.856008,SAC_Main_6,SAC_Main_4 SAC_Main_8
 Sac_Main,Zone7,42.641001,-87.855427,SAC_Main_7,SAC_Main_5
 Sac_Main,Zone8,42.6408,-87.855725,SAC_Main_8,SAC_Main_6
-Tallent,Zone1,42.649022,-87.847965,Talent_1,45 Talent_2
-Tallent,Zone2,42.649011,-87.847167,Talent_2,Talent_1 Talent_4
-Tallent,Zone3,42.648575,-87.848009,Talent_3,45 Talent_4
-Tallent,Zone4,42.648559,-87.847184,Talent_4,Talent_2 Talent_3 Talent_6
-Tallent,Zone5,42.648153,-87.848014,Talent_5,45 51 Talent_6
-Tallent,Zone6,42.648132,-87.847206,Talent_6,49 Talent_5
-Sac,Traversal,42.643009,-87.85759,105,26 19
+Tallent,Zone1,42.649022,-87.847965,Tallent_1,45 Tallent_2
+Tallent,Zone2,42.649011,-87.847167,Tallent_2,Tallent_1 Tallent_4
+Tallent,Zone3,42.648575,-87.848009,Tallent_3,45 Tallent_4
+Tallent,Zone4,42.648559,-87.847184,Tallent_4,Tallent_2 Tallent_3 Tallent_6
+Tallent,Zone5,42.648153,-87.848014,Tallent_5,45 51 Tallent_6
+Tallent,Zone6,42.648132,-87.847206,Tallent_6,49 Tallent_5
+Sac,Traversal,42.643009,-87.85759,105,26 19 SAC_Overflow_1
 ,,,,,
-Campus Police,Main Entrance,42.647443,-87.847219,47,48
+Campus Police,Main Entrance,42.647443,-87.847219,47,48 Tallent_Hall
 Lot,Traversal,42.64743,-87.846881,48,47 49
 Lot,Traversal,42.64798,-87.8469,49,51 48
-Lot,Traversal,42.648016,-87.848529,51,45 52 49
+Lot,Traversal,42.648016,-87.848529,51,45 52 49 Tallent_5
 Lot ,Traversal,42.647748,-87.849295,52,51 53
 Lot,Traversal,42.647285,-87.850166,53,52 54
-Lot,Traversal,42.6473,-87.853624,54,53 55
-Lot,Traversal,42.647487,-87.854281,55,46 54 56 60
-Lot ,Traversal,42.647895,-87.854268,56,55 57
-Lot,Traversal,42.648299,-87.854135,57,56 58
-Lot,Traversal,42.648629,-87.854013,58,57
+Lot,Traversal,42.6473,-87.853624,54,53 55 Student_Center_6 Student_Center_7
+Lot,Traversal,42.647487,-87.854281,55,54 56 60 Student_Center_6
+Lot ,Traversal,42.647895,-87.854268,56,55 57 Student_Center_6 Student_Center_4
+Lot,Traversal,42.648299,-87.854135,57,56 58 Student_Center_4 Student_Center_2
+Lot,Traversal,42.648629,-87.854013,58,57 Student_Center_2 Student_Center_1
 Student Center,Building,42.647748,-87.855178,Student_Center,60
-Student Center,Main Entrance,42.647388,-87.854757,60,55 Molinaro_Hall
+Student Center,Main Entrance,42.647388,-87.854757,60,55 11 46 Molinaro_Hall
 Molinaro,Building,42.64695,-87.855509,Molinaro_Hall,10
 Greenquist,Building,42.646316,-87.855348,Greenquist_Hall,7 8 9
 Wyllie,Building,42.645439,-87.854999,Wyllie_Hall,4 5 6
