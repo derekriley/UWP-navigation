@@ -10,7 +10,7 @@ Greenquist,Main Entrance,42.646336,-87.855648,8,33 7 9 Greenquist_Hall
 Greenquist,Side Entrance,42.646631,-87.855578,9,33 10 8 Greenquist_Hall
 Molinaro,Side Entrance,42.646802,-87.855859,10,33 9 11 Molinaro_Hall
 Molinaro,Side Entrance,42.64711,-87.85571,11,10 46 Molinaro_Hall
-SAC,Main Entrance,42.642934,-87.856317,19,26 Sports_and_Activity_Center
+SAC,Main Entrance,42.642934,-87.856317,19,26 105 Sports_and_Activity_Center
 SAC,Main Entrance,42.64209,-87.856247,20,SAC_Main_1 Sports_and_Activity_Center
 Lot,Traversal,42.644331,-87.857408,21,27 28 22 Rita_Main_8 Rita_Overflow_2
 Lot,Traversal,42.644052,-87.857278,22,21 23 24 Rita_Overflow_2 Rita_Overflow_4
@@ -73,7 +73,7 @@ Tallent,Zone3,42.648575,-87.848009,Tallent_3,45 Tallent_4
 Tallent,Zone4,42.648559,-87.847184,Tallent_4,Tallent_2 Tallent_3 Tallent_6
 Tallent,Zone5,42.648153,-87.848014,Tallent_5,45 51 Tallent_6
 Tallent,Zone6,42.648132,-87.847206,Tallent_6,49 Tallent_5
-Sac,Traversal,42.643009,-87.85759,105,26 19 SAC_Overflow_1
+Sac,Traversal,42.643009,-87.85759,105,19 SAC_Overflow_1
 ,,,,,
 Campus Police,Main Entrance,42.647443,-87.847219,47,48 Tallent_Hall
 Lot,Traversal,42.64743,-87.846881,48,47 49
