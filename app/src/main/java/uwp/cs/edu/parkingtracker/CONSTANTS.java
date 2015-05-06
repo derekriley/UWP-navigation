@@ -378,12 +378,12 @@ public final class CONSTANTS {
         buildingOutlines.put("The Rita", RITA_OUTLINE);
         buildingOutlines.put("Sports and Activity Center", SAC_OUTLINE);
 
-        zones.put("Talent_1", T_ZONE_1);
-        zones.put("Talent_2", T_ZONE_2);
-        zones.put("Talent_3", T_ZONE_3);
-        zones.put("Talent_4", T_ZONE_4);
-        zones.put("Talent_5", T_ZONE_5);
-        zones.put("Talent_6", T_ZONE_6);
+        zones.put("Tallent_1", T_ZONE_1);
+        zones.put("Tallent_2", T_ZONE_2);
+        zones.put("Tallent_3", T_ZONE_3);
+        zones.put("Tallent_4", T_ZONE_4);
+        zones.put("Tallent_5", T_ZONE_5);
+        zones.put("Tallent_6", T_ZONE_6);
         zones.put("Student_Center_1", A_ZONE_1);
         zones.put("Student_Center_2", A_ZONE_2);
         zones.put("Student_Center_3", A_ZONE_3);

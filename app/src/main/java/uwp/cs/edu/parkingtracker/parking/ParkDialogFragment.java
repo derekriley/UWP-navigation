@@ -95,7 +95,7 @@ public class ParkDialogFragment extends DialogFragment {
         SeekBar fullnessSlider = new SeekBar(getActivity());
 
         fullnessSlider.setMax(4);
-        fullnessSlider.setPadding(25,50,25,-10);
+        fullnessSlider.setPadding(50,70,50,-10);
         final TextView result = new TextView(getActivity());
         result.setPadding(20, 10, 10 , 10);
         result.setText("0 %");
