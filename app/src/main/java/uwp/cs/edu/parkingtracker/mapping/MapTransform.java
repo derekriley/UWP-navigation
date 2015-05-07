@@ -414,7 +414,6 @@ public class MapTransform extends MapObject {
         DatabaseHandler.getInstance(passedActivity).addGpsPoint(parkingLatLng);
     }
 
-
     //this is the method it gets the latlng value of the parking spot from
     // the local database. Used when reloading activity
     public void getParkingSpot() {
@@ -485,7 +484,7 @@ public class MapTransform extends MapObject {
 
     //Builds slide up panel for a building that was selected
     public void buildingSelected(String name, LatLng point) {
-        slidingUpPanel.setVisibility(View.VISIBLE);
+        //slidingUpPanel.setVisibility(View.VISIBLE);
         slidingUpText.setText(name);
         slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         pathProvider = new NavigationPathProvider();

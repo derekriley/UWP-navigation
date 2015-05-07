@@ -38,7 +38,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,7 +80,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private SlidingUpPanelLayout slidingUpPanel;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +106,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         }
         //location manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 6000, 10, this);
+        if (locationManager != null) {
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 6000, 10, this);
+        }
         slidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
     }
 
@@ -168,6 +168,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         getMenuInflater().inflate(R.menu.main, menu);
         actionBarMenu = menu;
         actionBarMenu.findItem(R.id.action_cancel).setVisible(false);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
+        } else if (locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
+        } else {
+            //location is not working
+            actionBarMenu.findItem(R.id.action_park).setVisible(false);
+        }
         return true;
     }
 
@@ -286,7 +298,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         }
         if (role.equals("visitor")) {
             //TODO: CHANGE LINKS BASED OFF OF VISITOR
-            drawerItems = new String[]{"Information" , "uwp.edu", "Events", "Admissions" };
+            drawerItems = new String[]{"Information", "uwp.edu", "Events", "Admissions"};
         }
         mAdapter = new ArrayAdapter<>(this, R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
@@ -343,7 +355,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         startActivity(browserIntent);
     }
 
-    public boolean isLoadingComplete () {
+    public boolean isLoadingComplete() {
         return loadComplete;
     }
 
@@ -396,22 +408,19 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public void onBackPressed() {
         //Handle the back button
-        if(keyCode == KeyEvent.KEYCODE_BACK) {
-            //if the sliding
-            if((slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED )||
-                    (slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
-                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                return true;
-            }
+        //if the sliding is open
+        if (slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+            slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+        else {
             //Ask the user if they want to quit
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Exit")
                     .setMessage("Do you wish to exit?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -423,13 +432,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                     })
                     .setNegativeButton("No", null)
                     .show();
-
-            return true;
         }
-        else {
-            return super.onKeyDown(keyCode, event);
-        }
-
     }
 
     @Override
@@ -470,6 +473,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     public void onProviderDisabled(String provider) {
         //location is disabled
         Toast.makeText(getApplicationContext(), "Please Enable Location", Toast.LENGTH_LONG).show();
-        actionBarMenu.findItem(R.id.action_park).setVisible(false);
+        if (actionBarMenu != null) {
+            actionBarMenu.findItem(R.id.action_park).setVisible(false);
+        }
     }
 }
