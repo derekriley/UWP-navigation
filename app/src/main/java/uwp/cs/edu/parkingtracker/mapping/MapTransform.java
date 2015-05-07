@@ -290,7 +290,6 @@ public class MapTransform extends MapObject {
         this.buildingMarkers = new ArrayList<>();
         DatabaseHandler.getInstance(passedActivity);
         NodeParser.getInstance(passedActivity);
-        this.pathProvider = new NavigationPathProvider();
     }
 
 
@@ -596,6 +595,7 @@ public class MapTransform extends MapObject {
         @Override
         protected List<ParkingZoneOption> doInBackground(LatLng... params) {
             LatLng point = params[0];
+            pathProvider = new NavigationPathProvider();
             List<ParkingZoneOption> options = new ArrayList<>();
             for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
                 ZonePoly zp = entry.getValue();
@@ -607,7 +607,9 @@ public class MapTransform extends MapObject {
                 float pathLength = calculatePathLength(path);
                 options.add(new ParkingZoneOption(id, pathLength, color, path));
                 Log.d(id,String.valueOf(pathLength));
+                //
             }
+            pathProvider = null;
             return options;
         }
 
