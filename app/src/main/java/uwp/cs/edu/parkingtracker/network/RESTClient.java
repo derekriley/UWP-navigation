@@ -161,7 +161,7 @@ public class RESTClient extends AsyncTask<ArrayList<String>, Void, String> {
      */
     private void fetchResultsFromDatabase(String apiCall) throws MalformedURLException, ProtocolException, IOException {
         this.url = new URL(CONSTANTS.REST_URL + apiCall);
-
+        Log.i("URL",url.toString());
         this.connection = (HttpURLConnection) this.url.openConnection();
         this.connection = doLogin(this.connection);
 

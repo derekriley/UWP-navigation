@@ -42,7 +42,7 @@ public final class CONSTANTS {
     public static final String PREFS_NAME = "UwpNavSettings";
 
     // REST related strings
-    public static final String REST_URL = "http://eisner.io/parkingserver/";
+    public static final String REST_URL = "http://cinnamon.cs.uwp.edu/parking/app.php/";
     public static final String VOTE = "v/";
     public static final String VOTE_AVG = "va/";
     public static final String TEST = "test";

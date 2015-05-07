@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
     private ProgressBar progress;
     private MapTransform mapTransform = null;
     private DeviceListeners deviceListeners = null;
-    private final int SERVICE_DELAY = 30000;
+    private final int SERVICE_DELAY = 20000;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
