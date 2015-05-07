@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -49,10 +50,7 @@ public class MenuActivity extends Activity {
     private TextView statusText;
     private Button studentBtn;
     private Button visitorBtn;
-//commented out for gps status methods see notes near the end
-//    private Location lastKnownLocation;
-//    private long lastKnownLocationTimeMillis = 0;
-//    private boolean isGPSFix = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,58 +190,7 @@ public class MenuActivity extends Activity {
                     }
 
         }
-        //Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show();
         return false;
     }
-
-//Nate or Russ can you take a look at this i'm a bit stumped -Matthew
-// this section is suppose to be for checking if the phones gps has a fix
-// but i'm just not sure if i should be making a inner class for a location listener to use its
-// onLocationChanged method also I'm unsure if my onGpsStatusChanged is what we want but i have implemented is like
-//the one mentioned on this tasks trello card
-
-//    LocationManager LocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-//
-//
-//
-// uncomment lines 17 18 19
-//
-//
-//    GpsStatus.Listener gpsListener = new GpsStatus.Listener() {
-//    public void onGpsStatusChanged(int event) {
-//        switch (event) {
-//            case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-//                if (lastKnownLocation != null) {
-//                    isGPSFix = (SystemClock.elapsedRealtime() - lastKnownLocationTimeMillis) < 3000;
-//                }
-//                if (isGPSFix) {
-//                    //Gps is working
-//                    // pretty sure this is were we place calls to the map activity but i'm not really sure what to do at this point
-//                } else
-//                    // gps fix has been lost report to user that? i'm not really sure what to do at this point
-//                    //gps signal has been lost
-//                    break;
-//
-//            case GpsStatus.GPS_EVENT_FIRST_FIX:
-//
-//                isGPSFix = true;
-//
-//                break;
-//        }
-//    }
-//};
-//this is from what i could figure out the only key method that is overrode when implementing LocationListener
-//    public void onLocationChanged(Location location){
-//        if(location == null)return;
-//
-//
-//            lastKnownLocationTimeMillis = SystemClock.elapsedRealtime();
-//
-//            lastKnownLocation = location
-//
-//    }
-
-
-
-
 }

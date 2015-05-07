@@ -70,17 +70,6 @@ public class NodeParser {
         parseNodeFile(is);
     }
 
-    //get single instance
-    public static NodeParser getInstance(Context context) {
-        if (mInstance == null) {
-            synchronized (NodeParser.class) {
-                if (mInstance == null) {
-                    mInstance = new NodeParser(context);
-                }
-            }
-        }
-        return mInstance;
-    }
 
     public static void parseNodeFile(InputStream inputStream) {
 

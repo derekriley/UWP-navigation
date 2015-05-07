@@ -28,6 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import uwp.cs.edu.parkingtracker.network.DatabaseExchange;
+
 
 /**
  * Created by kifle on 7/9/2014.
@@ -38,30 +40,8 @@ public class ParkDialogFragment extends DialogFragment {
 
     protected String zID;
     protected String fullness;
-    protected ParkDialogListener mListener;
     protected int fullnessValue;
 
-
-    public interface ParkDialogListener {
-        public void onDialogSend(DialogFragment dialog, int val);
-    }
-
-
-    /**
-     * Create a new instance of MyDialogFragment, providing "num"
-     * as an argument.
-     * */
-    static ParkDialogFragment newInstance(String zID, String fullness) {
-        ParkDialogFragment f = new ParkDialogFragment();
-        f.zID = zID;
-        f.fullness = fullness;
-        // Supply num input as an argument.
-//        Bundle args = new Bundle();
-//        args.putInt("num", num);
-//        f.setArguments(args);
-
-        return f;
-    }
 
     /**
      * Called at the initial phase of fragment's lifecycle.
@@ -70,12 +50,6 @@ public class ParkDialogFragment extends DialogFragment {
      */
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (ParkDialogListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement ParkDialogListener");
-//        }
     }
 
     /**
@@ -124,7 +98,7 @@ public class ParkDialogFragment extends DialogFragment {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mListener.onDialogSend(ParkDialogFragment.this, fullnessValue);
+                DatabaseExchange.sendVote(zID, fullnessValue * 25);
                 dismiss();
             }
         });
@@ -140,9 +114,6 @@ public class ParkDialogFragment extends DialogFragment {
 
     public String getID () {return this.zID;};
 
-    public void setListener (ParkDialogListener pdL) {
-        mListener = pdL;
-    }
     /**
      * catchs the illegal state exception in two methods
      * and ignore it, allowing the app to continue running.

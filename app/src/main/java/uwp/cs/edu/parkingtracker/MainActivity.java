@@ -27,6 +27,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +46,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -56,10 +60,9 @@ import uwp.cs.edu.parkingtracker.parking.ZoneService;
 /**
  * Created by nate eisner on 4/14/15.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements LocationListener {
     private ProgressBar progress;
     private MapTransform mapTransform = null;
-    private DeviceListeners deviceListeners = null;
     private final int SERVICE_DELAY = 20000;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -73,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
     private Intent mServiceIntent = null;
     private ProgressDialog pD;
     private Menu actionBarMenu;
-
+    protected LocationManager locationManager;
 
 
 
@@ -96,12 +99,14 @@ public class MainActivity extends ActionBarActivity {
         setupGoogleAnalytics();
         setupTools();
         setupBottomPanel();
-        deviceListeners = getDeviceListeners();
         //create map
         if (mapTransform == null) {
             mapTransform = new MapTransform(MainActivity.this);
             mapTransform.setUpMap();
         }
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 6000, 10, this);
+
     }
 
     @Override
@@ -200,7 +205,6 @@ public class MainActivity extends ActionBarActivity {
     //shows parkdialogfragment
     public void showParkDialogFragment(String zID) {
         ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
-        parkDialogFragment.setListener(deviceListeners);
         parkDialogFragment.setzID(zID);
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
@@ -320,15 +324,6 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    //gets devicelisteners
-    public DeviceListeners getDeviceListeners() {
-        if (deviceListeners == null) {
-            // Instantiate new device listener.
-            deviceListeners = new DeviceListeners(this);
-        }
-        return deviceListeners;
-    }
-
     //setup the bottom panel
     private void setupBottomPanel() {
         new Handler().postDelayed(new Runnable() {
@@ -425,5 +420,38 @@ public class MainActivity extends ActionBarActivity {
             return super.onKeyDown(keyCode, event);
         }
 
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, 10000,
+                    1, this);
+        } else if (locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 10000,
+                    1, this);
+        } else {
+            Toast.makeText(getApplicationContext(), "Please Check Location", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(getApplicationContext(), "Please Enable Location", Toast.LENGTH_LONG).show();
     }
 }

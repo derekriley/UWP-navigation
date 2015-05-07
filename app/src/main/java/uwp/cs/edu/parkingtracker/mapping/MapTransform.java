@@ -263,6 +263,7 @@ public class MapTransform extends MapObject {
     private Marker parkingMarker = null;
     private ArrayList<Marker> buildingMarkers;
     PathProvider pathProvider;
+    NodeParser np;
 
     // Instance variable end
 
@@ -288,10 +289,9 @@ public class MapTransform extends MapObject {
         this.zonePolyMap = new HashMap<>();
         this.pD = new ProgressDialog(passedActivity,R.style.TransparentProgressDialog);
         this.buildingMarkers = new ArrayList<>();
+        this.np = new NodeParser(passedActivity);
         DatabaseHandler.getInstance(passedActivity);
-        NodeParser.getInstance(passedActivity);
     }
-
 
     /**
      * Positions map to specified lot coordinates, lays out the parking lot zones, and
@@ -506,7 +506,8 @@ public class MapTransform extends MapObject {
         slidingUpPanel.setVisibility(View.VISIBLE);
         slidingUpText.setText(name);
         slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-
+        pathProvider = new NavigationPathProvider();
+        np = new NodeParser(passedActivity);
         new ListTask().execute(point);
 
     }
@@ -533,7 +534,7 @@ public class MapTransform extends MapObject {
             drawnPath.remove();
         attachMarkersToMap();
         pathProvider = null;
-        pathProvider = new NavigationPathProvider();
+        np = null;
     }
 
     public class ZonePoly {
@@ -632,7 +633,6 @@ public class MapTransform extends MapObject {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     ParkingZoneOption pzo = (ParkingZoneOption) lv.getItemAtPosition(position);
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    slidingUpPanel = null;
                     passedActivity.setCancelItem(true);
                     clearPath();
                     removeMarkers();
@@ -640,9 +640,7 @@ public class MapTransform extends MapObject {
                     LatLngBounds.Builder bc = new LatLngBounds.Builder();
                     for (LatLng l : pzo.path.getPoints()) bc.include(l);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
-                    slidingUpPanel = (SlidingUpPanelLayout) passedActivity.findViewById(R.id.sliding_layout);
                     slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-
                 }
             });
 
