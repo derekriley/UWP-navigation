@@ -36,59 +36,69 @@ public class ParkingZoneOptionAdapter extends ArrayAdapter<ParkingZoneOption> {
     Context context;
     int layoutResourceId;
     List<ParkingZoneOption> data = null;
-//    ParkingZoneOption data[] = null;
 
     public ParkingZoneOptionAdapter(Context context, int layoutResourceId, List<ParkingZoneOption> data) {
-        super(context,layoutResourceId,data);
-        this.layoutResourceId=layoutResourceId;
-        this.context=context;
-        this.data=data;
+        super(context, layoutResourceId, data);
+        this.layoutResourceId = layoutResourceId;
+        this.context = context;
+        this.data = data;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         ParkingZoneOptionHolder holder = null;
 
-        if (row==null){
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            row=inflater.inflate(layoutResourceId,parent,false);
-            holder=new ParkingZoneOptionHolder();
-            holder.txtTitle=(TextView)row.findViewById(R.id.txtTitle);
-            holder.txtDistance=(TextView)row.findViewById(R.id.txtDistance);
-            holder.txtFullness=(TextView)row.findViewById(R.id.txtFullness);
+        if (row == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            row = inflater.inflate(layoutResourceId, parent, false);
+            holder = new ParkingZoneOptionHolder();
+            holder.txtTitle = (TextView) row.findViewById(R.id.txtTitle);
+            holder.txtDistance = (TextView) row.findViewById(R.id.txtDistance);
+            holder.txtFullness = (TextView) row.findViewById(R.id.txtFullness);
             row.setTag(holder);
-        }
-        else{
-            holder = (ParkingZoneOptionHolder)row.getTag();
+        } else {
+            holder = (ParkingZoneOptionHolder) row.getTag();
         }
 
         ParkingZoneOption parkingZoneOption = data.get(position);
 
-        String distance = String.format("%.0f",parkingZoneOption.distance);
         String strFullness = "";
-        if (parkingZoneOption.color == Color.RED) {
-            strFullness="Full";
+        int color = parkingZoneOption.color;
+        if (color == Color.RED ||
+                color == Color.argb(170, Color.red(color), Color.green(color), Color.blue(color)) ||
+                color == Color.argb(85, Color.red(color), Color.green(color), Color.blue(color))) {
+            strFullness = "Full";
         }
-        if (parkingZoneOption.color == Color.YELLOW) {
-            strFullness="Half Full";
+        if (color == Color.YELLOW ||
+                color == Color.argb(170, Color.red(color), Color.green(color), Color.blue(color)) ||
+                color == Color.argb(85, Color.red(color), Color.green(color), Color.blue(color))) {
+            strFullness = "Half Full";
         }
-        if (parkingZoneOption.color == Color.GREEN) {
-            strFullness="Empty";
+        if (color == Color.GREEN ||
+                color == Color.argb(170, Color.red(color), Color.green(color), Color.blue(color)) ||
+                color == Color.argb(85, Color.red(color), Color.green(color), Color.blue(color))) {
+            strFullness = "Empty";
         }
-        int fullnessColor = parkingZoneOption.color;
-        String strDistance = String.format("%.0fm",parkingZoneOption.distance);
+        if (color == Color.BLACK) {
+            strFullness = "CLOSED";
+        }
+
+        String strDistance = String.format("%.0fm", parkingZoneOption.distance);
         String title = parkingZoneOption.id.replace("_", " ");
         holder.txtTitle.setText(title);
 
         holder.txtDistance.setText(strDistance);
         holder.txtFullness.setText(strFullness);
-        holder.txtFullness.setTextColor(fullnessColor);
+        if (color == Color.BLACK) {
+            color = Color.WHITE;
+        }
+        holder.txtFullness.setTextColor(color);
 
         return row;
     }
 
-    static class ParkingZoneOptionHolder{
+    static class ParkingZoneOptionHolder {
         TextView txtTitle;
         TextView txtDistance;
         TextView txtFullness;

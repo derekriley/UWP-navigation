@@ -242,8 +242,8 @@ import uwp.cs.edu.parkingtracker.parking.ZoneList;
 
 /**
  * Created by David on 11/21/14.
- * Modified by Nate
- * <p/>
+ * Modified by Nate Eisner
+ *
  * Contains all methods that deal with creating the map that will be displayed
  * on the application
  */
@@ -262,16 +262,10 @@ public class MapTransform extends MapObject {
     private ProgressDialog pD;
     private Marker parkingMarker = null;
     private ArrayList<Marker> buildingMarkers;
-    PathProvider pathProvider;
-    NodeParser np;
+    private PathProvider pathProvider;
+    private NodeParser np;
 
-    // Instance variable end
-
-    /**
-     * MapTransform : Default constructor.
-     *
-     * @param activity
-     */
+    //default constructor
     public MapTransform(MainActivity activity) {
         // Set instance variables.
         this.passedActivity = activity;
@@ -293,10 +287,7 @@ public class MapTransform extends MapObject {
         DatabaseHandler.getInstance(passedActivity);
     }
 
-    /**
-     * Positions map to specified lot coordinates, lays out the parking lot zones, and
-     * adds the markers required for user interaction.
-     */
+    //all options to set up a map
     public void setUpMap() {
         buildPolyMap();
         float zoomFactor = CONSTANTS.DEFAULT_ZOOM_FACTOR;
@@ -356,7 +347,6 @@ public class MapTransform extends MapObject {
         getParkingSpot();
     }
 
-
     //Builds the ZonePoly Hashmap from the CONSTANTS
     private void buildPolyMap() {
         Iterator it = CONSTANTS.zones.entrySet().iterator();
@@ -380,9 +370,7 @@ public class MapTransform extends MapObject {
 
     }
 
-    /**
-     * Clears map and redraws
-     */
+    //recolor zones from server
     public void refreshMap() {
         //start to redraw zones
         new MapTask().execute();
@@ -403,6 +391,7 @@ public class MapTransform extends MapObject {
         }
     }
 
+    //remove building markers
     public void removeMarkers() {
         //remove building markers
         for (Marker m : buildingMarkers) {
@@ -438,6 +427,7 @@ public class MapTransform extends MapObject {
         }
     }
 
+    //removes parking spot marker from map
     public void removeParkingSpot() {
         if (parkingMarker != null) {
             parkingMarker.setVisible(false);
@@ -448,18 +438,13 @@ public class MapTransform extends MapObject {
         }
     }
 
-
     //returns current location from gps in LatLng
     public LatLng getLocation() {
         Location location = mMap.getMyLocation();
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
-    /**
-     * Returns a zone id, this zone id is identified
-     * based upon the point chosen, the parameters to this function are passed from the basic user class
-     * in the method known as TapEvent
-     */
+    //gets the zone id that is tapped
     public String getZoneTapped(LatLng point) {
         for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
             ZonePoly temp = entry.getValue();
@@ -470,9 +455,7 @@ public class MapTransform extends MapObject {
         return null;
     }
 
-    /**
-     * Task to update Polygons on map from ZoneList
-     */
+    //update polygons from server
     public class MapTask extends AsyncTask<Void, String, Void> {
 
         @Override
@@ -502,7 +485,6 @@ public class MapTransform extends MapObject {
 
     //Builds slide up panel for a building that was selected
     public void buildingSelected(String name, LatLng point) {
-
         slidingUpPanel.setVisibility(View.VISIBLE);
         slidingUpText.setText(name);
         slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -512,11 +494,10 @@ public class MapTransform extends MapObject {
 
     }
 
+    //calculates the length of a path
     protected float calculatePathLength(PolylineOptions plo) {
         float totalDistance = 0;
         for (int i = 1; i < plo.getPoints().size(); i++) {
-//            float results[] = {};
-//            Location.distanceBetween(plo.getPoints().get(i).latitude,plo.getPoints().get(i).longitude,plo.getPoints().get(i-1).latitude,plo.getPoints().get(i-1).longitude,results);
             Location currLocation = new Location("this");
             currLocation.setLatitude(plo.getPoints().get(i).latitude);
             currLocation.setLongitude(plo.getPoints().get(i).longitude);
@@ -524,11 +505,11 @@ public class MapTransform extends MapObject {
             lastLocation.setLatitude(plo.getPoints().get(i - 1).latitude);
             lastLocation.setLongitude(plo.getPoints().get(i - 1).longitude);
             totalDistance += lastLocation.distanceTo(currLocation);
-//            totalDistance+=results[0];
         }
         return totalDistance;
     }
 
+    //clears path and null's pathing tools
     public void clearPath() {
         if (drawnPath != null)
             drawnPath.remove();
@@ -537,6 +518,7 @@ public class MapTransform extends MapObject {
         np = null;
     }
 
+    //ZonePoly object for mapping purposes
     public class ZonePoly {
         private Polygon polygon;
         private String ID;
@@ -585,12 +567,16 @@ public class MapTransform extends MapObject {
         }
     }
 
+    //Build list of zone options
     private class ListTask extends AsyncTask<LatLng, Void, List<ParkingZoneOption>> {
+
+
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            pD.show();
+            if (!passedActivity.isLoadingComplete())
+                Toast.makeText(passedActivity.getApplicationContext(), "Please Wait", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -618,8 +604,6 @@ public class MapTransform extends MapObject {
         protected void onPostExecute(List<ParkingZoneOption> options) {
             super.onPostExecute(options);
             ParkingZoneOptionAdapter adapter = new ParkingZoneOptionAdapter(passedActivity, R.layout.listview_item_row, options);
-//        View header = (View) passedActivity.getLayoutInflater().inflate(R.layout.listview_header_row, null);
-//        lv.addHeaderView(header);
             adapter.sort(new Comparator<ParkingZoneOption>() {
                 @Override
                 public int compare(ParkingZoneOption lhs, ParkingZoneOption rhs) {
@@ -645,7 +629,6 @@ public class MapTransform extends MapObject {
             });
 
             slidingUpPanel.setEnableDragViewTouchEvents(true);
-          //  pD.dismiss();
         }
 
     }

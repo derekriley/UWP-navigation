@@ -58,9 +58,10 @@ import uwp.cs.edu.parkingtracker.parking.ParkingSpotDialogFragment;
 import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
 /**
- * Created by nate eisner on 4/14/15.
+ * Created by Nate Eisner on 4/14/15.
  */
 public class MainActivity extends ActionBarActivity implements LocationListener {
+    //variables
     private ProgressBar progress;
     private MapTransform mapTransform = null;
     private final int SERVICE_DELAY = 20000;
@@ -77,6 +78,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private ProgressDialog pD;
     private Menu actionBarMenu;
     protected LocationManager locationManager;
+    private SlidingUpPanelLayout slidingUpPanel;
 
 
 
@@ -104,9 +106,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             mapTransform = new MapTransform(MainActivity.this);
             mapTransform.setUpMap();
         }
+        //location manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 6000, 10, this);
-
+        slidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
     }
 
     @Override
@@ -174,8 +177,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
         handleMenuItem(item);
 
         // Activate the navigation drawer toggle
@@ -317,8 +318,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                     case "Admissions":
                         openUrl("http://www.uwp.edu/apply/admissions/index.cfm");
                         break;
-
-
                 }
             }
         });
@@ -330,7 +329,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             @Override
             public void run() {
                 //hide bottom sliding panel
-                SlidingUpPanelLayout sUPL = ((SlidingUpPanelLayout) findViewById(R.id.sliding_layout));
+                SlidingUpPanelLayout sUPL = ((SlidingUpPanelLayout)
+                        findViewById(R.id.sliding_layout));
                 //sUPL.setVisibility(View.GONE);
                 sUPL.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
@@ -341,6 +341,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private void openUrl(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
+    }
+
+    public boolean isLoadingComplete () {
+        return loadComplete;
     }
 
     //receiver to get loading status and loading amount
@@ -395,6 +399,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //Handle the back button
         if(keyCode == KeyEvent.KEYCODE_BACK) {
+            //if the sliding
+            if((slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED )||
+                    (slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+                slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                return true;
+            }
             //Ask the user if they want to quit
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -424,34 +434,42 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(Location location) {
-
+        //do nothing
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+        //status of gps changed
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (locationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, 10000,
                     1, this);
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
         } else if (locationManager
                 .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER, 10000,
                     1, this);
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
         } else {
+            //location is not working
             Toast.makeText(getApplicationContext(), "Please Check Location", Toast.LENGTH_LONG).show();
+            actionBarMenu.findItem(R.id.action_park).setVisible(false);
         }
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        //location is enabled
+        actionBarMenu.findItem(R.id.action_park).setVisible(true);
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+        //location is disabled
         Toast.makeText(getApplicationContext(), "Please Enable Location", Toast.LENGTH_LONG).show();
+        actionBarMenu.findItem(R.id.action_park).setVisible(false);
     }
 }
