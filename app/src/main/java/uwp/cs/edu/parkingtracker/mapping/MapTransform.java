@@ -409,7 +409,7 @@ public class MapTransform extends MapObject {
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
             DatabaseHandler.getInstance(passedActivity).addGpsPoint(parkingLatLng);
         } else {
-            Toast.makeText(passedActivity,"No Location Found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(passedActivity, "No Location Found", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -519,11 +519,23 @@ public class MapTransform extends MapObject {
 
     //clears path and null's pathing tools
     public void clearPath() {
-        if (drawnPath != null)
+        if (drawnPath != null){
             drawnPath.remove();
+            drawnPath = null;
+        }
+
         attachMarkersToMap();
         pathProvider = null;
         np = null;
+    }
+
+    public boolean isPathDrawn() {
+        if (drawnPath == null) {
+            Log.i("Path","not there");
+            return false;
+
+        }
+        return true;
     }
 
     //ZonePoly object for mapping purposes

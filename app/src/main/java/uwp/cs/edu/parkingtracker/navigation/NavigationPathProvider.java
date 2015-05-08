@@ -106,6 +106,7 @@ public class NavigationPathProvider implements PathProvider {
         }
 
         Collections.reverse(path);
+        path.remove(0);
         return path;
     }
 }

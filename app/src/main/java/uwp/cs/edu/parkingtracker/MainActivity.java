@@ -39,6 +39,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -173,20 +174,27 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
+        Log.i("drawer", "onpostcreate");
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+        Log.i("drawer", "onconfigchange");
     }
 
     //assign options menu to bar menu object
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
         actionBarMenu = menu;
-        actionBarMenu.findItem(R.id.action_cancel).setVisible(false);
+        if (mapTransform.isPathDrawn()) {
+            actionBarMenu.findItem(R.id.action_cancel).setVisible(true);
+        } else {
+            actionBarMenu.findItem(R.id.action_cancel).setVisible(false);
+        }
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (locationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -515,13 +523,13 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                     if (pD.isShowing()) {
                         pD.dismiss();
                     }
-                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Network Connection Poor", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
         };
         mServiceIntent.addCategory(ZoneService.TAG);
         startService(mServiceIntent);
-        timeOutHandler.postDelayed(timeOut, 45000);
+        timeOutHandler.postDelayed(timeOut, TIMEOUT);
     }
 }

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">UWP</string>
+    <string name="app_name">UWP Parking</string>
     <string name="basic_user_action_settings">Settings</string>
     <string name="expert_user_action_settings">Settings</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="shake_menu_button">Shake</string>
 
     <string name="lot">How full is the lot?</string>
     <string name="zones"> -- </string>
