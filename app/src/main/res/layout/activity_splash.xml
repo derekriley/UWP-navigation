@@ -41,7 +41,24 @@
             android:textColor="@android:color/holo_red_light"
             android:id="@+id/textView"
             android:layout_gravity="bottom|center"/>
+        <AbsoluteLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            >
 
 
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_height="50dp"
+            android:id="@+id/imageView2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/PoweredByParkside" />
+
+        </AbsoluteLayout>
+    </LinearLayout>
+
 </RelativeLayout>
