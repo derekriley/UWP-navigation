@@ -92,6 +92,9 @@ public class ZoneList extends MapObject{
             if (Double.valueOf(confidence) < 33){
                 this.color = Color.argb(85,Color.red(color),Color.green(color),Color.blue(color));
             }
+            if (Double.valueOf(fullness) == -1) {
+                this.color = Color.DKGRAY;
+            }
         }
 
         public int getColor() {

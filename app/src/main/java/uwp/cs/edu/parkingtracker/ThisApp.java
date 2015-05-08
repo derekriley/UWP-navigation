@@ -22,8 +22,6 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
-
-
 /**
  *
  * Maintains all needs associated with google analytics
@@ -32,6 +30,7 @@ import com.google.android.gms.analytics.Tracker;
 public class ThisApp extends Application {
     Tracker t;
     private final String PROPERTY_ID = "UA-61649168-1";
+    private MainActivity mainActivity;
 
     @Override
     public void onCreate() {
@@ -42,5 +41,13 @@ public class ThisApp extends Application {
 
     public synchronized Tracker getTracker() {
         return t;
+    }
+
+    public void setMain(MainActivity main) {
+        mainActivity = main;
+    }
+
+    public MainActivity getMain() {
+        return mainActivity;
     }
 }

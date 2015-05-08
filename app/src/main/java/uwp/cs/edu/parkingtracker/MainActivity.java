@@ -16,15 +16,20 @@
 
 package uwp.cs.edu.parkingtracker;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +45,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -51,13 +57,13 @@ import uwp.cs.edu.parkingtracker.parking.ParkingSpotDialogFragment;
 import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
 /**
- * Created by nate eisner on 4/14/15.
+ * Created by Nate Eisner on 4/14/15.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements LocationListener {
+    //variables
     private ProgressBar progress;
     private MapTransform mapTransform = null;
-    private DeviceListeners deviceListeners = null;
-    private final int SERVICE_DELAY = 30000;
+    private final int SERVICE_DELAY = 20000;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
@@ -70,8 +76,9 @@ public class MainActivity extends ActionBarActivity {
     private Intent mServiceIntent = null;
     private ProgressDialog pD;
     private Menu actionBarMenu;
-
-
+    protected LocationManager locationManager;
+    private SlidingUpPanelLayout slidingUpPanel;
+    private ThisApp thisApp;
 
 
     @Override
@@ -82,6 +89,10 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
         setContentView(R.layout.activity_main);
+
+        thisApp = (ThisApp)getApplication();
+        thisApp.setMain(this);
+
         //progress dialog for initial loading
         pD = new ProgressDialog(this, R.style.TransparentProgressDialog);
         pD.setIndeterminate(true);
@@ -93,12 +104,17 @@ public class MainActivity extends ActionBarActivity {
         setupGoogleAnalytics();
         setupTools();
         setupBottomPanel();
-        deviceListeners = getDeviceListeners();
         //create map
         if (mapTransform == null) {
             mapTransform = new MapTransform(MainActivity.this);
             mapTransform.setUpMap();
         }
+        //location manager
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null) {
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 6000, 10, this);
+        }
+        slidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
     }
 
     @Override
@@ -114,10 +130,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
         // Unregister the listener when the application is paused
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
-        if (mServiceIntent != null) {
-            stopService(mServiceIntent);
-        }
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
     }
 
     @Override
@@ -157,6 +170,18 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         actionBarMenu = menu;
         actionBarMenu.findItem(R.id.action_cancel).setVisible(false);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
+        } else if (locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
+        } else {
+            //location is not working
+            actionBarMenu.findItem(R.id.action_park).setVisible(false);
+        }
         return true;
     }
 
@@ -166,8 +191,6 @@ public class MainActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
         handleMenuItem(item);
 
         // Activate the navigation drawer toggle
@@ -183,7 +206,7 @@ public class MainActivity extends ActionBarActivity {
         // Google Analytics
 
         // Get tracker.
-        Tracker t = ((ThisApp) getApplication()).getTracker();
+        Tracker t = thisApp.getTracker();
 
         // Set screen name.
         t.setScreenName("Main");
@@ -197,7 +220,6 @@ public class MainActivity extends ActionBarActivity {
     //shows parkdialogfragment
     public void showParkDialogFragment(String zID) {
         ParkDialogFragment parkDialogFragment = new ParkDialogFragment();
-        parkDialogFragment.setListener(deviceListeners);
         parkDialogFragment.setzID(zID);
         parkDialogFragment.show(getSupportFragmentManager(), "map");
     }
@@ -210,7 +232,6 @@ public class MainActivity extends ActionBarActivity {
                 setCancelItem(false);
                 return true;
             case R.id.action_park:
-                //TODO: Set a dialog to REPARK? UNPARK?
                 ParkingSpotDialogFragment dia = new ParkingSpotDialogFragment();
                 dia.setMapTransform(mapTransform);
                 dia.show(getFragmentManager(), "Diag");
@@ -279,7 +300,7 @@ public class MainActivity extends ActionBarActivity {
         }
         if (role.equals("visitor")) {
             //TODO: CHANGE LINKS BASED OFF OF VISITOR
-            drawerItems = new String[]{"Information" , "uwp.edu", "Events", "Admissions" };
+            drawerItems = new String[]{"Information", "uwp.edu", "Events", "Admissions"};
         }
         mAdapter = new ArrayAdapter<>(this, R.layout.color_textview, drawerItems);
         mDrawerList.setAdapter(mAdapter);
@@ -311,20 +332,9 @@ public class MainActivity extends ActionBarActivity {
                     case "Admissions":
                         openUrl("http://www.uwp.edu/apply/admissions/index.cfm");
                         break;
-
-
                 }
             }
         });
-    }
-
-    //gets devicelisteners
-    public DeviceListeners getDeviceListeners() {
-        if (deviceListeners == null) {
-            // Instantiate new device listener.
-            deviceListeners = new DeviceListeners(this);
-        }
-        return deviceListeners;
     }
 
     //setup the bottom panel
@@ -333,7 +343,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 //hide bottom sliding panel
-                SlidingUpPanelLayout sUPL = ((SlidingUpPanelLayout) findViewById(R.id.sliding_layout));
+                SlidingUpPanelLayout sUPL = ((SlidingUpPanelLayout)
+                        findViewById(R.id.sliding_layout));
                 //sUPL.setVisibility(View.GONE);
                 sUPL.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
@@ -344,6 +355,10 @@ public class MainActivity extends ActionBarActivity {
     private void openUrl(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
+    }
+
+    public boolean isLoadingComplete() {
+        return loadComplete;
     }
 
     //receiver to get loading status and loading amount
@@ -360,14 +375,11 @@ public class MainActivity extends ActionBarActivity {
                     progress.setProgress(status);
                 }
             }
-            if (loadComplete) {
-                loadingComplete();
-            }
         }
     };
 
     //ran when service loadingcomplete
-    private void loadingComplete() {
+    public void loadingComplete() {
         progress.setProgress(0);
         if (pD.isShowing()) {
             pD.dismiss();
@@ -394,4 +406,72 @@ public class MainActivity extends ActionBarActivity {
         //    invalidateOptionsMenu();
     }
 
+    @Override
+    public void onBackPressed() {
+        //Handle the back button
+        //if the sliding is open
+        if (slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+            slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+        else {
+            //Ask the user if they want to quit
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Exit")
+                    .setMessage("Do you wish to exit?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Stop the activity
+                            MainActivity.this.finish();
+                            System.exit(0);
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        //do nothing
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        //status of gps changed
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, 10000,
+                    1, this);
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
+        } else if (locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 10000,
+                    1, this);
+            actionBarMenu.findItem(R.id.action_park).setVisible(true);
+        } else {
+            //location is not working
+            Toast.makeText(getApplicationContext(), "Please Check Location", Toast.LENGTH_LONG).show();
+            actionBarMenu.findItem(R.id.action_park).setVisible(false);
+        }
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        //location is enabled
+        actionBarMenu.findItem(R.id.action_park).setVisible(true);
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        //location is disabled
+        Toast.makeText(getApplicationContext(), "Please Enable Location", Toast.LENGTH_LONG).show();
+        if (actionBarMenu != null) {
+            actionBarMenu.findItem(R.id.action_park).setVisible(false);
+        }
+    }
 }

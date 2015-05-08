@@ -29,12 +29,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import uwp.cs.edu.parkingtracker.parking.ZoneService;
 
@@ -46,11 +46,11 @@ public class MenuActivity extends Activity {
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor prefEditor;
-    private GoogleApiClient mGoogleApiClient;
     private int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private TextView statusText;
     private Button studentBtn;
     private Button visitorBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,12 +138,15 @@ public class MenuActivity extends Activity {
         pd.setIndeterminate(true);
         pd.show();
 
+        Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
+        startActivity(mIntent);
+
         //Service
         final Intent mServiceIntent = new Intent(this, ZoneService.class);
         startService(mServiceIntent);
-        Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
-        startActivity(mIntent);
+
         pd.dismiss();
+        finish();
 
     }
 
@@ -169,12 +172,10 @@ public class MenuActivity extends Activity {
             setButtons(false);
             statusText.setText("Check Network Connection");
         }
-        else {
+        if (isConnectingToInternet()){
             setButtons(true);
             statusText.setText("");
         }
-
-
     }
 
     //returns the status of internet connectivity
@@ -191,8 +192,7 @@ public class MenuActivity extends Activity {
                     }
 
         }
+        Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show();
         return false;
     }
-
-
 }
