@@ -138,11 +138,13 @@ public class MenuActivity extends Activity {
         pd.setIndeterminate(true);
         pd.show();
 
+        Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
+        startActivity(mIntent);
+
         //Service
         final Intent mServiceIntent = new Intent(this, ZoneService.class);
         startService(mServiceIntent);
-        Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
-        startActivity(mIntent);
+
         pd.dismiss();
         finish();
 

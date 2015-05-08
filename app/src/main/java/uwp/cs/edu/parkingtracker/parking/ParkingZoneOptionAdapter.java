@@ -80,7 +80,7 @@ public class ParkingZoneOptionAdapter extends ArrayAdapter<ParkingZoneOption> {
                 color == Color.argb(85, Color.red(color), Color.green(color), Color.blue(color))) {
             strFullness = "Empty";
         }
-        if (color == Color.BLACK) {
+        if (color == Color.DKGRAY) {
             strFullness = "CLOSED";
         }
 

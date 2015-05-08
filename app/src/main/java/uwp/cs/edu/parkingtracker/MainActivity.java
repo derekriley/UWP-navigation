@@ -78,6 +78,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private Menu actionBarMenu;
     protected LocationManager locationManager;
     private SlidingUpPanelLayout slidingUpPanel;
+    private ThisApp thisApp;
 
 
     @Override
@@ -88,6 +89,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             return;
         }
         setContentView(R.layout.activity_main);
+
+        thisApp = (ThisApp)getApplication();
+        thisApp.setMain(this);
+
         //progress dialog for initial loading
         pD = new ProgressDialog(this, R.style.TransparentProgressDialog);
         pD.setIndeterminate(true);
@@ -125,10 +130,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     protected void onPause() {
         super.onPause();
         // Unregister the listener when the application is paused
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
-        if (mServiceIntent != null) {
-            stopService(mServiceIntent);
-        }
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(loadingStatus);
     }
 
     @Override
@@ -204,7 +206,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         // Google Analytics
 
         // Get tracker.
-        Tracker t = ((ThisApp) getApplication()).getTracker();
+        Tracker t = thisApp.getTracker();
 
         // Set screen name.
         t.setScreenName("Main");
@@ -373,14 +375,11 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                     progress.setProgress(status);
                 }
             }
-            if (loadComplete) {
-                loadingComplete();
-            }
         }
     };
 
     //ran when service loadingcomplete
-    private void loadingComplete() {
+    public void loadingComplete() {
         progress.setProgress(0);
         if (pD.isShowing()) {
             pD.dismiss();
@@ -423,12 +422,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                             //Stop the activity
                             MainActivity.this.finish();
                             System.exit(0);
                         }
-
                     })
                     .setNegativeButton("No", null)
                     .show();

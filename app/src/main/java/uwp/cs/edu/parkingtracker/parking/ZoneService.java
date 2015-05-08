@@ -25,6 +25,8 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import uwp.cs.edu.parkingtracker.CONSTANTS;
+import uwp.cs.edu.parkingtracker.MainActivity;
+import uwp.cs.edu.parkingtracker.ThisApp;
 
 
 /**
@@ -37,6 +39,7 @@ public class ZoneService extends IntentService {
     private Time startTime = new Time();
     //time for service to stay alive
     private final int SERVICE_TIME = 60000;
+    //private MainActivity main;
 
     /**
      * An IntentService must always have a constructor that calls the super constructor. The
@@ -45,6 +48,7 @@ public class ZoneService extends IntentService {
      */
     public ZoneService() {
         super("ZoneService");
+
     }
 
     @Override
@@ -63,7 +67,6 @@ public class ZoneService extends IntentService {
                     LocalBroadcastManager.getInstance(ZoneService.this).sendBroadcast(intent);
                     i++;
                 }
-
     }
 
     @Override
@@ -72,6 +75,9 @@ public class ZoneService extends IntentService {
         final Intent intent = new Intent(ACTION);
         intent.putExtra (CONSTANTS.DATA_STATUS,true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        ThisApp thisApp = (ThisApp)getApplication();
+        MainActivity main = thisApp.getMain();
+        main.loadingComplete();
     }
 
     //checks to see if service is taking to long
