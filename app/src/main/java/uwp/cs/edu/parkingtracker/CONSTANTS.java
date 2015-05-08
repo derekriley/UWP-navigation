@@ -377,20 +377,21 @@ public final class CONSTANTS {
         buildings.put("Rita Tallent Picken", new LatLng(42.645257, -87.856353));
         buildings.put("Molinaro Hall", new LatLng(42.647024, -87.856256));
         buildings.put("Student Center", new LatLng(42.64782, -87.855225));
-        buildings.put("Student Health And Counseling Center", new LatLng(42.64796, -87.846231));
-        buildings.put("Tallent Hall", new LatLng(42.647518, -87.847593));
 
-        //buildings.put("Library", new LatLng(42.645545, -87.854982));
-        //buildings.put("University Apartments", new LatLng(42.648881, -87.857133));
-        //buildings.put("Ranger Hall", new LatLng(42.646904, -87.857972));
-        //buildings.put("Pike River Suites", new LatLng(42.648607, -87.854778));
-        //buildings.put("Facilities Management Complex", new LatLng(42.649597, -87.847796));
-        parkingLots.put("Parking Lot A", new LatLng(42.648019, -87.853306));
-        parkingLots.put("Parking Lot B", new LatLng(42.645004, -87.858295));
-        parkingLots.put("Parking Lot C", new LatLng(42.643951, -87.858026));
-        parkingLots.put("Parking Lot D", new LatLng(42.6427, -87.857822));
-        parkingLots.put("Parking Lot E", new LatLng(42.641504, -87.856192));
-        parkingLots.put("Parking Lot T", new LatLng(42.64854, -87.847608));
+//        FUTURE BUILDINGS
+//        buildings.put("Student Health And Counseling Center", new LatLng(42.64796, -87.846231));
+//        buildings.put("Tallent Hall", new LatLng(42.647518, -87.847593));
+//        buildings.put("University Apartments", new LatLng(42.648881, -87.857133));
+//        buildings.put("Ranger Hall", new LatLng(42.646904, -87.857972));
+//        buildings.put("Pike River Suites", new LatLng(42.648607, -87.854778));
+//        buildings.put("Facilities Management Complex", new LatLng(42.649597, -87.847796));
+//        POSSIBLE PARKING LOT NAMING
+//        parkingLots.put("Parking Lot A", new LatLng(42.648019, -87.853306));
+//        parkingLots.put("Parking Lot B", new LatLng(42.645004, -87.858295));
+//        parkingLots.put("Parking Lot C", new LatLng(42.643951, -87.858026));
+//        parkingLots.put("Parking Lot D", new LatLng(42.6427, -87.857822));
+//        parkingLots.put("Parking Lot E", new LatLng(42.641504, -87.856192));
+//        parkingLots.put("Parking Lot T", new LatLng(42.64854, -87.847608));
 
         buildingOutlines.put("Student Center",SC_OUTLINE);
         buildingOutlines.put("Molinaro Hall", MOLN_OUTLINE);
@@ -398,7 +399,7 @@ public final class CONSTANTS {
         buildingOutlines.put("Wyllie Hall", WHYL_OUTLINE);
         buildingOutlines.put("The Rita", RITA_OUTLINE);
         buildingOutlines.put("Sports and Activity Center", SAC_OUTLINE);
-        buildingOutlines.put("TalLent Hall", TALLENT_OUTLINE);
+        buildingOutlines.put("Tallent Hall", TALLENT_OUTLINE);
         buildingOutlines.put("Student Health and Counseling Center", SHCC_OUTLINE);
 
         zones.put("Tallent_1", T_ZONE_1);

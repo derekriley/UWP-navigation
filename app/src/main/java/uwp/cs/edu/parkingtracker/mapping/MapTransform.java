@@ -326,6 +326,9 @@ public class MapTransform extends MapObject {
                 //if the click is in a zone...show dialog
                 String zoneID = getZoneTapped(latLng);
                 if (zoneID != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+
                     passedActivity.showParkDialogFragment(zoneID);
                 }
                 String buildingName = buildings.BuildingTapped(latLng);
@@ -519,7 +522,7 @@ public class MapTransform extends MapObject {
 
     //clears path and null's pathing tools
     public void clearPath() {
-        if (drawnPath != null){
+        if (drawnPath != null) {
             drawnPath.remove();
             drawnPath = null;
         }
@@ -531,7 +534,7 @@ public class MapTransform extends MapObject {
 
     public boolean isPathDrawn() {
         if (drawnPath == null) {
-            Log.i("Path","not there");
+            Log.i("Path", "not there");
             return false;
 
         }
