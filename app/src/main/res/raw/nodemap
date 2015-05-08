@@ -38,16 +38,17 @@ Lot,Traversal,42.644593,-87.855939,43,41 42 34 3
 Lot,Traversal,42.645097,-87.855579,44,6 34 35
 Lot,Bus Stop,42.64856,-87.848521,45,51 Tallent_3 Tallent_1
 Lot,Traversal,42.647292,-87.855854,46,67 11
-Student Center,Main Entrance,42.647388,-87.854757,60,55 67 61 Student_Center Molinaro_Hall
-Lot,Traversal,42.64658,-87.85473,61,60 62 63
+Student Center,Main Entrance,42.647388,-87.854757,60,55 70 Student_Center Molinaro_Hall
+Lot,Traversal,42.64658,-87.85473,61,70 62 63
 Lot,Traversal,42.64613,-87.85514,62,61 63 64 Greenquist_Hall
 Lot,Traversal,42.64608,-87.85435,63,61 62 64 40
 Lot,Traversal,42.64589,-87.85486,64,63 62 65
 Lot,Traversal,42.64591,-87.85561,65,33 7 64
 Molinaro,Main Entrance,42.64707,-87.85538,66,67 Molinaro_Hall
-Lot,Traversal,42.64733,-87.85537,67,46 66 60 Student_Center
+Lot,Traversal,42.64733,-87.85537,67,46 66 70 Student_Center
 Building,Traversal,42.64665,-87.85536,68,Molinaro_Hall Greenquist_Hall
 Building,Traversal,42.64577,-87.85536,69,Greenquist_Hall Wyllie_Hall
+Lot,Traversal,42.64734,-87.85469,70,67 60 55 61
 Student Center,Zone 1,42.648691,-87.853435,Student_Center_1,58
 Student Center,Zone 2,42.648279,-87.853695,Student_Center_2,57 Student_Center_3
 Student Center,Zone 3,42.648267,-87.852846,Student_Center_3,Student_Center_2
@@ -92,7 +93,7 @@ Lot,Traversal,42.648016,-87.848529,51,45 52 49 Tallent_5
 Lot ,Traversal,42.647748,-87.849295,52,51 53
 Lot,Traversal,42.647285,-87.850166,53,52 54
 Lot,Traversal,42.6473,-87.853624,54,53 55 Student_Center_6 Student_Center_7
-Lot,Traversal,42.647487,-87.854281,55,54 56 60 Student_Center_6
+Lot,Traversal,42.647487,-87.854281,55,54 56 60 70 Student_Center_6
 Lot ,Traversal,42.647895,-87.854268,56,55 57 Student_Center_6 Student_Center_4
 Lot,Traversal,42.648299,-87.854135,57,56 58 Student_Center_4 Student_Center_2
 Lot,Traversal,42.648629,-87.854013,58,57 Student_Center_2 Student_Center_1
