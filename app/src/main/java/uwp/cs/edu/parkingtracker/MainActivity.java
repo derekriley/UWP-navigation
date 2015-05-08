@@ -16,6 +16,7 @@
 
 package uwp.cs.edu.parkingtracker;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -64,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private ProgressBar progress;
     private MapTransform mapTransform = null;
     private final int SERVICE_DELAY = 20000;
+    private final int TIMEOUT = 45000;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
@@ -80,7 +82,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private SlidingUpPanelLayout slidingUpPanel;
     private ThisApp thisApp;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +90,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             return;
         }
         setContentView(R.layout.activity_main);
-
-        thisApp = (ThisApp)getApplication();
+        thisApp = (ThisApp) getApplication();
         thisApp.setMain(this);
 
         //progress dialog for initial loading
@@ -115,6 +115,23 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 6000, 10, this);
         }
         slidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
+        //server is taking too long so disable loading dialog
+        final Handler timeOutHandler = new Handler();
+        Runnable timeOut = new Runnable() {
+            @Override
+            public void run() {
+                if (isMyServiceRunning(ZoneService.class)) {
+                    //service is taking too long
+                    if (pD.isShowing()) {
+                        pD.dismiss();
+                    }
+                    Toast.makeText(getApplicationContext(), "Network Trouble", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        };
+        timeOutHandler.postDelayed(timeOut, TIMEOUT);
     }
 
     @Override
@@ -242,7 +259,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             case R.id.action_visitor:
                 modifyDrawerItems("visitor");
                 return true;
-
         }
 
         return false;
@@ -370,6 +386,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             if (!loadComplete) {
                 if (progress != null) {
                     progress.setVisibility(View.VISIBLE);
+                    progress.setIndeterminate(false);
                     //gets amount of zones loaded
                     int status = intent.getIntExtra(CONSTANTS.DATA_AMOUNT, 0);
                     progress.setProgress(status);
@@ -378,21 +395,23 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         }
     };
 
-    //ran when service loadingcomplete
+    //ran when service loading complete
     public void loadingComplete() {
+        loadComplete = true;
         progress.setProgress(0);
+        progress.setIndeterminate(false);
         if (pD.isShowing()) {
             pD.dismiss();
         }
         mapTransform.refreshMap();
-        mServiceIntent = new Intent(MainActivity.this, ZoneService.class);
+
         // Timer
         final Handler timerHandler = new Handler();
         //server refresh timer
         Runnable timerRunnable = new Runnable() {
             @Override
             public void run() {
-                startService(mServiceIntent);
+                serviceRunner();
                 return;
             }
         };
@@ -412,8 +431,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         //if the sliding is open
         if (slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
             slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }
-        else {
+        } else {
             //Ask the user if they want to quit
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -473,5 +491,37 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         if (actionBarMenu != null) {
             actionBarMenu.findItem(R.id.action_park).setVisible(false);
         }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void serviceRunner() {
+        Intent mServiceIntent = new Intent(getApplicationContext(), ZoneService.class);
+        mServiceIntent.addCategory(ZoneService.TAG);
+        final Handler timeOutHandler = new Handler();
+        Runnable timeOut = new Runnable() {
+            @Override
+            public void run() {
+                if (isMyServiceRunning(ZoneService.class)) {
+                    //service is taking too long
+                    if (pD.isShowing()) {
+                        pD.dismiss();
+                    }
+                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        };
+        mServiceIntent.addCategory(ZoneService.TAG);
+        startService(mServiceIntent);
+        timeOutHandler.postDelayed(timeOut, 45000);
     }
 }

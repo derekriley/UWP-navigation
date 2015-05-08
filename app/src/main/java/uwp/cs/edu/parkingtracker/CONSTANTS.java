@@ -352,7 +352,7 @@ public final class CONSTANTS {
 
     static {
         buildings.put("Greenquist Hall", new LatLng(42.646377, -87.855475));
-        buildings.put("Sports and Activity Center", new LatLng(42.64253, -87.856661));
+        buildings.put("Sports and Activity Center", new LatLng(42.64253, -87.856691));
         buildings.put("Wyllie Hall", new LatLng(42.645505, -87.855124));
         buildings.put("Rita Tallent Picken", new LatLng(42.645257, -87.856353));
         buildings.put("Molinaro Hall", new LatLng(42.647024, -87.856256));

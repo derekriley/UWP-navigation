@@ -61,9 +61,9 @@ public class MenuActivity extends Activity {
         prefEditor = preferences.edit();
 
         //find UI objects
-        statusText = (TextView)findViewById(R.id.status);
-        studentBtn = (Button)findViewById(R.id.buttonStudents);
-        visitorBtn = (Button)findViewById(R.id.buttonVisitors);
+        statusText = (TextView) findViewById(R.id.status);
+        studentBtn = (Button) findViewById(R.id.buttonStudents);
+        visitorBtn = (Button) findViewById(R.id.buttonVisitors);
 
         statusChecker();
 
@@ -73,7 +73,7 @@ public class MenuActivity extends Activity {
             @Override
             public void run() {
                 statusChecker();
-                timerHandler.postDelayed(this, 2500);
+                timerHandler.postDelayed(this, 5000);
                 return;
 
             }
@@ -138,13 +138,12 @@ public class MenuActivity extends Activity {
         pd.setIndeterminate(true);
         pd.show();
 
-        Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
-        startActivity(mIntent);
-
-        //Service
-        final Intent mServiceIntent = new Intent(this, ZoneService.class);
+        Intent mServiceIntent = new Intent(getApplicationContext(), ZoneService.class);
+        mServiceIntent.addCategory(ZoneService.TAG);
         startService(mServiceIntent);
 
+        Intent mIntent = new Intent(MenuActivity.this, MainActivity.class);
+        startActivity(mIntent);
         pd.dismiss();
         finish();
 
@@ -167,32 +166,30 @@ public class MenuActivity extends Activity {
 
     //checks services
     private void statusChecker() {
-        Log.i("Status","Checking status");
+        Log.i("Status", "Checking status");
         if (!isConnectingToInternet()) {
             setButtons(false);
             statusText.setText("Check Network Connection");
         }
-        if (isConnectingToInternet()){
+        if (isConnectingToInternet()) {
             setButtons(true);
             statusText.setText("");
         }
     }
 
     //returns the status of internet connectivity
-    private boolean isConnectingToInternet(){
+    private boolean isConnectingToInternet() {
         ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null)
-        {
+        if (connectivity != null) {
             NetworkInfo[] info = connectivity.getAllNetworkInfo();
             if (info != null)
                 for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                    {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
                         return true;
                     }
 
         }
-        Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "No network connection", Toast.LENGTH_SHORT).show();
         return false;
     }
 }

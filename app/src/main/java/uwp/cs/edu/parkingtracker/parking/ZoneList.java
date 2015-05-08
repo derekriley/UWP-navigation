@@ -33,8 +33,8 @@ import uwp.cs.edu.parkingtracker.network.DatabaseExchange;
  * Thread-safe Singleton Class for the main zone list.
  * Works with Activities and the zone service
  * Created by nate eisner
- * */
-public class ZoneList extends MapObject{
+ */
+public class ZoneList extends MapObject {
 
     private static class Zone {
         private String zoneId;
@@ -69,11 +69,12 @@ public class ZoneList extends MapObject{
 
         /**
          * Used to set fullness of the zone
+         *
          * @param fullness - fullness amount
          */
         public void setFullness(String fullness, String confidence) {
             this.fullness = fullness;
-            this.confidence=confidence;
+            this.confidence = confidence;
             if (Double.valueOf(fullness) > 66) {
                 this.color = Color.RED;
             }
@@ -83,14 +84,14 @@ public class ZoneList extends MapObject{
             if (Double.valueOf(fullness) < 33) {
                 this.color = Color.GREEN;
             }
-            if (Double.valueOf(confidence) > 66){
-                this.color = Color.argb(255,Color.red(color),Color.green(color),Color.blue(color));
+            if (Double.valueOf(confidence) > 66) {
+                this.color = Color.argb(255, Color.red(color), Color.green(color), Color.blue(color));
             }
-            if (Double.valueOf(confidence) >= 33 && Double.valueOf(confidence) <= 66){
-                this.color = Color.argb(170,Color.red(color),Color.green(color),Color.blue(color));
+            if (Double.valueOf(confidence) >= 33 && Double.valueOf(confidence) <= 66) {
+                this.color = Color.argb(170, Color.red(color), Color.green(color), Color.blue(color));
             }
-            if (Double.valueOf(confidence) < 33){
-                this.color = Color.argb(85,Color.red(color),Color.green(color),Color.blue(color));
+            if (Double.valueOf(confidence) < 33) {
+                this.color = Color.argb(85, Color.red(color), Color.green(color), Color.blue(color));
             }
             if (Double.valueOf(fullness) == -1) {
                 this.color = Color.DKGRAY;
@@ -108,11 +109,11 @@ public class ZoneList extends MapObject{
     }
 
     //thread-safe hashmap
-    private ConcurrentHashMap<String,Zone> zoneMap;
+    private ConcurrentHashMap<String, Zone> zoneMap;
     public static volatile ZoneList mInstance = null;
     private boolean beingUsed = false;
 
-     //Constructor - creates from constants map
+    //Constructor - creates from constants map
     private ZoneList() {
         zoneMap = new ConcurrentHashMap<>();
         for (Map.Entry<String, PolygonOptions> entry : CONSTANTS.zones.entrySet()) {
@@ -135,25 +136,25 @@ public class ZoneList extends MapObject{
         return mInstance;
     }
 
-    public synchronized ArrayList<String> getZoneIDs () {
+    public synchronized ArrayList<String> getZoneIDs() {
         synchronized (zoneMap) {
             ArrayList<String> zIDS = new ArrayList<>();
-                zIDS.addAll(zoneMap.keySet());
+            zIDS.addAll(zoneMap.keySet());
             return zIDS;
         }
     }
 
-    public synchronized boolean setFullness (String zID) {
+    public synchronized boolean setFullness(String zID) {
         try {
             Zone z = zoneMap.get(zID);
             String result = DatabaseExchange.getFullness(zID);
             String fullness = result.split(",")[0];
             String confidence = "";
-            if (result.split(",").length>1) {
+            if (result.split(",").length > 1) {
                 confidence = result.split(",")[1];
             }
 
-            z.setFullness(fullness,confidence);
+            z.setFullness(fullness, confidence);
 
             zoneMap.put(zID, z);
             return true;
