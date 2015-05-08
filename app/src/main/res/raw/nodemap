@@ -4,7 +4,7 @@ Rita,Side Entrance,42.644547,-87.856697,2,41 23
 Rita,Side Entrance,42.645053,-87.856097,3,43 The_Rita
 Wyllie ,Main Entrance,42.645051,-87.855159,4,35 Wyllie_Hall
 Wyllie ,Side Entrance,42.645276,-87.854565,5,40 Wyllie_Hall
-Wyllie ,Side Entrance,42.645237,-87.855540,6,44 32 33 65 Wyllie_Hall
+Wyllie ,Side Entrance,42.645237,-87.855540,6,44 32 33 65 Wyllie_Hall The_Rita
 Greenquist,Side Entrance,42.646017,-87.855635,7,65 8 Greenquist_Hall
 Greenquist,Main Entrance,42.646336,-87.855648,8,33 7 9 Greenquist_Hall
 Greenquist,Side Entrance,42.646631,-87.855578,9,33 10 8 Greenquist_Hall
@@ -50,6 +50,7 @@ Building,Traversal,42.64665,-87.85536,68,Molinaro_Hall Greenquist_Hall
 Building,Traversal,42.64577,-87.85536,69,Greenquist_Hall Wyllie_Hall
 Lot,Traversal,42.64734,-87.85469,70,67 60 55 61
 Lot,Traversal,42.64308,-87.85632,71,105 26 19
+Health,door,42.64796,-87.84633,72,49 Student_Health_and_Counseling_Center
 Student Center,Zone 1,42.648691,-87.853435,Student_Center_1,58
 Student Center,Zone 2,42.648279,-87.853695,Student_Center_2,57 Student_Center_3
 Student Center,Zone 3,42.648267,-87.852846,Student_Center_3,Student_Center_2
@@ -88,7 +89,7 @@ Tallent,Zone6,42.648132,-87.847206,Tallent_6,49 Tallent_5
 Sac,Traversal,42.643009,-87.85759,105,71 SAC_Overflow_1
 ,,,,,
 Campus Police,Main Entrance,42.647443,-87.847219,47,48 Tallent_Hall
-Lot,Traversal,42.64743,-87.846881,48,47 49
+Lot,Traversal,42.64743,-87.846881,48,47 49 72
 Lot,Traversal,42.64798,-87.8469,49,51 48
 Lot,Traversal,42.648016,-87.848529,51,45 52 49 Tallent_5
 Lot ,Traversal,42.647748,-87.849295,52,51 53
@@ -107,3 +108,4 @@ Wyllie,Building,42.645439,-87.854999,Wyllie_Hall,4 5 6 69
 Rita,Building,42.645203,-87.856434,The_Rita,1 3
 SAC,Building,42.642577,-87.85631,Sports_and_Activity_Center,19 20
 Tallent,Building,42.647524,-87.84753,Tallent_Hall,47
+Health and Counseling,Building,42.64795,-87.84621,Student_Health_and_Counseling_Center,72
