@@ -402,11 +402,15 @@ public class MapTransform extends MapObject {
         }
         //set location
         parkingLatLng = getLocation();
-        //make new marker
-        parkingMarker = mMap.addMarker(new MarkerOptions().title("Parking Spot")
-                .position(parkingLatLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
-        DatabaseHandler.getInstance(passedActivity).addGpsPoint(parkingLatLng);
+        if (parkingLatLng != null) {
+            //make new marker
+            parkingMarker = mMap.addMarker(new MarkerOptions().title("Parking Spot")
+                    .position(parkingLatLng)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+            DatabaseHandler.getInstance(passedActivity).addGpsPoint(parkingLatLng);
+        } else {
+            Toast.makeText(passedActivity,"No Location Found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //this is the method it gets the latlng value of the parking spot from
@@ -488,8 +492,7 @@ public class MapTransform extends MapObject {
             pathProvider = new NavigationPathProvider();
             np = new NodeParser(passedActivity);
             new ListTask().execute(point);
-        }
-        else {
+        } else {
             Toast.makeText(passedActivity.getApplicationContext(), "Please Wait for Loading Complete", Toast.LENGTH_SHORT).show();
         }
 
