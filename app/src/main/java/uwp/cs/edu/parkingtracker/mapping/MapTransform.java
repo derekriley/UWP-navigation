@@ -439,7 +439,11 @@ public class MapTransform extends MapObject {
     //returns current location from gps in LatLng
     public LatLng getLocation() {
         Location location = mMap.getMyLocation();
-        return new LatLng(location.getLatitude(), location.getLongitude());
+        if (location != null) {
+            return new LatLng(location.getLatitude(), location.getLongitude());
+        } else {
+            return null;
+        }
     }
 
     //gets the zone id that is tapped
