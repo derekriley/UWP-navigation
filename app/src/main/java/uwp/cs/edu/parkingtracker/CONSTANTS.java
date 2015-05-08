@@ -69,7 +69,7 @@ public final class CONSTANTS {
     static final LatLng T_ROW_2_POINT_2 = new LatLng(42.648801, -87.847605);
     static final LatLng T_ROW_2_POINT_3 = new LatLng(42.648785, -87.846757);
 
-    static final LatLng T_ROW_3_POINT_1 = new LatLng(42.648367, -87.848478);
+    static final LatLng T_ROW_3_POINT_1 = new LatLng(42.648366, -87.848391);
     static final LatLng T_ROW_3_POINT_2 = new LatLng(42.648358, -87.847644);
     static final LatLng T_ROW_3_POINT_3 = new LatLng(42.648333, -87.846739);
 
