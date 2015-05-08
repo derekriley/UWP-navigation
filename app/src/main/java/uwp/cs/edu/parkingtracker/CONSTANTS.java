@@ -260,6 +260,26 @@ public final class CONSTANTS {
             .add(E_ROW_1_POINT_1, E_ROW_1_POINT_2, E_ROW_2_POINT_2, E_ROW_2_POINT_1);
     //SAC Overflow (E) Polygons End
 
+    //Tallent Hall Outline Coordinates Begin
+    static final LatLng TH_ROW_1_POINT_1 = new LatLng (42.647715, -87.847784);
+    static final LatLng TH_ROW_1_POINT_2 = new LatLng (42.647706, -87.847213);
+    static final LatLng TH_ROW_2_POINT_1 = new LatLng (42.647280, -87.847216);
+    static final LatLng TH_ROW_2_POINT_2 = new LatLng (42.647292, -87.847803);
+
+    static final PolygonOptions TALLENT_OUTLINE = new PolygonOptions()
+            .add(TH_ROW_1_POINT_1, TH_ROW_1_POINT_2, TH_ROW_2_POINT_2, TH_ROW_2_POINT_1);
+    //Tallent Hall Outline Coordinates End
+
+    //SHCC Outline Coordinates Begin
+    static final LatLng SHCC_ROW_1_POINT_1 = new LatLng (42.648067, -87.846325);
+    static final LatLng SHCC_ROW_1_POINT_2 = new LatLng (42.648059, -87.845912);
+    static final LatLng SHCC_ROW_2_POINT_1 = new LatLng (42.647848, -87.846329);
+    static final LatLng SHCC_ROW_2_POINT_2 = new LatLng (42.647850, -87.845916);
+
+    static final PolygonOptions SHCC_OUTLINE = new PolygonOptions()
+            .add(SHCC_ROW_1_POINT_1, SHCC_ROW_1_POINT_2, SHCC_ROW_2_POINT_2, SHCC_ROW_2_POINT_1);
+    //SHCC Outline Coordinates End
+
     //Student Center Outline Coordinates Begin
     static final LatLng SC_ROW_1_POINT_1 = new LatLng (42.648062, -87.855849);
     static final LatLng SC_ROW_1_POINT_2 = new LatLng (42.648048, -87.854766);
@@ -377,6 +397,8 @@ public final class CONSTANTS {
         buildingOutlines.put("Wyllie Hall", WHYL_OUTLINE);
         buildingOutlines.put("The Rita", RITA_OUTLINE);
         buildingOutlines.put("Sports and Activity Center", SAC_OUTLINE);
+        buildingOutlines.put("TalLent Hall", TALLENT_OUTLINE);
+        buildingOutlines.put("Student Health and Counseling Center", SHCC_OUTLINE);
 
         zones.put("Tallent_1", T_ZONE_1);
         zones.put("Tallent_2", T_ZONE_2);
