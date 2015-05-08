@@ -71,6 +71,7 @@ public class BuildingList extends MapObject{
         buildingHashMap.get("Wyllie Hall").setNavId("Wyllie_Hall");
         buildingHashMap.get("The Rita").setNavId("The_Rita");
         buildingHashMap.get("Sports and Activity Center").setNavId("Sports_and_Activity_Center");
+        buildingHashMap.get("Tallent Hall").setNavId("Tallent_Hall");
         buildingHashMap.get("Student Health and Counseling Center").setNavId("Student_Health_and_Counseling_Center");
     }
 
