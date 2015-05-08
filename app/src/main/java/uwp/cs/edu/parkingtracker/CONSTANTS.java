@@ -74,7 +74,7 @@ public final class CONSTANTS {
     static final LatLng T_ROW_3_POINT_3 = new LatLng(42.648333, -87.846739);
 
     static final LatLng T_ROW_4_POINT_1 = new LatLng(42.647981, -87.848403);
-    static final LatLng T_ROW_4_POINT_2 = new LatLng(42.648082, -87.847627);
+    static final LatLng T_ROW_4_POINT_2 = new LatLng(42.647946, -87.847631);
     static final LatLng T_ROW_4_POINT_3 = new LatLng(42.647981, -87.846827);
     //Talent (T) Coordinates End
 
@@ -98,7 +98,7 @@ public final class CONSTANTS {
 
     static final LatLng A_ROW_2_POINT_1 = new LatLng(42.648511, -87.854008);
     static final LatLng A_ROW_2_POINT_2 = new LatLng(42.648516, -87.853350);
-    static final LatLng A_ROW_2_POINT_3 = new LatLng(42.648455, -87.851937);
+    static final LatLng A_ROW_2_POINT_3 = new LatLng(42.648455, -87.852173);
 
     static final LatLng A_ROW_3_POINT_1 = new LatLng(42.648095, -87.854203);
     static final LatLng A_ROW_3_POINT_2 = new LatLng(42.648077, -87.853363);
