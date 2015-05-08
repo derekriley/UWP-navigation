@@ -10,14 +10,14 @@ Greenquist,Main Entrance,42.646336,-87.855648,8,33 7 9 Greenquist_Hall
 Greenquist,Side Entrance,42.646631,-87.855578,9,33 10 8 Greenquist_Hall
 Molinaro,Side Entrance,42.646802,-87.855859,10,33 9 11 Molinaro_Hall
 Molinaro,Side Entrance,42.64711,-87.85571,11,10 46 Molinaro_Hall
-SAC,Main Entrance,42.642934,-87.856317,19,26 105 Sports_and_Activity_Center
+SAC,Main Entrance,42.642934,-87.856317,19,71 Sports_and_Activity_Center
 SAC,Main Entrance,42.64209,-87.856247,20,SAC_Main_1 Sports_and_Activity_Center
 Lot,Traversal,42.644331,-87.857408,21,27 28 22 Rita_Main_8 Rita_Overflow_2
 Lot,Traversal,42.644052,-87.857278,22,21 23 24 Rita_Overflow_2 Rita_Overflow_4
 Lot ,Traversal,42.643924,-87.857027,23,22 24 2
 Lot,Traversal,42.643785,-87.857119,24,22 23 25 Rita_Overflow_4 Rita_Overflow_5
 Lot,Traversal,42.643264,-87.856991,25,24 26 Rita_Overflow_5
-Lot,Traversal,42.643209,-87.856281,26,19 25 42
+Lot,Traversal,42.643209,-87.856281,26,71 25 42
 Lot,Traversal,42.644830,-87.856910,27,21 28 1
 Lot ,Traversal,42.644848,-87.857424,28,27 21 29 1 Rita_Main_3 Rita_Main_6 Rita_Main_8
 Lot ,Traversal,42.645435,-87.857405,29,28 30 Rita_Main_3
@@ -49,6 +49,7 @@ Lot,Traversal,42.64733,-87.85537,67,46 66 70 Student_Center
 Building,Traversal,42.64665,-87.85536,68,Molinaro_Hall Greenquist_Hall
 Building,Traversal,42.64577,-87.85536,69,Greenquist_Hall Wyllie_Hall
 Lot,Traversal,42.64734,-87.85469,70,67 60 55 61
+Lot,Traversal,42.64308,-87.85632,71,105 26 19
 Student Center,Zone 1,42.648691,-87.853435,Student_Center_1,58
 Student Center,Zone 2,42.648279,-87.853695,Student_Center_2,57 Student_Center_3
 Student Center,Zone 3,42.648267,-87.852846,Student_Center_3,Student_Center_2
@@ -84,7 +85,7 @@ Tallent,Zone3,42.648575,-87.848009,Tallent_3,45 Tallent_4
 Tallent,Zone4,42.648559,-87.847184,Tallent_4,Tallent_2 Tallent_3 Tallent_6
 Tallent,Zone5,42.648153,-87.848014,Tallent_5,45 51 Tallent_6
 Tallent,Zone6,42.648132,-87.847206,Tallent_6,49 Tallent_5
-Sac,Traversal,42.643009,-87.85759,105,19 SAC_Overflow_1
+Sac,Traversal,42.643009,-87.85759,105,71 SAC_Overflow_1
 ,,,,,
 Campus Police,Main Entrance,42.647443,-87.847219,47,48 Tallent_Hall
 Lot,Traversal,42.64743,-87.846881,48,47 49
