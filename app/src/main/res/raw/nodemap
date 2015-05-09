@@ -1,5 +1,5 @@
 Building,Type,Long.,Lat.,id,neighbors
-Rita,Main Entrance,42.645007,-87.856926,1,28 27 3 44 6 The_Rita
+Rita,Main Entrance,42.645007,-87.856926,1,28 27 3 6 The_Rita
 Rita,Side Entrance,42.644547,-87.856697,2,41 23
 Rita,Side Entrance,42.645053,-87.856097,3,43 The_Rita
 Wyllie ,Main Entrance,42.645051,-87.855159,4,35 Wyllie_Hall
@@ -105,7 +105,7 @@ Student Center,Building,42.647748,-87.855178,Student_Center,60
 Molinaro,Building,42.64695,-87.855509,Molinaro_Hall,10 11 66 68
 Greenquist,Building,42.646316,-87.855348,Greenquist_Hall,7 8 9 68 69
 Wyllie,Building,42.645439,-87.854999,Wyllie_Hall,4 5 6 69
-Rita,Building,42.645203,-87.856434,The_Rita,1 3
+Rita,Building,42.645203,-87.856434,The_Rita,1 3 6
 SAC,Building,42.642577,-87.85631,Sports_and_Activity_Center,19 20
 Tallent,Building,42.647524,-87.84753,Tallent_Hall,47
 Health and Counseling,Building,42.64795,-87.84621,Student_Health_and_Counseling_Center,72
