@@ -65,19 +65,18 @@ public class ParkingZoneOptionAdapter extends ArrayAdapter<ParkingZoneOption> {
 
         String strFullness = "";
         int color = parkingZoneOption.color;
-        if (color == Color.RED ||
-                color == Color.argb(170, Color.red(color), Color.green(color), Color.blue(color)) ||
-                color == Color.argb(85, Color.red(color), Color.green(color), Color.blue(color))) {
+        //remove alpha to compare color
+        int noAColor = Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
+        //red
+        if (noAColor == 16711680) {
             strFullness = "Full";
         }
-        if (color == Color.YELLOW ||
-                color == Color.argb(170, Color.red(color), Color.green(color), Color.blue(color)) ||
-                color == Color.argb(85, Color.red(color), Color.green(color), Color.blue(color))) {
+        //yellow
+        if (noAColor == 16776960) {
             strFullness = "Half Full";
         }
-        if (color == Color.GREEN ||
-                color == Color.argb(170, Color.red(color), Color.green(color), Color.blue(color)) ||
-                color == Color.argb(85, Color.red(color), Color.green(color), Color.blue(color))) {
+        //green
+        if (noAColor == 65280) {
             strFullness = "Empty";
         }
         if (color == Color.DKGRAY) {

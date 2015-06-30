@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     //variables
     private ProgressBar progress;
     private MapTransform mapTransform = null;
-    private final int SERVICE_DELAY = 20000;
+    private final int SERVICE_DELAY = 5000;
     private final int TIMEOUT = 45000;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;

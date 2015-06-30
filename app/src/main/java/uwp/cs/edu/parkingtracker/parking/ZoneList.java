@@ -136,15 +136,13 @@ public class ZoneList extends MapObject {
         return mInstance;
     }
 
-    public synchronized ArrayList<String> getZoneIDs() {
-        synchronized (zoneMap) {
+    public ArrayList<String> getZoneIDs() {
             ArrayList<String> zIDS = new ArrayList<>();
             zIDS.addAll(zoneMap.keySet());
             return zIDS;
-        }
     }
 
-    public synchronized boolean setFullness(String zID) {
+    public boolean setFullness(String zID) {
         try {
             Zone z = zoneMap.get(zID);
             String result = DatabaseExchange.getFullness(zID);
@@ -164,11 +162,11 @@ public class ZoneList extends MapObject {
         }
     }
 
-    public synchronized int getColor(String zID) {
+    public int getColor(String zID) {
         return zoneMap.get(zID).getColor();
     }
 
-    public synchronized String getFullness(String zID) {
+    public String getFullness(String zID) {
         return zoneMap.get(zID).getFullness();
     }
 }

@@ -402,6 +402,7 @@ public class MapTransform extends MapObject {
         if (parkingMarker != null) {
             //remove marker
             parkingMarker.remove();
+            parkingMarker.setVisible(false);
         }
         //set location
         parkingLatLng = getLocation();
@@ -416,6 +417,14 @@ public class MapTransform extends MapObject {
         }
     }
 
+    public boolean isParked() {
+        boolean result = false;
+        if (parkingMarker != null) {
+            result = parkingMarker.isVisible();
+        }
+        return result;
+    }
+
     //this is the method it gets the latlng value of the parking spot from
     // the local database. Used when reloading activity
     public void getParkingSpot() {
@@ -425,6 +434,7 @@ public class MapTransform extends MapObject {
             parkingMarker = mMap.addMarker(new MarkerOptions().title("Parking Spot")
                     .position(parkingLatLng).icon(BitmapDescriptorFactory
                             .fromResource(R.drawable.parking)));
+            parkingMarker.setVisible(true);
         }
     }
 
