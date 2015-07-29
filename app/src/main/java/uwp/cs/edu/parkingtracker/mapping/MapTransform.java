@@ -272,12 +272,12 @@ public class MapTransform extends MapObject {
         this.mMap = ((SupportMapFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
 
-        this.slidingUpText = (TextView) passedActivity.findViewById(R.id.slidetext);
-        this.slidingUpPanel = (SlidingUpPanelLayout) passedActivity.findViewById(R.id.sliding_layout);
-        this.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        this.lv = (ListView) slidingUpPanel.findViewById(R.id.list);
+//        this.slidingUpText = (TextView) passedActivity.findViewById(R.id.slidetext);
+//        this.slidingUpPanel = (SlidingUpPanelLayout) passedActivity.findViewById(R.id.sliding_layout);
+//        this.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+//        this.lv = (ListView) slidingUpPanel.findViewById(R.id.list);
         this.buildings = new BuildingList();
-        this.slidingUpPanel.setPanelHeight(0);
+//        this.slidingUpPanel.setPanelHeight(0);
         this.zonePolyMap = new HashMap<>();
         this.pD = new ProgressDialog(passedActivity, R.style.TransparentProgressDialog);
         this.buildingMarkers = new ArrayList<>();
@@ -297,7 +297,7 @@ public class MapTransform extends MapObject {
 
         drawPolygons();
 
-        slidingUpPanel.setDragView(passedActivity.findViewById(R.id.sliding_layout_child2));
+//        slidingUpPanel.setDragView(passedActivity.findViewById(R.id.sliding_layout_child2));
         //slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -308,13 +308,13 @@ public class MapTransform extends MapObject {
                     Toast.makeText(passedActivity, "You Parked Here!", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                if (markerTitle != null) {
-                    slidingUpPanel.setPanelHeight(
-                            passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
-                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    buildingSelected(markerTitle, CONSTANTS.buildings.get(markerTitle));
-                    //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
-                }
+//                if (markerTitle != null) {
+//                    slidingUpPanel.setPanelHeight(
+//                            passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
+//                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//                    buildingSelected(markerTitle, CONSTANTS.buildings.get(markerTitle));
+//                    //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
+//                }
                 return true;
             }
         });
@@ -331,14 +331,14 @@ public class MapTransform extends MapObject {
 
                     passedActivity.showParkDialogFragment(zoneID);
                 }
-                String buildingName = buildings.BuildingTapped(latLng);
-                if (buildingName != null) {
-                    buildingSelected(buildingName, latLng);
-                    //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
-                } else {
-                    slidingUpPanel.setPanelHeight(0);
-                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                }
+//                String buildingName = buildings.BuildingTapped(latLng);
+//                if (buildingName != null) {
+//                    buildingSelected(buildingName, latLng);
+//                    //Toast.makeText(passedActivity, buildingName + " Pressed", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    slidingUpPanel.setPanelHeight(0);
+//                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+//                }
             }
         });
         attachMarkersToMap();
@@ -498,22 +498,22 @@ public class MapTransform extends MapObject {
         }
     }
 
-    //Builds slide up panel for a building that was selected
-    public void buildingSelected(String name, LatLng point) {
-        if (passedActivity.isLoadingComplete()) {
-            slidingUpPanel.setPanelHeight(
-                    passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
-            slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            slidingUpText.setText(name);
-            slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            pathProvider = new NavigationPathProvider();
-            np = new NodeParser(passedActivity);
-            new ListTask().execute(point);
-        } else {
-            Toast.makeText(passedActivity.getApplicationContext(), "Please Wait for Loading Complete", Toast.LENGTH_SHORT).show();
-        }
-
-    }
+//    //Builds slide up panel for a building that was selected
+//    public void buildingSelected(String name, LatLng point) {
+//        if (passedActivity.isLoadingComplete()) {
+//            slidingUpPanel.setPanelHeight(
+//                    passedActivity.getResources().getDimensionPixelSize(R.dimen.panel_height));
+//            slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//            slidingUpText.setText(name);
+//            slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//            pathProvider = new NavigationPathProvider();
+//            np = new NodeParser(passedActivity);
+//            new ListTask().execute(point);
+//        } else {
+//            Toast.makeText(passedActivity.getApplicationContext(), "Please Wait for Loading Complete", Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
 
     //calculates the length of a path
     protected float calculatePathLength(PolylineOptions plo) {
@@ -600,65 +600,65 @@ public class MapTransform extends MapObject {
         }
     }
 
-    //Build list of zone options
-    private class ListTask extends AsyncTask<LatLng, Void, List<ParkingZoneOption>> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected List<ParkingZoneOption> doInBackground(LatLng... params) {
-            LatLng point = params[0];
-            pathProvider = new NavigationPathProvider();
-            List<ParkingZoneOption> options = new ArrayList<>();
-            for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
-                ZonePoly zp = entry.getValue();
-                String id = zp.getID();
-                int color = zp.getColor();
-                Log.d(buildings.BuildingTapped(point).toString(), point.toString());
-                Log.d("ZoneID", id);
-                PolylineOptions path = pathProvider.getPath(buildings.BuildingTapped(point), id);
-                float pathLength = calculatePathLength(path);
-                options.add(new ParkingZoneOption(id, pathLength, color, path));
-                Log.d(id, String.valueOf(pathLength));
-            }
-            pathProvider = null;
-            return options;
-        }
-
-        @Override
-        protected void onPostExecute(List<ParkingZoneOption> options) {
-            super.onPostExecute(options);
-            ParkingZoneOptionAdapter adapter = new ParkingZoneOptionAdapter(passedActivity, R.layout.listview_item_row, options);
-            adapter.sort(new Comparator<ParkingZoneOption>() {
-                @Override
-                public int compare(ParkingZoneOption lhs, ParkingZoneOption rhs) {
-                    return lhs.compareTo(rhs);
-                }
-            });
-            lv.setAdapter(adapter);
-            //clicks on an option
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ParkingZoneOption pzo = (ParkingZoneOption) lv.getItemAtPosition(position);
-                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    passedActivity.setCancelItem(true);
-                    clearPath();
-                    removeMarkers();
-                    drawnPath = mMap.addPolyline(pzo.path);
-                    LatLngBounds.Builder bc = new LatLngBounds.Builder();
-                    for (LatLng l : pzo.path.getPoints()) bc.include(l);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
-                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                }
-            });
-
-            slidingUpPanel.setEnableDragViewTouchEvents(true);
-        }
-
-    }
+//    //Build list of zone options
+//    private class ListTask extends AsyncTask<LatLng, Void, List<ParkingZoneOption>> {
+//
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//        }
+//
+//        @Override
+//        protected List<ParkingZoneOption> doInBackground(LatLng... params) {
+//            LatLng point = params[0];
+//            pathProvider = new NavigationPathProvider();
+//            List<ParkingZoneOption> options = new ArrayList<>();
+//            for (Map.Entry<String, ZonePoly> entry : zonePolyMap.entrySet()) {
+//                ZonePoly zp = entry.getValue();
+//                String id = zp.getID();
+//                int color = zp.getColor();
+//                Log.d(buildings.BuildingTapped(point).toString(), point.toString());
+//                Log.d("ZoneID", id);
+//                PolylineOptions path = pathProvider.getPath(buildings.BuildingTapped(point), id);
+//                float pathLength = calculatePathLength(path);
+//                options.add(new ParkingZoneOption(id, pathLength, color, path));
+//                Log.d(id, String.valueOf(pathLength));
+//            }
+//            pathProvider = null;
+//            return options;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<ParkingZoneOption> options) {
+//            super.onPostExecute(options);
+//            ParkingZoneOptionAdapter adapter = new ParkingZoneOptionAdapter(passedActivity, R.layout.listview_item_row, options);
+//            adapter.sort(new Comparator<ParkingZoneOption>() {
+//                @Override
+//                public int compare(ParkingZoneOption lhs, ParkingZoneOption rhs) {
+//                    return lhs.compareTo(rhs);
+//                }
+//            });
+//            lv.setAdapter(adapter);
+//            //clicks on an option
+//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    ParkingZoneOption pzo = (ParkingZoneOption) lv.getItemAtPosition(position);
+////                    slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+////                    passedActivity.setCancelItem(true);
+//                    clearPath();
+//                    removeMarkers();
+//                    drawnPath = mMap.addPolyline(pzo.path);
+//                    LatLngBounds.Builder bc = new LatLngBounds.Builder();
+//                    for (LatLng l : pzo.path.getPoints()) bc.include(l);
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+//                    //slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+//                }
+//            });
+//
+////            slidingUpPanel.setEnableDragViewTouchEvents(true);
+//        }
+//
+//    }
 }
